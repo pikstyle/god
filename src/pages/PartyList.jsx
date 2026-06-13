@@ -3,7 +3,7 @@ function ListeParty({ partyList, vote}) {
         <>
             <h1>Liste des partis</h1>
             <ul>
-                {partyList.sort((a, b) => b.vote - a.vote).map((party) => {
+                {partyList.map((party) => {
                 return (
                     <li key={party.id}>
                         <h2>{party.title}</h2>

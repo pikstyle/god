@@ -10,6 +10,9 @@ function App() {
   const [textHome, setTextHome] = useState('')
   const [isLeader, setIsLeader] = useState(false)
 
+  // Liste des partis triées par ordre décroissant de votes
+  const sortedParties = [...parties].sort((a, b) => b.vote - a.vote)
+
   // Ajouter un parti à la liste des partis
   const addParty = (partyToAdd) => {
     setParties((prev) => {
@@ -26,6 +29,8 @@ function App() {
       }
     }))
   }
+  // Verifie que sortedParties n'est pas vide et met a jour le leader
+  const leader = sortedParties.length !== 0 ? parties[0] : null
 
   return (
     <BrowserRouter>
@@ -33,7 +38,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home isLeader={isLeader} setIsLeader={setIsLeader}textHome={textHome} setTextHome={setTextHome}/>}/>
         <Route path="/create" element={<CreateParty addParty={addParty}/>}/>
-        <Route path="/parties" element={<PartyList partyList={parties} vote={vote}/>}/>
+        <Route path="/parties" element={<PartyList partyList={sortedParties} vote={vote}/>}/>
       </Routes>
     </BrowserRouter>
   )
