@@ -1,19 +1,24 @@
 import { Link } from "react-router-dom"
 
-function ListeParty( {partyList} ) {
+function ListeParty({ partyList, vote}) {
     return (
         <>
             <Link to="/create">Créer un parti</Link>
+            <Link to="/"> Home</Link>
             <h1>Liste des partis</h1>
-            {partyList.map((party) => {
-               return (
-                <div>
-                    <h2>{party.title}</h2>
-                    <p>{party.description}</p>
-                    <img src={URL.createObjectURL(party.logo)} alt="logo-party" />
-                </div>
-               )
-            })}
+            <ul>
+                {partyList.sort((a, b) => b.vote - a.vote).map((party) => {
+                return (
+                    <li key={party.id}>
+                        <h2>{party.title}</h2>
+                        <p>{party.description}</p>
+                        <img src={URL.createObjectURL(party.logo)} alt="logo-party" />
+                        <h3>Nombre de vote = {party.vote}</h3>
+                        <button onClick={() => vote(party.id)}>Voter</button>
+                    </li>
+                )
+                })}
+            </ul>
         </>
     )
 }
