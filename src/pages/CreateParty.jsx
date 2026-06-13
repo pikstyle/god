@@ -10,7 +10,7 @@ function CreateParty({ addParty }) {
     // Quand on envoie le form
     const handleSubmit = (event) => {
         event.preventDefault()
-        addParty({ id: Date.now(), title: title, description: description, logo: partyLogo, vote: 0})
+        addParty({ id: Date.now(), title: title, description: description, logo_url: partyLogo, votes: 0})
     }
  
     return (

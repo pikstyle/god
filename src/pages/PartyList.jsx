@@ -8,8 +8,8 @@ function ListeParty({ partyList, vote}) {
                     <li key={party.id}>
                         <h2>{party.title}</h2>
                         <p>{party.description}</p>
-                        <img src={URL.createObjectURL(party.logo)} alt="logo-party" />
-                        <h3>Nombre de vote = {party.vote}</h3>
+                        <img src={party.logo_url} alt="logo-party" />
+                        <h3>Nombre de vote = {party.votes}</h3>
                         <button onClick={() => vote(party.id)}>Voter</button>
                     </li>
                 )
