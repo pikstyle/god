@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import CreateParty from './pages/CreateParty'
 import PartyList from './pages/PartyList'
 import { useState } from 'react'
+import NavBar from './components/NavBar'
 
 function App() {
   const [parties, setParties] = useState([]) // Liste des partis
@@ -28,10 +29,11 @@ function App() {
 
   return (
     <BrowserRouter>
+    <NavBar></NavBar>
       <Routes>
         <Route path="/" element={<Home isLeader={isLeader} setIsLeader={setIsLeader}textHome={textHome} setTextHome={setTextHome}/>}/>
         <Route path="/create" element={<CreateParty addParty={addParty}/>}/>
-        <Route path="/partis" element={<PartyList partyList={parties} vote={vote}/>}/>
+        <Route path="/parties" element={<PartyList partyList={parties} vote={vote}/>}/>
       </Routes>
     </BrowserRouter>
   )

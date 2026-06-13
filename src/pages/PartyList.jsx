@@ -1,10 +1,6 @@
-import { Link } from "react-router-dom"
-
 function ListeParty({ partyList, vote}) {
     return (
         <>
-            <Link to="/create">Créer un parti</Link>
-            <Link to="/"> Home</Link>
             <h1>Liste des partis</h1>
             <ul>
                 {partyList.sort((a, b) => b.vote - a.vote).map((party) => {

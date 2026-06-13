@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
 
 function CreateParty({ addParty }) {
 
@@ -16,8 +15,6 @@ function CreateParty({ addParty }) {
  
     return (
         <>
-            <Link to="/partis">Liste des partis</Link>
-            <Link to="/"> Home</Link>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="title">Titre</label>
                 <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
