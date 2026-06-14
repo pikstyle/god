@@ -32,6 +32,20 @@ function App() {
     checkSession() 
   }, [])
 
+  // Lit le texte depuis supabase
+  useEffect(() => {
+    const fetchHomeContent = async () => {
+      const { data, error } = await supabase.from('home_content').select('*') // Attendre la réponse avec await et extrait le texte
+      setTextHome(data[0]?.content) // Prendre que la première ligne et maj le texte localement et textHome passé en prop à Home
+    }
+    fetchHomeContent()
+  }, [])
+
+  // Sauvegarde le texteHome
+  const saveHomeContent = async (textContent) => {
+    await supabase.from('home_content').update({ content: textContent }).eq('id', 1) // Maj le texte depuis supabase
+  }
+
   // Liste des partis triées par ordre décroissant de votes
   const sortedParties = [...parties].sort((a, b) => b.votes - a.votes)
 
@@ -65,7 +79,7 @@ function App() {
     <BrowserRouter>
     <NavBar></NavBar>
       <Routes>
-        <Route path="/" element={<Home isLeader={isLeader} setIsLeader={setIsLeader}textHome={textHome} setTextHome={setTextHome}/>}/>
+        <Route path="/" element={<Home isLeader={isLeader} setIsLeader={setIsLeader}textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} />}/>
         <Route path="/create" element={<CreateParty addParty={addParty}/>}/>
         <Route path="/parties" element={<PartyList partyList={sortedParties} vote={vote}/>}/>
         <Route path="/login" element={<Login setUser={setUser}/>}/>

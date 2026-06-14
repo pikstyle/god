@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom"
 function SignUp({ setUser }) {
     const [email, setEmail] = useState('')
     const [mdp, setMdp] = useState('')
-
-    const navigate = useNavigate()
+    const navigate = useNavigate() // Hook qui lance la fonction pour naviguer
 
     // Submit le form et signup
     const handleSubmit = async (event) => {
