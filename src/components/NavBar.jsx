@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function NavBar() {
+function NavBar({ user }) {
     return (
         <div>
             <Link to="/">Home </Link>
@@ -8,8 +8,7 @@ function NavBar() {
             <Link to="/parties">Liste des partis </Link>
             <Link to="/signup">Signup </Link>
             <Link to="/login">Login </Link>
-
-
+            <p>{user ? user.email : 'Non connecté'}</p>
         </div>
     )
 }

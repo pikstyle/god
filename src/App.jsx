@@ -6,7 +6,7 @@ import NavBar from './components/NavBar'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import ProtectedRoute from './components/ProtectedRoute'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { supabase } from './supabaseClients'
 
 function App() {
@@ -14,6 +14,9 @@ function App() {
   const [textHome, setTextHome] = useState('')
   const [isLeader, setIsLeader] = useState(false)
   const [user, setUser] = useState(null)
+  const [userVote, setUserVote] = useState(null)
+  const [isVoting, setIsVoting] = useState(false)
+  const isVotingRef = useRef(false)
 
   // Charge les partis depuis Supabase au démarrage
   useEffect(() => {
@@ -42,6 +45,17 @@ function App() {
     fetchHomeContent()
   }, [])
 
+  // Charge le vote de l'utilisateur
+  useEffect(()  => {
+    const fetchUserVote = async () => {
+      if (user) { // Verifie si l'user est connecté
+        const { data } = await supabase.from('votes').select('*').eq('user_id', user.id) 
+        setUserVote(data[0]?.party_id) // si data[0] est undefined alors return juste undefined grace au ? optional chaining
+      }
+    }
+    fetchUserVote()
+  }, [user])
+
   // Sauvegarde le texteHome dans la base de donnée
   const saveHomeContent = async (textContent) => {
     await supabase.from('home_content').update({ content: textContent }).eq('id', 1) // Maj le texte depuis supabase
@@ -60,31 +74,64 @@ function App() {
 
   // Retourne un nouveau tableau de parties avec le bon nombre de vote pour le parti correspondant
   const vote = async (partyId) => {
-    setParties(parties.map((party) => { // Maj le state local
-      if (party.id === partyId) {
-        return { ...party, votes: party.votes + 1 } // change seulement le nombre de vote
+    if (isVotingRef.current) return 
+    isVotingRef.current = true
+    try {
+      setIsVoting(true)
+      const { data } = await supabase.from('votes').select('*').eq('user_id', user.id)
+      if (!userVote) { // Vérifie si l'user à déjà voté
+        // L'user n'a jamais voté
+        setParties(parties.map((party) => { // Maj le state local
+          if (party.id === partyId) {
+            return { ...party, votes: party.votes + 1 } // change seulement le nombre de vote
+          } else {
+            return party
+          }
+        }))
+        setUserVote(partyId)
+        const currentParty = parties.find((p) => p.id === partyId) // Parcours parties et trouve le party dont l'id match
+        await supabase.from('parties').update({ votes: currentParty.votes + 1 }).eq('id', partyId) // Envoie à supabse en incrementant la valeur de vote et modifie que la ligne du bon party avec partyId
+        await supabase.from('votes').insert({ user_id: user.id, party_id: partyId })
       } else {
-        return party
-      }
-    }))
-    const currentParty = parties.find((p) => p.id === partyId) // Parcours parties et trouve le party dont l'id match
-    await supabase.from('parties').update({ votes: currentParty.votes + 1 }).eq('id', partyId) // Envoie à supabse en incrementant la valeur de vote et modifie que la ligne du bon party avec partyId
+        const currentVotePartyId = userVote // Id du parti déjà voté
+        const currentParty = parties.find((p) => p.id === currentVotePartyId) // Parcours parties et trouve le party dont l'id match (objet complet)
+        if (currentVotePartyId === partyId) {
+          return
+        } else {
+          await supabase.from('parties').update({ votes: currentParty.votes -1 }).eq('id', currentVotePartyId) // Supprime l'ancien vote de la table parties
+          await supabase.from('votes').delete().eq('user_id', user.id) // Supprime le vote de l'user dans la table votes
+          const newParty = parties.find((p) => p.id === partyId) // Parcours parties et trouve le party dont l'id match (objet complet)
+          await supabase.from('parties').update({ votes: newParty.votes +1 }).eq('id', partyId) // Ajoute le vote sur supabase
+          await supabase.from('votes').insert({ user_id: user.id, party_id: partyId }) // Ajoute un nouveau vote dans la table votes avec l'id de l'user et le party id
+          setUserVote(partyId)
+          setParties(parties.map((party) => { // Maj le state local
+            if (party.id === currentVotePartyId) {
+              return { ...party, votes: party.votes - 1 } // change seulement le nombre de vote
+            } else if (party.id === partyId ){
+              return { ...party, votes: party.votes + 1 }
+            } else {
+              return party
+            }
+          }))
+        }
+        }
+    } finally { 
+      isVotingRef.current = false
+      setIsVoting(false)
+    }
   }
 
   // Verifie que sortedParties n'est pas vide et met a jour le leader
   const leader = sortedParties.length !== 0 ? parties[0] : null
-
-  console.log(user)
   
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <BrowserRouter>
-    <NavBar></NavBar>
-    
+    <NavBar user={user}></NavBar>
       <Routes>
         <Route path="/" element={<ProtectedRoute user={user}><Home isLeader={isLeader} setIsLeader={setIsLeader}textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} /></ProtectedRoute>}/>
         <Route path="/create" element={<ProtectedRoute user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
-        <Route path="/parties" element={<ProtectedRoute user={user}><PartyList partyList={sortedParties} vote={vote}/></ProtectedRoute>}/>
+        <Route path="/parties" element={<ProtectedRoute user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting}/></ProtectedRoute>}/>
         <Route path="/login" element={<Login setUser={setUser}/>}/>
         <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
       </Routes>

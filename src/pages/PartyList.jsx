@@ -1,4 +1,4 @@
-function ListeParty({ partyList, vote}) {
+function ListeParty({ partyList, vote, isVoting }) {
     return (
         <>
             <h1>Liste des partis</h1>
@@ -10,7 +10,7 @@ function ListeParty({ partyList, vote}) {
                         <p>{party.description}</p>
                         <img src={party.logo_url} alt="logo-party" />
                         <h3>Nombre de vote = {party.votes}</h3>
-                        <button onClick={() => vote(party.id)}>Voter</button>
+                        <button onClick={() => vote(party.id)} disabled={isVoting}>Voter</button>
                     </li>
                 )
                 })}
