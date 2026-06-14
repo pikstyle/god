@@ -5,6 +5,7 @@ import PartyList from './pages/PartyList'
 import NavBar from './components/NavBar'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
+import ProtectedRoute from './components/ProtectedRoute'
 import { useState, useEffect } from 'react'
 import { supabase } from './supabaseClients'
 
@@ -41,7 +42,7 @@ function App() {
     fetchHomeContent()
   }, [])
 
-  // Sauvegarde le texteHome
+  // Sauvegarde le texteHome dans la base de donnée
   const saveHomeContent = async (textContent) => {
     await supabase.from('home_content').update({ content: textContent }).eq('id', 1) // Maj le texte depuis supabase
   }
@@ -74,14 +75,16 @@ function App() {
   const leader = sortedParties.length !== 0 ? parties[0] : null
 
   console.log(user)
-
+  
+  // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <BrowserRouter>
     <NavBar></NavBar>
+    
       <Routes>
-        <Route path="/" element={<Home isLeader={isLeader} setIsLeader={setIsLeader}textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} />}/>
-        <Route path="/create" element={<CreateParty addParty={addParty}/>}/>
-        <Route path="/parties" element={<PartyList partyList={sortedParties} vote={vote}/>}/>
+        <Route path="/" element={<ProtectedRoute user={user}><Home isLeader={isLeader} setIsLeader={setIsLeader}textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} /></ProtectedRoute>}/>
+        <Route path="/create" element={<ProtectedRoute user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
+        <Route path="/parties" element={<ProtectedRoute user={user}><PartyList partyList={sortedParties} vote={vote}/></ProtectedRoute>}/>
         <Route path="/login" element={<Login setUser={setUser}/>}/>
         <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
       </Routes>
