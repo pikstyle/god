@@ -19,9 +19,10 @@ function Login({ setUser }) {
         <form onSubmit={handleSubmit}>
             <h1>Login</h1>
             <label>Email</label>
-            <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
+            <input required type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
             <label>Mot de passe</label>
-            <input type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
+            <input required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
+            <button type="submit">Login</button>
             <button type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
             <h3>Pas encore de compte ? Alors</h3>
             <Link to="/signup">Signup </Link>
