@@ -12,7 +12,6 @@ import { supabase } from './supabaseClients'
 function App() {
   const [parties, setParties] = useState([]) // Liste des partis
   const [textHome, setTextHome] = useState('')
-  const [isLeader, setIsLeader] = useState(false)
   const [user, setUser] = useState(null)
   const [userVote, setUserVote] = useState(null)
   const [isVoting, setIsVoting] = useState(false)
@@ -64,11 +63,14 @@ function App() {
   // Liste des partis triées par ordre décroissant de votes
   const sortedParties = [...parties].sort((a, b) => b.votes - a.votes)
 
+  // Definir qui est le leader
+  const isLeader = user?.id === sortedParties[0]?.created_by
+
   // Ajouter un parti à la liste des partis
   const addParty = async ({ title, description, votes }) => {
-    await supabase.from('parties').insert({ title, description, votes }) // Attend et insère le parti dans la table parties de supabase 
+    const { data } = await supabase.from('parties').insert({ title, description, votes, created_by: user.id }).select() // Attend et insère le parti dans la table parties de supabase 
     setParties((prev) => { // maj le state local avec le nouveau parti pour que l'affichage se maj sans avoir à recharger les données depuis Supabase
-      return[...prev, { title, description, votes }]
+      return[...prev, data[0]]
     })
   }
 
@@ -124,7 +126,7 @@ function App() {
     <BrowserRouter>
     <NavBar user={user}></NavBar>
       <Routes>
-        <Route path="/" element={<ProtectedRoute user={user}><Home isLeader={isLeader} setIsLeader={setIsLeader}textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} /></ProtectedRoute>}/>
+        <Route path="/" element={<ProtectedRoute user={user}><Home isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} /></ProtectedRoute>}/>
         <Route path="/create" element={<ProtectedRoute user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
         <Route path="/parties" element={<ProtectedRoute user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting}/></ProtectedRoute>}/>
         <Route path="/login" element={<Login setUser={setUser}/>}/>
