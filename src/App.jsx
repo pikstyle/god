@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate} from 'react-router-dom'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import CreateParty from './pages/CreateParty'
 import PartyList from './pages/PartyList'
@@ -21,6 +21,7 @@ function App() {
   const [profile, setProfile] = useState(null)
   const isVotingRef = useRef(false) // isVotingRef = { current: false }
   const navigate = useNavigate()
+  const location = useLocation()
 
   // Charge les partis depuis Supabase au démarrage
   useEffect(() => {
@@ -154,9 +155,9 @@ function App() {
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <>
-      <NavBar user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>
+      {user && location.pathname !== "/onboarding" && <NavBar user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
         <Routes>
-          <Route path="/" element={<ProtectedRoute loading={loading} user={user}><Home isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} /></ProtectedRoute>}/>
+          <Route path="/" element={<Home user={user} isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
           <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
           <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting}/></ProtectedRoute>}/>
           <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>

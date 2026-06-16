@@ -5,10 +5,11 @@ function Onboarding( {user, profile, updateProfile} ) {
     const [username, setUsername] = useState("")
     const navigate = useNavigate()
 
-    const handleSubmit = (event) => {
+    // Quand on clique sur save
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        updateProfile({ username, avatar_url: profile?.avatar_url })
-        navigate('/')
+        await updateProfile({ username, avatar_url: profile?.avatar_url }) // Update le profile 
+        navigate('/') // Navigue à Home
     }
     
     return (
