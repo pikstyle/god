@@ -22,7 +22,7 @@ function Login({ setUser }) {
             <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
             <label>Mot de passe</label>
             <input type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
-            <button onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
+            <button type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
         </form>
     )
 }

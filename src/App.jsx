@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route} from 'react-router-dom'
+import { Routes, Route, useNavigate} from 'react-router-dom'
 import Home from './pages/Home'
 import CreateParty from './pages/CreateParty'
 import PartyList from './pages/PartyList'
@@ -6,6 +6,7 @@ import NavBar from './components/NavBar'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import Profile from './pages/Profile'
+import Onboarding from './pages/Onboarding'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from './supabaseClients'
@@ -17,7 +18,9 @@ function App() {
   const [userVote, setUserVote] = useState(null)
   const [isVoting, setIsVoting] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [profile, setProfile] = useState(null)
   const isVotingRef = useRef(false) // isVotingRef = { current: false }
+  const navigate = useNavigate()
 
   // Charge les partis depuis Supabase au démarrage
   useEffect(() => {
@@ -57,6 +60,19 @@ function App() {
     fetchUserVote()
   }, [user])
 
+    // Recuperer le profile de l'user depuis supabase
+    useEffect(() => {
+        const fetchProfile = async () => {
+            if (!user) return // evite de montrer le component si user n'est pas encore chargé
+            const { data } = await supabase.from('profiles').select('*').eq('id', user.id) // Récupère la ligne dans la table profiles où id = user.id
+            setProfile(data[0]) // Stocke le profile et maj le state
+            if (!data[0]) { // Si l'user n'a pas de profile, go onboard
+              navigate('/onboarding')
+      }
+        }
+        fetchProfile()
+    }, [user])
+
   // Sauvegarde le texteHome dans la base de donnée
   const saveHomeContent = async (textContent) => {
     await supabase.from('home_content').update({ content: textContent }).eq('id', 1) // Maj le texte depuis supabase
@@ -85,6 +101,7 @@ function App() {
   // Sauvegarde le profil de l'user dans la table de profiles de Supabase
   const updateProfile = async ( {username, avatar_url} ) => { // Nouveau pseudo, avatar
     const { data } = await supabase.from("profiles").upsert({ id: user.id, username, avatar_url }) // Si le profil existe deja, il est maj sinon on le crée
+    setProfile({ ...profile, username }) // Updtate le state localelent seulement du pseudo
   }
 
   // Retourne un nouveau tableau de parties avec le bon nombre de vote pour le parti correspondant
@@ -136,17 +153,18 @@ function App() {
   }  
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
-    <BrowserRouter>
-    <NavBar user={user} logout={logOut} loading={loading}></NavBar>
-      <Routes>
-        <Route path="/" element={<ProtectedRoute loading={loading} user={user}><Home isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} /></ProtectedRoute>}/>
-        <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
-        <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting}/></ProtectedRoute>}/>
-        <Route path="/profile" element={<ProtectedRoute loading={loading} user={user} updat eProfile={updateProfile}><Profile></Profile></ProtectedRoute>}/>
-        <Route path="/login" element={<Login setUser={setUser}/>}/>
-        <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
-      </Routes>
-    </BrowserRouter>
+    <>
+      <NavBar user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>
+        <Routes>
+          <Route path="/" element={<ProtectedRoute loading={loading} user={user}><Home isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} /></ProtectedRoute>}/>
+          <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
+          <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting}/></ProtectedRoute>}/>
+          <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
+          <Route path="/login" element={<Login setUser={setUser}/>}/>
+          <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
+          <Route path="/onboarding" element={<ProtectedRoute loading={loading} user={user}><Onboarding user={user} profile={profile} updateProfile={updateProfile}/></ProtectedRoute>}/>
+        </Routes>
+      </>
   )
 }
 
