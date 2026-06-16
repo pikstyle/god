@@ -5,6 +5,7 @@ import PartyList from './pages/PartyList'
 import NavBar from './components/NavBar'
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
+import Profile from './pages/Profile'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from './supabaseClients'
@@ -76,9 +77,14 @@ function App() {
   }
 
   // Logout
-  const logOut = () => {
-    supabase.auth.signOut()
+  const logOut = async () => {
+    await supabase.auth.signOut()
     setUser(null)
+  }
+
+  // Sauvegarde le profil de l'user dans la table de profiles de Supabase
+  const updateProfile = async ( {username, avatar_url} ) => { // Nouveau pseudo, avatar
+    const { data } = await supabase.from("profiles").upsert({ id: user.id, username, avatar_url }) // Si le profil existe deja, il est maj sinon on le crée
   }
 
   // Retourne un nouveau tableau de parties avec le bon nombre de vote pour le parti correspondant
@@ -136,6 +142,7 @@ function App() {
         <Route path="/" element={<ProtectedRoute loading={loading} user={user}><Home isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} /></ProtectedRoute>}/>
         <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
         <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting}/></ProtectedRoute>}/>
+        <Route path="/profile" element={<ProtectedRoute loading={loading} user={user} updat eProfile={updateProfile}><Profile></Profile></ProtectedRoute>}/>
         <Route path="/login" element={<Login setUser={setUser}/>}/>
         <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
       </Routes>

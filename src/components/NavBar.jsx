@@ -8,6 +8,7 @@ function NavBar({ user, logout, loading }) {
             <Link to="/parties">Liste des partis </Link>
             <Link to="/signup">Signup </Link>
             <Link to="/login">Login </Link>
+            <Link to="/profile">Profile </Link>
             <button onClick={logout}>Logout</button>
             <p>{loading ? "Chargement..." : user ? user.email : 'Non connecté'}</p>
         </div>
