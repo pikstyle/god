@@ -131,7 +131,7 @@ function App() {
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <BrowserRouter>
-    <NavBar user={user} logout={logOut}></NavBar>
+    <NavBar user={user} logout={logOut} loading={loading}></NavBar>
       <Routes>
         <Route path="/" element={<ProtectedRoute loading={loading} user={user}><Home isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} /></ProtectedRoute>}/>
         <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>

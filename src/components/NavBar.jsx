@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function NavBar({ user, logout }) {
+function NavBar({ user, logout, loading }) {
     return (
         <div>
             <Link to="/">Home </Link>
@@ -9,7 +9,7 @@ function NavBar({ user, logout }) {
             <Link to="/signup">Signup </Link>
             <Link to="/login">Login </Link>
             <button onClick={logout}>Logout</button>
-            <p>{user ? user.email : 'Non connecté'}</p>
+            <p>{loading ? "Chargement..." : user ? user.email : 'Non connecté'}</p>
         </div>
     )
 }
