@@ -27,14 +27,13 @@ function App() {
     fetchParties() // Lance la fonction
   }, [])
 
-  // Verifie si on est connecté en tant que user
+  // Fonction de la librairie Supabase. Ecoute en temps réel tous les changements d'auth (login email, OAuth, logout, expiration). Il se déclenche automatiquement après chaque redirect OAuth.
   useEffect(() => {
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession() // Vérifie si on est déjà connecté et récupère la connexion en tant que session
-      setUser(session?.user) // Maj le state user avec la session
-      setLoading(false)
-    }
-    checkSession() 
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => { // Retourne un objet qu'on destructure en subscription, retournée à chaque changement
+      setUser(session?.user ?? null) // session => contient la nouvelle session. Si aucune session alors user devient null
+      setLoading(false) // On arrete le loading pour débloquer ProtectedRoute
+    })
+    return () => subscription.unsubscribe() // Arreter d'ecouter 
   }, [])
 
   // Lit le texte depuis supabase

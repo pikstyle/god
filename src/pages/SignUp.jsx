@@ -13,7 +13,7 @@ function SignUp({ setUser }) {
         event.preventDefault()
         const { data, error } = await supabase.auth.signUp({ email: email, password: mdp}) // Crée l'user lors de la connexion et le stocke dans data
         setUser(data.user) // Maj le state local avec le bon user
-        setEmailSent(true) // 
+        setEmailSent(true) // Quand on submit le form, mettre que l'email de verif à été envoyé
     }
 
     return (
@@ -24,6 +24,7 @@ function SignUp({ setUser }) {
             <label>Mot de passe</label>
             <input type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
             <button>SignUp</button>
+            <button onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Signup avec Google</button>
             </form></div> : <p>Vous devez verif votre mail</p>}
         </>
     )
