@@ -15,6 +15,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [userVote, setUserVote] = useState(null)
   const [isVoting, setIsVoting] = useState(false)
+  const [loading, setLoading] = useState(true)
   const isVotingRef = useRef(false) // isVotingRef = { current: false }
 
   // Charge les partis depuis Supabase au démarrage
@@ -31,6 +32,7 @@ function App() {
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession() // Vérifie si on est déjà connecté et récupère la connexion en tant que session
       setUser(session?.user) // Maj le state user avec la session
+      setLoading(false)
     }
     checkSession() 
   }, [])
@@ -72,6 +74,12 @@ function App() {
     setParties((prev) => { // maj le state local avec le nouveau parti pour que l'affichage se maj sans avoir à recharger les données depuis Supabase
       return[...prev, data[0]]
     })
+  }
+
+  // Logout
+  const logOut = () => {
+    supabase.auth.signOut()
+    setUser(null)
   }
 
   // Retourne un nouveau tableau de parties avec le bon nombre de vote pour le parti correspondant
@@ -124,11 +132,11 @@ function App() {
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <BrowserRouter>
-    <NavBar user={user}></NavBar>
+    <NavBar user={user} logout={logOut}></NavBar>
       <Routes>
-        <Route path="/" element={<ProtectedRoute user={user}><Home isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} /></ProtectedRoute>}/>
-        <Route path="/create" element={<ProtectedRoute user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
-        <Route path="/parties" element={<ProtectedRoute user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting}/></ProtectedRoute>}/>
+        <Route path="/" element={<ProtectedRoute loading={loading} user={user}><Home isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} /></ProtectedRoute>}/>
+        <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
+        <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting}/></ProtectedRoute>}/>
         <Route path="/login" element={<Login setUser={setUser}/>}/>
         <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
       </Routes>
