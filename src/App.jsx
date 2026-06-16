@@ -16,7 +16,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [userVote, setUserVote] = useState(null)
   const [isVoting, setIsVoting] = useState(false)
-  const isVotingRef = useRef(false)
+  const isVotingRef = useRef(false) // isVotingRef = { current: false }
 
   // Charge les partis depuis Supabase au démarrage
   useEffect(() => {
@@ -74,56 +74,51 @@ function App() {
 
   // Retourne un nouveau tableau de parties avec le bon nombre de vote pour le parti correspondant
   const vote = async (partyId) => {
-    if (isVotingRef.current) return 
-    isVotingRef.current = true
+    if (isVotingRef.current) return // on est entrain de voter donc on sort direct
+    isVotingRef.current = true // sinon, on met à true le fait qu'on est entrainde voter
     try {
       setIsVoting(true)
-      const { data } = await supabase.from('votes').select('*').eq('user_id', user.id)
-      if (!userVote) { // Vérifie si l'user à déjà voté
+      if (!userVote) { // Vérifie si l'user n'a pas encore déjà voté
         // L'user n'a jamais voté
-        setParties(parties.map((party) => { // Maj le state local
+        setParties(parties.map((party) => { // Maj le state local des parties 
           if (party.id === partyId) {
             return { ...party, votes: party.votes + 1 } // change seulement le nombre de vote
           } else {
             return party
           }
         }))
-        setUserVote(partyId)
+        setUserVote(partyId) // Maj le state local avec le nouveau parti voté
         const currentParty = parties.find((p) => p.id === partyId) // Parcours parties et trouve le party dont l'id match
         await supabase.from('parties').update({ votes: currentParty.votes + 1 }).eq('id', partyId) // Envoie à supabse en incrementant la valeur de vote et modifie que la ligne du bon party avec partyId
-        await supabase.from('votes').insert({ user_id: user.id, party_id: partyId })
-      } else {
+        await supabase.from('votes').insert({ user_id: user.id, party_id: partyId }) // insère une nouvelle ligne dans la table votes de supabase avec l'id de l'user et l'id du party pour lequel il a voté
+      } else { // L'uer à déjà voté
         const currentVotePartyId = userVote // Id du parti déjà voté
         const currentParty = parties.find((p) => p.id === currentVotePartyId) // Parcours parties et trouve le party dont l'id match (objet complet)
-        if (currentVotePartyId === partyId) {
+        if (currentVotePartyId === partyId) { // On vote pour le même parti => impossible pour donc return direct
           return
-        } else {
-          await supabase.from('parties').update({ votes: currentParty.votes -1 }).eq('id', currentVotePartyId) // Supprime l'ancien vote de la table parties
+        } else { // On vote pour un nouveau parti
+          await supabase.from('parties').update({ votes: currentParty.votes -1 }).eq('id', currentVotePartyId) // Décrémente le nombre de votes de l'ancien parti
           await supabase.from('votes').delete().eq('user_id', user.id) // Supprime le vote de l'user dans la table votes
           const newParty = parties.find((p) => p.id === partyId) // Parcours parties et trouve le party dont l'id match (objet complet)
           await supabase.from('parties').update({ votes: newParty.votes +1 }).eq('id', partyId) // Ajoute le vote sur supabase
           await supabase.from('votes').insert({ user_id: user.id, party_id: partyId }) // Ajoute un nouveau vote dans la table votes avec l'id de l'user et le party id
-          setUserVote(partyId)
-          setParties(parties.map((party) => { // Maj le state local
-            if (party.id === currentVotePartyId) {
-              return { ...party, votes: party.votes - 1 } // change seulement le nombre de vote
-            } else if (party.id === partyId ){
-              return { ...party, votes: party.votes + 1 }
-            } else {
-              return party
+          setUserVote(partyId) // Maj le state local avec le nouveau parti voté
+          setParties(parties.map((party) => { // Retourne un nouveau tableau avec le nombre de vote de chaque partis maj
+            if (party.id === currentVotePartyId) { // Check si c'est l'ancien parti voté
+              return { ...party, votes: party.votes - 1 } // change seulement le nombre de vote de l'ancien parti voté
+            } else if (party.id === partyId ){ // Check si c'est un nouveau id
+              return { ...party, votes: party.votes + 1 } // Rajoute le vote dans le nouveau party
+            } else { // C'est un autre parti random donc on touche pas
+              return party // On retourne le parti tel quel
             }
           }))
         }
         }
-    } finally { 
-      isVotingRef.current = false
+    } finally {  
+      isVotingRef.current = false // Fin de voter
       setIsVoting(false)
     }
-  }
-
-  // Verifie que sortedParties n'est pas vide et met a jour le leader
-  const leader = sortedParties.length !== 0 ? parties[0] : null
-  
+  }  
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <BrowserRouter>
