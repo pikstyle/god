@@ -1,6 +1,6 @@
 import { useState } from "react" 
 import { supabase } from '../supabaseClients'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
 function Login({ setUser }) {
     const [email, setEmail] = useState('')
@@ -23,6 +23,8 @@ function Login({ setUser }) {
             <label>Mot de passe</label>
             <input type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
             <button type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
+            <h3>Pas encore de compte ? Alors</h3>
+            <Link to="/signup">Signup </Link>
         </form>
     )
 }
