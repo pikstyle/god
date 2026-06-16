@@ -17,8 +17,8 @@ function Profile( {user, updateProfile} ) {
     return (
         <div>
             <h1>Profile</h1>
-            <h2>{profile.username}</h2>
-            <img src="{profile?.avatar_url}" alt="avatar"/>
+            <h2>{profile?.username}</h2>
+            <img src={profile?.avatar_url} alt="avatar"/>
         </div>
     )
 }
