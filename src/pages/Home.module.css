@@ -1,0 +1,24 @@
+.entrer {
+    font-size: x-large;
+    position: fixed; 
+    bottom: 100px;
+    font-family: inherit;
+    background-color: transparent;
+    color: var(--text);
+    border: 2px solid var(--border);
+    padding: 12px;
+    cursor: pointer;
+}
+
+.div_home{
+    display: flex;            /* active flexbox */
+    justify-content: flex-start; /* le contenu demarre en haut*/
+    flex-direction: column; /* emopile verticalement */
+    align-items: center;      /* centre sur l'axe secondaire, centre verticalement */
+    min-height: 100vh; /* donne au conteneur la taille de l'ecran */
+}
+
+.titre {
+    font-size: 10em;
+    margin-top: 100px; /* baisse un peu le titre */
+}

@@ -10,7 +10,7 @@ function NavBar({ user, logout, loading, username }) {
             <Link to="/login">Login </Link>
             <Link to="/profile"> Profile </Link>
             <button onClick={logout}>Logout</button>
-            <p>{loading ? "Chargement..." : user ? username : 'Non connecté'}</p>
+            <p>{loading ? "Chargement..." : null}</p>
         </div>
     )
 }
