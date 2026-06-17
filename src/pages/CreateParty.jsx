@@ -11,10 +11,14 @@ function CreateParty({ addParty }) {
     // Quand on envoie le form
     const handleSubmit = async (event) => {
         event.preventDefault()
+        if (partyLogo.size > 1 * 1024 * 1024) { // Verifie que le logo est inf a 1MB
+            alert('Image trop lourde, max 1MB')
+            return
+        }
         if (isSubmittingRef.current) return // On est entrainde submit donc on sort direct
         isSubmittingRef.current = true
         try {
-            await addParty({ title: title, description: description, logo_url: partyLogo, votes: 0})
+            await addParty({ title: title, description: description, logoFile: partyLogo, votes: 0})
             // Apres avoir crée le parti on reset les inputs
             setTitle("")
             setDescription("")

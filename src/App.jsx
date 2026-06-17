@@ -23,11 +23,16 @@ function App() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // Charge les partis depuis Supabase au démarrage
+  // Charge les partis
   useEffect(() => {
     const fetchParties = async () => {
-      const { data, error } = await supabase.from('parties').select('*') // Attendre la réponse avec await et extrait les deux propriétés en variables séparées
-      setParties(data)
+      const { data: partiesData } = await supabase.from('parties').select('*') // Recupere tous les partis depuis supabase et nomme la data partiesData pour eviter conflit de nom
+      const { data: profilesData } = await supabase.from('profiles').select('id, username') // Recup tous les profiles depuis supabase mais stocke seulement l'id et username
+      const merged = (partiesData ?? []).map(party => ({ // Pour chaque parti, on créé un nouvel objet avec :
+        ...party, // toutes les infos du partis
+        profiles: profilesData.find(p => p.id === party.created_by) // Ajoute une propriété "profiles" a l'objet dont l'id de profiles data = l'id du createur
+      }))
+      setParties(merged ?? []) // Met a jour le state avec le tableau fusionné, le ?? [] protège si merged est null comme ça on crash pas
     }
     fetchParties() // Lance la fonction
   }, [])
@@ -64,7 +69,7 @@ function App() {
     // Recuperer le profile de l'user depuis supabase
     useEffect(() => {
         const fetchProfile = async () => {
-            if (!user) return // evite de montrer le component si user n'est pas encore chargé
+            if (!user) return // évite de faire la requête si user n'est pas encore chargé
             const { data } = await supabase.from('profiles').select('*').eq('id', user.id) // Récupère la ligne dans la table profiles où id = user.id
             setProfile(data[0]) // Stocke le profile et maj le state
             if (!data[0]) { // Si l'user n'a pas de profile, go onboard
@@ -86,10 +91,12 @@ function App() {
   const isLeader = user?.id === sortedParties[0]?.created_by
 
   // Ajouter un parti à la liste des partis
-  const addParty = async ({ title, description, votes }) => {
-    const { data } = await supabase.from('parties').insert({ title, description, votes, created_by: user.id }).select() // Attend et insère le parti dans la table parties de supabase 
+  const addParty = async ({ title, description, votes, logoFile }) => {
+    const { data: uploadData } = await supabase.storage.from('logos').upload(title, logoFile) // Upload (donc envoie) le logofile au bucket de supabase
+    const { data: urlData } = supabase.storage.from('logos').getPublicUrl(title) // Récupère l'URL publique du fichier uploadé (url générée par supabase)
+    const { data } = await supabase.from('parties').insert({ title, description, votes, created_by: user.id, logo_url: urlData.publicUrl }).select() // Attend et insère le parti dans la table parties de supabase 
     setParties((prev) => { // maj le state local avec le nouveau parti pour que l'affichage se maj sans avoir à recharger les données depuis Supabase
-      return[...prev, data[0]]
+      return[...prev, data[0]] // Créé un nouveau tableau avec tout les anciens + le nouveau et met tout ça dans setParties
     })
   }
 
@@ -102,7 +109,7 @@ function App() {
   // Sauvegarde le profil de l'user dans la table de profiles de Supabase
   const updateProfile = async ( {username, avatar_url} ) => { // Nouveau pseudo, avatar
     const { data } = await supabase.from("profiles").upsert({ id: user.id, username, avatar_url }) // Si le profil existe deja, il est maj sinon on le crée
-    setProfile({ ...profile, username }) // Updtate le state localelent seulement du pseudo
+    setProfile({ ...profile, username }) // Update le state localement seulement du pseudo
   }
 
   // Retourne un nouveau tableau de parties avec le bon nombre de vote pour le parti correspondant
@@ -124,10 +131,10 @@ function App() {
         const currentParty = parties.find((p) => p.id === partyId) // Parcours parties et trouve le party dont l'id match
         await supabase.from('parties').update({ votes: currentParty.votes + 1 }).eq('id', partyId) // Envoie à supabse en incrementant la valeur de vote et modifie que la ligne du bon party avec partyId
         await supabase.from('votes').insert({ user_id: user.id, party_id: partyId }) // insère une nouvelle ligne dans la table votes de supabase avec l'id de l'user et l'id du party pour lequel il a voté
-      } else { // L'uer à déjà voté
+      } else { // L'user a déjà voté
         const currentVotePartyId = userVote // Id du parti déjà voté
         const currentParty = parties.find((p) => p.id === currentVotePartyId) // Parcours parties et trouve le party dont l'id match (objet complet)
-        if (currentVotePartyId === partyId) { // On vote pour le même parti => impossible pour donc return direct
+        if (currentVotePartyId === partyId) { // On vote pour le même parti donc rien à faire
           return
         } else { // On vote pour un nouveau parti
           await supabase.from('parties').update({ votes: currentParty.votes -1 }).eq('id', currentVotePartyId) // Décrémente le nombre de votes de l'ancien parti
@@ -159,7 +166,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home user={user} isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
           <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
-          <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting}/></ProtectedRoute>}/>
+          <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/></ProtectedRoute>}/>
           <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
           <Route path="/login" element={<Login setUser={setUser}/>}/>
           <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
