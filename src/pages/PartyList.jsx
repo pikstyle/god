@@ -1,17 +1,22 @@
+import styles from './PartyList.module.css'
+
 function ListeParty({ partyList, vote, isVoting, profile, user }) {
     return (
         <>
-            <h1>Liste des partis</h1>
-            <ul>
+            <ul className={styles.liste}>
                 {partyList.map((party) => {
                 return (
-                    <li key={party.id}>
-                        <h2>{party.title}</h2>
+                    <li className={styles.carte} key={party.id}>
+                        <div className={styles.infos}>
+                          {/* {party.profiles?.avatar_url && <img src={party.profiles.avatar_url} alt="avatar" referrerPolicy="no-referrer"/>} Photo du créateur si elle existe. referrerPolicy="no-referrer" empêche Google de bloquer l'image */}
+                            <img src={party.logo_url} alt="logo-party" />
+                            <h2>{party.title}</h2>
+                        </div>
+                        
                         <p>{party.description}</p>
-                        <img src={party.logo_url} alt="logo-party" />
+
                         <h3>Nombre de vote = {party.votes}</h3>
                         <h3>Créé par : {party.profiles?.username}</h3>
-                        {party.profiles?.avatar_url && <img src={party.profiles.avatar_url} alt="avatar" referrerPolicy="no-referrer"/>} {/* Photo du créateur si elle existe. referrerPolicy="no-referrer" empêche Google de bloquer l'image */}
                         <button onClick={() => vote(party.id)} disabled={isVoting}>Voter</button>
                     </li>
                 )

@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-function Profile( {user, updateProfile, profile} ) {
+function Profile( {user, updateProfile, profile, logout} ) {
     const [username, setUsername] = useState("")
     return (
         <div>
@@ -11,6 +11,7 @@ function Profile( {user, updateProfile, profile} ) {
             <label>Noueau pseudo : </label>
             <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
             <button onClick={() => updateProfile({ username, avatar_url: profile?.avatar_url })}>Save</button>
+            <button onClick={() => logout()}>Logout</button>
         </div> 
     )
 }

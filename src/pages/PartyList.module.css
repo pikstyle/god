@@ -1,0 +1,28 @@
+.liste {
+    list-style: none;
+    padding: 20px;
+    padding-top: 35px;
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); /*  trois colonnes qui se partagent l'espace à parts égales */
+    gap: 20px;
+}
+
+.liste img {
+    height: 50px;
+    width: auto;
+    object-fit: cover; /* pour avoir une image toujours carrée*/
+}
+
+.carte {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* chaque item se cale à gauche et garde sa taille*/
+    border: 1px solid var(--border);
+    padding: 5px;
+}
+
+.infos {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
