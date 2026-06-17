@@ -10,6 +10,7 @@ import Onboarding from './pages/Onboarding'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from './supabaseClients'
+import styles from "./components/Navbar.module.css"
 
 function App() {
   const [parties, setParties] = useState([]) // Liste des partis
@@ -168,16 +169,18 @@ function App() {
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <>
-      {user && location.pathname !== "/onboarding" && <NavBar user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
-        <Routes>
-          <Route path="/" element={<Home user={user} isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
-          <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
-          <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/></ProtectedRoute>}/>
-          <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
-          <Route path="/login" element={<Login setUser={setUser}/>}/>
-          <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
-          <Route path="/onboarding" element={<ProtectedRoute loading={loading} user={user}><Onboarding user={user} profile={profile} updateProfile={updateProfile}/></ProtectedRoute>}/>
-        </Routes>
+    {user && location.pathname !== "/onboarding" && <NavBar avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
+      <div className={styles.page} >
+          <Routes>
+            <Route path="/" element={<Home user={user} isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
+            <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
+            <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/></ProtectedRoute>}/>
+            <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
+            <Route path="/login" element={<Login setUser={setUser}/>}/>
+            <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
+            <Route path="/onboarding" element={<ProtectedRoute loading={loading} user={user}><Onboarding user={user} profile={profile} updateProfile={updateProfile}/></ProtectedRoute>}/>
+          </Routes>
+        </div>
       </>
   )
 }

@@ -1,4 +1,4 @@
-.form_login {
+.form_auth {
     display: flex;            /* active flexbox */
     justify-content: center; /* centre verticalement car column */
     flex-direction: column; /* empile verticalement */
@@ -18,7 +18,7 @@
     width: 150px; /* donne la meme taille aux boutons*/
 }
 
-.login_question {
+.auth_question {
     display: flex;
     gap: 0.5rem;
 }

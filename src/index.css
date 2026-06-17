@@ -11,16 +11,23 @@
     margin: 0;
 }
 
+html {
+  scrollbar-gutter: stable; /* quand la scroll barre arrive, evite un gros gap */
+}
+
 body {
     background-color: var(--background);
     color: var(--text);
     font-family: 'Computer Modern Serif', serif;
+    /* padding-inline: 24px;   /* espace à gauche ET à droite */
 }
 
 a {
     color: var(--text);
+    text-decoration: none;
 }
 
 button, input, textarea {
   font-family: inherit;
 }
+

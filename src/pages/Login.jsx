@@ -1,7 +1,7 @@
 import { useState } from "react" 
 import { supabase } from '../supabaseClients'
 import { useNavigate, Link } from "react-router-dom"
-import styles from './Login.module.css'
+import styles from './Auth.module.css'
 
 function Login({ setUser }) {
     const [email, setEmail] = useState('')
@@ -22,7 +22,7 @@ function Login({ setUser }) {
     }
 
     return (
-        <form className={styles.form_login} onSubmit={handleSubmit}>
+        <form className={styles.form_auth} onSubmit={handleSubmit}>
             <h1>Login</h1>
             <button className={styles.button} type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
             <div className={styles.separateur}>Ou</div>
@@ -31,7 +31,7 @@ function Login({ setUser }) {
             <label>Mot de passe</label>
             <input className={styles.inputs} required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
             <button className={styles.button} type="submit">Login</button>
-            <div className={styles.login_question}>
+            <div className={styles.auth_question}>
                 <h3>Pas encore de compte ? </h3>
                 <Link className={styles.link} to="/signup"> Signup</Link>
             </div>

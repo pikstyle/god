@@ -1,0 +1,36 @@
+.navbar {
+    display: flex;
+    justify-content: space-between; /* colle le premier groupe à gauche, le dernier à droite, avec le max d'espace entre les deux.*/
+    align-items: center;
+    padding: 5px 14px;
+    border-bottom: 1px solid var(--border)
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    text-decoration: none;
+}
+
+.logo {
+    display: flex;
+    align-items: center;  /* aligne verticalement l'image et le texte */
+    gap: 5px;
+    text-decoration: none;
+}
+
+.logo img {
+    height: 100px;
+    width: auto;
+    padding: 10px;
+}
+
+.avatar {
+    height: 25px;
+    width: auto; 
+    border-radius: 50%; /* le rend circulaire */
+    object-fit: cover; /* l'image remplit le cercle sans se déformer */
+}
+
+.page { padding-inline: 24px; }
