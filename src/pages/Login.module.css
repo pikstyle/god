@@ -1,8 +1,8 @@
 .form_login {
     display: flex;            /* active flexbox */
-    justify-content: center; /* centre tout*/
-    flex-direction: column; /* emopile verticalement */
-    align-items: center;      /* centre sur l'axe secondaire, centre verticalement */
+    justify-content: center; /* centre verticalement car column */
+    flex-direction: column; /* empile verticalement */
+    align-items: center;      /* centre horizontalement, car column */
     min-height: 100vh; /* donne au conteneur la taille de l'ecran permet donc de tout centrer*/
     gap: 1.5rem;   /* permet d'espacer tout les children du form*/
 }
@@ -16,6 +16,18 @@
     padding: 12px;
     cursor: pointer;
     width: 150px; /* donne la meme taille aux boutons*/
+}
+
+.login_question {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.link {
+    font-family: inherit;
+    font-size: 1.17em; /* h3 size*/
+    font-style: italic;
+    text-decoration: none;
 }
 
 .separateur {

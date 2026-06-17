@@ -29,10 +29,12 @@ function Login({ setUser }) {
             <label>Email</label>
             <input className={styles.inputs} required type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
             <label>Mot de passe</label>
-            <input className={styles.inputs}required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
+            <input className={styles.inputs} required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
             <button className={styles.button} type="submit">Login</button>
-            <h3>Pas encore de compte ? Alors</h3>
-            <Link to="/signup">Signup </Link>
+            <div className={styles.login_question}>
+                <h3>Pas encore de compte ? </h3>
+                <Link className={styles.link} to="/signup"> Signup</Link>
+            </div>
             {errorMsg && <p>{errorMsg}</p>}
         </form>
     )

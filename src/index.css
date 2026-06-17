@@ -2,7 +2,7 @@
 
 :root {
     --background: #080808;
-    --text: #ffffff;
+    --text: #ffffff; 
     --border: #ffffff;
 }
 
@@ -19,4 +19,8 @@ body {
 
 a {
     color: var(--text);
+}
+
+button, input, textarea {
+  font-family: inherit;
 }
