@@ -1,0 +1,42 @@
+.form_login {
+    display: flex;            /* active flexbox */
+    justify-content: center; /* centre tout*/
+    flex-direction: column; /* emopile verticalement */
+    align-items: center;      /* centre sur l'axe secondaire, centre verticalement */
+    min-height: 100vh; /* donne au conteneur la taille de l'ecran permet donc de tout centrer*/
+    gap: 1.5rem;   /* permet d'espacer tout les children du form*/
+}
+
+.button {
+    font-size: 15px;
+    font-family: inherit;
+    background-color: transparent;
+    color: var(--text);
+    border: 2px solid var(--border) ;
+    padding: 12px;
+    cursor: pointer;
+    width: 150px; /* donne la meme taille aux boutons*/
+}
+
+.separateur {
+    display: flex;
+    align-items: center; /* aligne les items sur la même ligne */
+    gap: 10px;  /* espace entre le "ou" et les lignes  */
+    width: 400px; /* taille que peut prendre les lignes  */
+}
+
+.separateur::before,
+.separateur::after {
+    content: ""; /* obligé pour que le separateur existe */
+    flex: 1; /* chaque trait grandit pour combler l'espace dispo */
+    height: 1px;
+    background-color: var(--border);
+}
+
+.inputs {
+    background-color: transparent;
+    font-size: 30px;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px;
+}

@@ -1,6 +1,7 @@
 import { useState } from "react" 
 import { supabase } from '../supabaseClients'
 import { useNavigate, Link } from "react-router-dom"
+import styles from './Login.module.css'
 
 function Login({ setUser }) {
     const [email, setEmail] = useState('')
@@ -21,14 +22,15 @@ function Login({ setUser }) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className={styles.form_login} onSubmit={handleSubmit}>
             <h1>Login</h1>
+            <button className={styles.button} type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
+            <div className={styles.separateur}>Ou</div>
             <label>Email</label>
-            <input required type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
+            <input className={styles.inputs} required type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
             <label>Mot de passe</label>
-            <input required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
-            <button type="submit">Login</button>
-            <button type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
+            <input className={styles.inputs}required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
+            <button className={styles.button} type="submit">Login</button>
             <h3>Pas encore de compte ? Alors</h3>
             <Link to="/signup">Signup </Link>
             {errorMsg && <p>{errorMsg}</p>}
