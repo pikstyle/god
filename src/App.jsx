@@ -32,7 +32,6 @@ function App() {
         ...party, // toutes les infos du partis
         profiles: profilesData.find(p => p.id === party.created_by) // Ajoute une propriété "profiles" a l'objet dont l'id de profiles data = l'id du createur
       }))
-      console.log(merged)
       setParties(merged ?? []) // Met a jour le state avec le tableau fusionné, le ?? [] protège si merged est null comme ça on crash pas
     }
     fetchParties() // Lance la fonction
@@ -82,7 +81,7 @@ function App() {
 
   // Sauvegarde le texteHome dans la base de donnée
   const saveHomeContent = async (textContent) => {
-    await supabase.from('home_content').update({ content: textContent }).eq('id', 1) // Maj le texte depuis supabase
+    await supabase.from('home_content').upsert({ id: 1, content: textContent }) // Maj le texte depuis supabase, et upsert insert si la ligne n'existe pas
   }
 
   // Liste des partis triées par ordre décroissant de votes
@@ -160,6 +159,12 @@ function App() {
       setIsVoting(false)
     }
   }  
+
+    // Si on est en loading, ou que on a un user mais pas son profile et que on est pas dans onboarding, on ecrit chargement
+    if (loading || (user && !profile && location.pathname !== '/onboarding')) {
+    return <p>Chargement...</p>
+  }
+
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <>

@@ -5,12 +5,17 @@ import { useNavigate, Link } from "react-router-dom"
 function Login({ setUser }) {
     const [email, setEmail] = useState('')
     const [mdp, setMdp] = useState('')
+    const [errorMsg, setErrorMsg] = useState('')
     const navigate = useNavigate() // Hook qui lance la fonction pour naviguer
 
     // Submit le form et login
     const handleSubmit = async (event) => {
         event.preventDefault()
         const { data, error } = await supabase.auth.signInWithPassword({ email: email, password: mdp }) // Connecte l'user lors de la connexion et le stocke dans data
+        if (error) {
+            setErrorMsg('Email ou mot de passe incorrect')
+            return
+        }
         setUser(data.user) // Maj le state local avec le bon user
         navigate('/') // Aller à la page home lors de la connexion
     }
@@ -26,6 +31,7 @@ function Login({ setUser }) {
             <button type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
             <h3>Pas encore de compte ? Alors</h3>
             <Link to="/signup">Signup </Link>
+            {errorMsg && <p>{errorMsg}</p>}
         </form>
     )
 }
