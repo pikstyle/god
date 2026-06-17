@@ -11,7 +11,7 @@ function ListeParty({ partyList, vote, isVoting, profile, user }) {
                         <img src={party.logo_url} alt="logo-party" />
                         <h3>Nombre de vote = {party.votes}</h3>
                         <h3>Créé par : {party.profiles?.username}</h3>
-                        <img src={profile?.avatar_url || user?.user_metadata?.avatar_url} alt="avatar"/>
+                        {party.profiles?.avatar_url && <img src={party.profiles.avatar_url} alt="avatar" referrerPolicy="no-referrer"/>} {/* Photo du créateur si elle existe. referrerPolicy="no-referrer" empêche Google de bloquer l'image */}
                         <button onClick={() => vote(party.id)} disabled={isVoting}>Voter</button>
                     </li>
                 )

@@ -27,11 +27,12 @@ function App() {
   useEffect(() => {
     const fetchParties = async () => {
       const { data: partiesData } = await supabase.from('parties').select('*') // Recupere tous les partis depuis supabase et nomme la data partiesData pour eviter conflit de nom
-      const { data: profilesData } = await supabase.from('profiles').select('id, username') // Recup tous les profiles depuis supabase mais stocke seulement l'id et username
+      const { data: profilesData } = await supabase.from('profiles').select('id, username, avatar_url') // Recup tous les profiles depuis supabase mais stocke seulement l'id et username
       const merged = (partiesData ?? []).map(party => ({ // Pour chaque parti, on créé un nouvel objet avec :
         ...party, // toutes les infos du partis
         profiles: profilesData.find(p => p.id === party.created_by) // Ajoute une propriété "profiles" a l'objet dont l'id de profiles data = l'id du createur
       }))
+      console.log(merged)
       setParties(merged ?? []) // Met a jour le state avec le tableau fusionné, le ?? [] protège si merged est null comme ça on crash pas
     }
     fetchParties() // Lance la fonction
@@ -96,7 +97,7 @@ function App() {
     const { data: urlData } = supabase.storage.from('logos').getPublicUrl(title) // Récupère l'URL publique du fichier uploadé (url générée par supabase)
     const { data } = await supabase.from('parties').insert({ title, description, votes, created_by: user.id, logo_url: urlData.publicUrl }).select() // Attend et insère le parti dans la table parties de supabase 
     setParties((prev) => { // maj le state local avec le nouveau parti pour que l'affichage se maj sans avoir à recharger les données depuis Supabase
-      return[...prev, data[0]] // Créé un nouveau tableau avec tout les anciens + le nouveau et met tout ça dans setParties
+      return [...prev, { ...data[0], profiles: { id: user.id, username: profile?.username, avatar_url: profile?.avatar_url } }] // Créé un nouveau tableau avec tout les anciens + le nouveau et met tout ça dans setParties
     })
   }
 
@@ -109,7 +110,7 @@ function App() {
   // Sauvegarde le profil de l'user dans la table de profiles de Supabase
   const updateProfile = async ( {username, avatar_url} ) => { // Nouveau pseudo, avatar
     const { data } = await supabase.from("profiles").upsert({ id: user.id, username, avatar_url }) // Si le profil existe deja, il est maj sinon on le crée
-    setProfile({ ...profile, username }) // Update le state localement seulement du pseudo
+    setProfile({ ...profile, username, avatar_url }) // Update le state localement seulement du pseudo
   }
 
   // Retourne un nouveau tableau de parties avec le bon nombre de vote pour le parti correspondant
