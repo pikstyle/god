@@ -10,6 +10,7 @@ function NavBar({ user, logout, loading, username, avatar }) {
                 <h1>GOD</h1>
             </Link>
             <div className={styles.right}>
+                <Link to="/hiw">How it works ? </Link>
                 <Link to="/parties">Liste des partis </Link>
                 <Link to="/create">Creer un parti </Link>
                 <Link to="/profile">{avatar && <img className={styles.avatar} src={avatar} alt="profil" />}</Link> 

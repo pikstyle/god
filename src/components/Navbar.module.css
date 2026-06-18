@@ -35,4 +35,7 @@
     border: 1px solid var(--border);
 }
 
-.page { padding-inline: 24px; }
+.page { 
+    padding-inline: 24px; 
+    padding-top: 20px;
+}

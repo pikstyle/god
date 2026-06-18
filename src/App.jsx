@@ -8,6 +8,7 @@ import SignUp from './pages/SignUp'
 import Profile from './pages/Profile'
 import Onboarding from './pages/Onboarding'
 import ProtectedRoute from './components/ProtectedRoute'
+import HowItWorks from './pages/HowItWorks'
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from './supabaseClients'
 import styles from "./components/Navbar.module.css"
@@ -186,6 +187,7 @@ function App() {
             <Route path="/login" element={<Login setUser={setUser}/>}/>
             <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
             <Route path="/onboarding" element={<ProtectedRoute loading={loading} user={user}><Onboarding user={user} profile={profile} updateProfile={updateProfile}/></ProtectedRoute>}/>
+            <Route path="/hiw" element={<HowItWorks/>}/>
           </Routes>
         </div>
       </>
