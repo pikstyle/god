@@ -109,8 +109,15 @@ function App() {
 
   // Sauvegarde le profil de l'user dans la table de profiles de Supabase
   const updateProfile = async ( {username, avatar_url} ) => { // Nouveau pseudo, avatar
-    const { data } = await supabase.from("profiles").upsert({ id: user.id, username, avatar_url }) // Si le profil existe deja, il est maj sinon on le crée
-    setProfile({ ...profile, username, avatar_url }) // Update le state localement seulement du pseudo
+    await supabase.from("profiles").upsert({ id: user.id, username, avatar_url }) // Si le profil existe deja, il est maj sinon on le crée
+    setParties(parties.map(party => { // Actualiser le profile aussi pour partyList
+      if (user.id === party.created_by) { // Pour chaque parti crée par l'user
+        return { ...party, profiles: { ...party.profiles, username, avatar_url } } // On garde le parti (...party) et on remplace son profiles par une copie de l'ancien (...party.profiles, pour conserver l'id) avec le nouveau pseudo + avatar par-dessus.
+      } else {
+        return party
+      }
+    }))
+    setProfile({ ...profile, username, avatar_url }) // Update le state localement seulement du pseudo et avatar
   }
 
   // Retourne un nouveau tableau de parties avec le bon nombre de vote pour le parti correspondant
