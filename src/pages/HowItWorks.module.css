@@ -1,0 +1,34 @@
+.div {
+    display: flex;
+    justify-content: center; /* centre verticalement car column */
+    flex-direction: column;
+    align-items: center;      /* centre horizontalement, car column */
+    gap: 50px;
+    min-height: 110vh; /* donne au conteneur la taille de l'ecran permet donc de tout centrer*/
+    font-size: large;
+    text-align: justify;
+}
+
+.text {
+    max-width: 600px;
+}
+
+.important {
+    max-width: 600px;
+
+}
+
+.titre {
+    display: flex;
+    justify-content: center; /* centre verticalement car column */
+    flex-direction: column;
+    align-items: center;      /* centre horizontalement, car column */
+    text-align: center;
+    padding-top: 20px;
+}
+
+.div img {
+    height: 300px;
+    width: auto;
+    padding-top: 20px;
+}

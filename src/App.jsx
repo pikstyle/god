@@ -19,7 +19,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [userVote, setUserVote] = useState(null)
   const [isVoting, setIsVoting] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState(null)
   const isVotingRef = useRef(false) // isVotingRef = { current: false }
   const navigate = useNavigate()
@@ -170,20 +170,18 @@ function App() {
   }  
 
     // Si on est en loading, ou que on a un user mais pas son profile et que on est pas dans onboarding, on ecrit chargement
-    // if (loading || (user && !profile && location.pathname !== '/onboarding')) {
-    // return <p>Chargement...</p>
-  // }
+    if (loading || (user && !profile && location.pathname !== '/onboarding')) {
+    return <p>Chargement...</p>
+  }
 
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <>
-    {/*{user && location.pathname !== "/onboarding" && <NavBar avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}*/} 
-    <NavBar avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>
+    {user && location.pathname !== "/onboarding" && <NavBar avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
       <div className={styles.page} >
           <Routes>
             <Route path="/" element={<Home user={user} isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
-            {/*<Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>*/} 
-            <Route path="/create" element={<CreateParty addParty={addParty}/>}/>
+            <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
             <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/></ProtectedRoute>}/>
             <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile  logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
             <Route path="/login" element={<Login setUser={setUser}/>}/>
