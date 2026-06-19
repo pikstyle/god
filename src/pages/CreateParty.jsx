@@ -1,4 +1,6 @@
 import { useState, useRef } from "react"
+import styles from './CreateParty.module.css'
+
 
 function CreateParty({ addParty }) {
 
@@ -13,6 +15,10 @@ function CreateParty({ addParty }) {
     // Quand on envoie le form
     const handleSubmit = async (event) => {
         event.preventDefault()
+        if (description.length > 50) {
+            alert('Description trop longue, max 50 caractères')
+            return
+        }
         if (partyLogo.size > 1 * 1024 * 1024) { // Verifie que le logo est inf a 1MB
             alert('Image trop lourde, max 1MB')
             return
@@ -36,14 +42,14 @@ function CreateParty({ addParty }) {
  
     return (
         <>
-            <form onSubmit={handleSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit}>
                 <label>Titre</label>
-                <input required type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+                <input className={styles.inputs} required type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
                 <label>Description</label>
-                <textarea required name="description" id="description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                <textarea className={styles.inputs} required name="description" id="description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
                 <label>Logo</label>
-                <input ref={fileInputRef} required type="file" id="logoParti" onChange={(e) => setPartyLogo(e.target.files[0])}/>
-                <button type="submit" disabled={isSubmitting}>{isSubmitting ? "Création..." : "Créer le parti"}</button>
+                <input className={styles.file_input} ref={fileInputRef} required type="file" id="logoParti" onChange={(e) => setPartyLogo(e.target.files[0])}/>
+                <button className={styles.button} type="submit" disabled={isSubmitting}>{isSubmitting ? "Création..." : "Créer le parti"}</button>
             </form>
         </>
     )

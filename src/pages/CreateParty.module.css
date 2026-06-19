@@ -1,0 +1,35 @@
+.form {
+    display: flex;            /* active flexbox */
+    justify-content: center; /* centre verticalement car column */
+    flex-direction: column; /* empile verticalement */
+    align-items: center;      /* centre horizontalement, car column */
+    min-height: 75vh; /* donne au conteneur la taille de l'ecran permet donc de tout centrer*/
+    gap: 1.5rem;   /* permet d'espacer tout les children du form*/
+}
+
+.button {
+    font-size: 15px;
+    font-family: inherit;
+    background-color: transparent;
+    color: var(--text);
+    border: 2px solid var(--border) ;
+    padding: 12px;
+    cursor: pointer;
+    width: 150px; /* donne la meme taille aux boutons*/
+}
+
+.inputs {
+    background-color: transparent;
+    font-size: 30px;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px;
+}
+
+.file_input {
+    background-color: transparent;
+    font-size: 15px;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px;
+}
