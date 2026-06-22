@@ -7,7 +7,7 @@ function ProtectedRoute({ user, children, loading }) {
     else if (user) { // Verifie si l'utilisateur est connecté (retourne un objet sinon null)
         return children // Afficher les children
     } else {
-        return <Navigate to='/'/> 
+        return <Navigate to='/login'/> 
     }
 }
 

@@ -123,6 +123,10 @@ function App() {
 
   // Retourne un nouveau tableau de parties avec le bon nombre de vote pour le parti correspondant
   const vote = async (partyId) => {
+    if (!user) { 
+      navigate('/login') // Si on est pas connecte on va vers login
+      return // On sort de la fonction
+    }
     if (isVotingRef.current) return // on est entrain de voter donc on sort direct
     isVotingRef.current = true // sinon, on met à true le fait qu'on est entrainde voter
     try {
@@ -177,12 +181,12 @@ function App() {
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <>
-    {user && location.pathname !== "/onboarding" && <NavBar avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
+    {location.pathname !== "/onboarding" && <NavBar avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
       <div className={styles.page} >
           <Routes>
             <Route path="/" element={<Home user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
             <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
-            <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/></ProtectedRoute>}/>
+            <Route path="/parties" element={<PartyList partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/>}/>
             <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile  logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
             <Route path="/login" element={<Login setUser={setUser}/>}/>
             <Route path="/signup" element={<SignUp setUser={setUser}/>}/>

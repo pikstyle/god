@@ -14,7 +14,7 @@ function NavBar({ user, logout, loading, username, avatar }) {
                 <NavLink to="/hiw">How it works ? </NavLink>
                 <NavLink to="/parties">Liste des partis </NavLink>
                 <NavLink to="/create">Creer un parti </NavLink>
-                <NavLink to="/profile">{avatar && <img className={styles.avatar} src={avatar} alt="profil" />}</NavLink> 
+                {user ? <NavLink to="/profile">{avatar && <img className={styles.avatar} src={avatar} alt="profil" />}</NavLink> : <NavLink to="/login">Login/Signup</NavLink>}
                 <p>{loading ? "Chargement..." : null}</p>
             </div>
         </nav>
