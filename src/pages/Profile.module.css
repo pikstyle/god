@@ -1,0 +1,35 @@
+.div_princ {
+    display: flex;            /* active flexbox */
+    justify-content: center; /* centre verticalement car column */
+    flex-direction: column; /* empile verticalement */
+    align-items: center;      /* centre horizontalement, car column */
+    gap: 1.5rem;   /* permet d'espacer tout les children du form*/
+}
+
+.button {
+    margin-top: auto;
+    background-color: #c48d41;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text);
+    border: 1px solid var(--border) ;
+    padding: 12px;
+    cursor: pointer;
+    width: 150px; /* donne la meme taille aux boutons*/
+}
+
+.button:hover {
+    filter: brightness(.9);
+}
+
+.button:active {
+    filter: brightness(1.3);
+}
+
+.inputs {
+    background-color: transparent;
+    font-size: 30px;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px;
+}
