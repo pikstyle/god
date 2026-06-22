@@ -2,6 +2,7 @@ import { useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import { supabase } from "../supabaseClients"
 import imageCompression from 'browser-image-compression'
+import styles from './Auth.module.css'
 
 function Onboarding( {user, profile, updateProfile} ) {
     const [username, setUsername] = useState("")
@@ -38,12 +39,12 @@ function Onboarding( {user, profile, updateProfile} ) {
     
     return (
         
-    <form onSubmit={handleSubmit}>
+    <form className={styles.form_auth} onSubmit={handleSubmit}>
         <label>Votre pseudo </label>
-        <input required type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
-        <input required type="file" onChange={(e) => setAvatarFile(e.target.files[0])}/> {/* Récupère le fichier choisi. e.target.files[0] = le premier fichier sélectionné */}
-
-        <button disabled={isSubmitting} type="submit">{isSubmitting ? "Création..." : "Save"}</button>
+        <input className={styles.inputs} required type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
+        <label>Votre photo de profil </label>
+        <input className={styles.inputs} required type="file" onChange={(e) => setAvatarFile(e.target.files[0])}/> {/* Récupère le fichier choisi. e.target.files[0] = le premier fichier sélectionné */}
+        <button className={styles.button} disabled={isSubmitting} type="submit">{isSubmitting ? "Création..." : "Save"}</button>
     </form>
     )
 }
