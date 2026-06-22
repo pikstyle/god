@@ -34,7 +34,7 @@ function CreateParty({ addParty }) {
         isSubmittingRef.current = true
         try {
             setIsSubmitting(true)
-            const compressedFile = await imageCompression(logoFile, options) // Avatar file est compress
+            const compressedFile = await imageCompression(partyLogo, options) // Avatar file est compress
             await addParty({ title: title, description: description, logoFile: compressedFile, votes: 0})
             // Apres avoir crée le parti on reset les inputs
             setTitle("")
@@ -53,7 +53,7 @@ function CreateParty({ addParty }) {
             <form className={styles.form} onSubmit={handleSubmit}>
                 <label>Titre (Max 15 caractères)</label>
                 <input className={styles.inputs} required type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-                <label>Description (Max 15 caractères)</label>
+                <label>Description (Max 50 caractères)</label>
                 <textarea className={styles.inputs} required name="description" id="description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
                 <label>Logo</label>
                 <input className={styles.file_input} ref={fileInputRef} required type="file" id="logoParti" onChange={(e) => setPartyLogo(e.target.files[0])}/>
