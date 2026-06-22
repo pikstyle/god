@@ -4,15 +4,13 @@
     display: grid; 
     grid-template-columns: repeat(4, 1fr); /*  trois colonnes qui se partagent l'espace à parts égales */
     gap: 20px;
-    grid-auto-rows: 300px 
+    grid-auto-rows: 300px;
 }
 
 .liste img {
     height: 50px;
     width: 50px;
-    object-fit: cover; /* pour avoir une image toujours carrée*/
-    object-fit: contain
-
+    object-fit: contain /* pour avoir une image toujours bien*/
 }
 
 .carte {

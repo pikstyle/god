@@ -1,13 +1,14 @@
 .div_princ {
     display: flex;            /* active flexbox */
-    justify-content: center; /* centre verticalement car column */
     flex-direction: column; /* empile verticalement */
+    justify-content: center;
     align-items: center;      /* centre horizontalement, car column */
     gap: 1.5rem;   /* permet d'espacer tout les children du form*/
+    min-height: 75vh; /* donne au conteneur la taille de l'ecran permet donc de tout centrer*/
+
 }
 
 .button {
-    margin-top: auto;
     background-color: #c48d41;
     font-size: 15px;
     font-family: inherit;
@@ -28,8 +29,14 @@
 
 .inputs {
     background-color: transparent;
-    font-size: 30px;
+    font-size: 15px;
     color: var(--text);
     border: 1px solid var(--border);
     padding: 10px;
+}
+
+.avatar_image {
+    height: 100px;
+    width: 100px;
+    object-fit: contain /* pour avoir une image toujours bien*/
 }

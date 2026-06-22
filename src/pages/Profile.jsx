@@ -7,7 +7,7 @@ function Profile( {user, updateProfile, profile, logout} ) {
         <div className={styles.div_princ}>
             <h1>Profile</h1>
             <h3>{profile?.username}</h3>
-            {profile?.avatar_url && <img src={profile.avatar_url} alt="avatar"/>}
+            {profile?.avatar_url && <img className={styles.avatar_image} src={profile.avatar_url} alt="avatar"/>}
             <h2>Update le profile : </h2> {/* Affiche la photo seulement si avatar_url existe (évite le flash de la pdp Google au chargement) */}
             <label>Noueau pseudo : </label>
             <input className={styles.inputs} type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
