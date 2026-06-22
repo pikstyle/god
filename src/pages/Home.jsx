@@ -9,7 +9,7 @@ function Home({ isLeader, textHome, setTextHome, saveHomeContent, user, partiLea
         <div className={styles.div_home}>
             <h2>Parti en tête : <span className={styles.leaderName}>{partiLeader?.title}</span>, dirigé par <span className={styles.leaderName}>{partiLeader?.profiles?.username}</span></h2>
             <h1 className={styles.titre}>{textHome}</h1>
-            {!user ? <button className={styles.entrer} onClick={() => navigate('/login')}>Entrer</button> : isLeader ? <div><input value={textHome} onChange={(e) => setTextHome(e.target.value)}/> <button onClick={() => saveHomeContent(textHome)}>Save</button></div>: <p>{null}</p>}
+            {isLeader ? <div><input value={textHome} onChange={(e) => setTextHome(e.target.value)}/> <button onClick={() => saveHomeContent(textHome)}>Save</button></div>: <p>{null}</p>}
         </div>
     )
 }
