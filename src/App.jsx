@@ -180,7 +180,7 @@ function App() {
     {user && location.pathname !== "/onboarding" && <NavBar avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
       <div className={styles.page} >
           <Routes>
-            <Route path="/" element={<Home user={user} isLeader={isLeader} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
+            <Route path="/" element={<Home user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
             <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
             <Route path="/parties" element={<ProtectedRoute loading={loading} user={user}><PartyList partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/></ProtectedRoute>}/>
             <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile  logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
