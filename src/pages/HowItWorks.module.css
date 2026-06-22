@@ -3,13 +3,13 @@
     justify-content: center; /* centre verticalement car column */
     flex-direction: column;
     align-items: center;      /* centre horizontalement, car column */
-    gap: 50px;
-    min-height: 110vh; /* donne au conteneur la taille de l'ecran permet donc de tout centrer*/
+    gap: 25px;
     font-size: large;
-    text-align: justify;
+    text-align: left;
 }
 
 .text {
+    margin-top: 50px;
     max-width: 600px;
 }
 
