@@ -83,7 +83,7 @@ function App() {
 
   // Sauvegarde le texteHome dans la base de donnée
   const saveHomeContent = async (textContent) => {
-    await supabase.from('home_content').upsert({ id: 1, content: textContent }) // Maj le texte depuis supabase, et upsert insert si la ligne n'existe pas
+    await supabase.from('home_content').update({ content: textContent} ).eq('id', 1); // Maj le texte depuis supabase, en filtrant qu'on est bien dans la premiere ligne de la table home 
   }
 
   // Liste des partis triées par ordre décroissant de votes
@@ -121,7 +121,6 @@ function App() {
     setProfile({ ...profile, username, avatar_url }) // Update le state localement seulement du pseudo et avatar
   }
 
-  // Retourne un nouveau tableau de parties avec le bon nombre de vote pour le parti correspondant
   const vote = async (partyId) => {
     if (!user) { 
       navigate('/login') // Si on est pas connecte on va vers login
@@ -141,19 +140,13 @@ function App() {
           }
         }))
         setUserVote(partyId) // Maj le state local avec le nouveau parti voté
-        const currentParty = parties.find((p) => p.id === partyId) // Parcours parties et trouve le party dont l'id match
-        await supabase.from('parties').update({ votes: currentParty.votes + 1 }).eq('id', partyId) // Envoie à supabse en incrementant la valeur de vote et modifie que la ligne du bon party avec partyId
         await supabase.from('votes').insert({ user_id: user.id, party_id: partyId }) // insère une nouvelle ligne dans la table votes de supabase avec l'id de l'user et l'id du party pour lequel il a voté
       } else { // L'user a déjà voté
         const currentVotePartyId = userVote // Id du parti déjà voté
-        const currentParty = parties.find((p) => p.id === currentVotePartyId) // Parcours parties et trouve le party dont l'id match (objet complet)
         if (currentVotePartyId === partyId) { // On vote pour le même parti donc rien à faire
           return
         } else { // On vote pour un nouveau parti
-          await supabase.from('parties').update({ votes: currentParty.votes -1 }).eq('id', currentVotePartyId) // Décrémente le nombre de votes de l'ancien parti
           await supabase.from('votes').delete().eq('user_id', user.id) // Supprime le vote de l'user dans la table votes
-          const newParty = parties.find((p) => p.id === partyId) // Parcours parties et trouve le party dont l'id match (objet complet)
-          await supabase.from('parties').update({ votes: newParty.votes +1 }).eq('id', partyId) // Ajoute le vote sur supabase
           await supabase.from('votes').insert({ user_id: user.id, party_id: partyId }) // Ajoute un nouveau vote dans la table votes avec l'id de l'user et le party id
           setUserVote(partyId) // Maj le state local avec le nouveau parti voté
           setParties(parties.map((party) => { // Retourne un nouveau tableau avec le nombre de vote de chaque partis maj
