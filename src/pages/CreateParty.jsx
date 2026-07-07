@@ -35,7 +35,12 @@ function CreateParty({ addParty }) {
         try {
             setIsSubmitting(true)
             const compressedFile = await imageCompression(partyLogo, options) // Avatar file est compress
-            await addParty({ title: title, description: description, logoFile: compressedFile, votes: 0})
+            const { error } = await addParty({ title: title, description: description, logoFile: compressedFile, votes: 0})
+            // Si on catch une erreur alors on ne cree pas le parti
+            if (error) {
+                alert(error.code === '23505' ? 'Ce nom de parti est déjà pris, choisissez-en un autre' : 'Erreur lors de la création du parti')
+                return // 23505 : code d'erreur standard de PostgreSQL : violé une contrainte unique
+            }
             // Apres avoir crée le parti on reset les inputs
             setTitle("")
             setDescription("")

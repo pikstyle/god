@@ -96,10 +96,16 @@ function App() {
   const addParty = async ({ title, description, votes, logoFile }) => {
     const { data: uploadData } = await supabase.storage.from('logos').upload(title, logoFile) // Upload (donc envoie) le logofile au bucket de supabase
     const { data: urlData } = supabase.storage.from('logos').getPublicUrl(title) // Récupère l'URL publique du fichier uploadé (url générée par supabase)
-    const { data } = await supabase.from('parties').insert({ title, description, votes, created_by: user.id, logo_url: urlData.publicUrl }).select() // Attend et insère le parti dans la table parties de supabase 
+    const { data, error } = await supabase.from('parties').insert({ title, description, votes, created_by: user.id, logo_url: urlData.publicUrl }).select() // Attend et insère le parti dans la table parties de supabase 
+    if (error) {
+      return { error } 
+    } else {
     setParties((prev) => { // maj le state local avec le nouveau parti pour que l'affichage se maj sans avoir à recharger les données depuis Supabase
       return [...prev, { ...data[0], profiles: { id: user.id, username: profile?.username, avatar_url: profile?.avatar_url } }] // Créé un nouveau tableau avec tout les anciens + le nouveau et met tout ça dans setParties
     })
+    return { error: null }
+    }
+
   }
 
   // Logout
