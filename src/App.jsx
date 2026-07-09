@@ -32,7 +32,7 @@ function App() {
       const { data: profilesData } = await supabase.from('profiles').select('id, username, avatar_url') // Recup tous les profiles depuis supabase mais stocke seulement l'id et username
       const merged = (partiesData ?? []).map(party => ({ // Pour chaque parti, on créé un nouvel objet avec :
         ...party, // toutes les infos du partis
-        profiles: profilesData.find(p => p.id === party.created_by) // Ajoute une propriété "profiles" a l'objet dont l'id de profiles data = l'id du createur
+        profiles: (profilesData ?? []).find(p => p.id === party.created_by) // Ajoute une propriété "profiles" a l'objet dont l'id de profiles data = l'id du createur
       }))
       setParties(merged ?? []) // Met a jour le state avec le tableau fusionné, le ?? [] protège si merged est null comme ça on crash pas
     }
@@ -127,6 +127,7 @@ function App() {
     setProfile({ ...profile, username, avatar_url }) // Update le state localement seulement du pseudo et avatar
   }
 
+  // Le compteur parties.votes est recalculé par un trigger Postgres à chaque insert/delete dans votes. Ici on ne fait qu'ajouter/retirer le vote donc on touche jamais au compteur en base. 
   const vote = async (partyId) => {
     if (!user) { 
       navigate('/login') // Si on est pas connecte on va vers login

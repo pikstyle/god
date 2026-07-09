@@ -1,10 +1,23 @@
 import styles from './PartyList.module.css'
+import PodiumCard from './PodiumCard'
 
-function ListeParty({ partyList, vote, isVoting, profile, user }) {
+function ListeParty({ partyList, vote, isVoting}) {
+
+
+    // le premier parti est le leader, tout le reste dans un tableau challengers
+    const [leader, second, third, ...challengers] = partyList
+
     return (
         <>
+        <div className={styles.podium}>
+            {leader && <PodiumCard party={leader} styleClass={styles.first} vote={vote} isVoting={isVoting} />}
+            </div>
+            <div className={styles.podiumRow}>
+            {second && <PodiumCard party={second} styleClass={styles.second} vote={vote} isVoting={isVoting} />}
+            {third  && <PodiumCard party={third}  styleClass={styles.third}  vote={vote} isVoting={isVoting} />}
+        </div>
             <ul className={styles.liste}>
-                {partyList.map((party) => {
+                {challengers.map((party) => {
                 return (
                     <li className={styles.carte} key={party.id}>
                         <div className={styles.infos}>
@@ -12,12 +25,13 @@ function ListeParty({ partyList, vote, isVoting, profile, user }) {
                             <img src={party.logo_url} alt="logo-party" />
                             <h2>{party.title}</h2>
                         </div>
-                        
                         <p>{party.description}</p>
 
-                        <h3>Nombre de vote = {party.votes}</h3>
-                        <h3>Créé par : {party.profiles?.username}</h3>
-                        <button onClick={() => vote(party.id)} disabled={isVoting}>Voter</button>
+                        <div className={styles.votes}>
+                            <span className={styles.voteNombre}>{party.votes}</span> votes
+                        </div>
+                        <h3>Dirigé par : {party.profiles?.username}</h3>
+                        <button className={styles.btnVote} onClick={() => vote(party.id)} disabled={isVoting}>Voter</button>
                     </li>
                 )
                 })}
