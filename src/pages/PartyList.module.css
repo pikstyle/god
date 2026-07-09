@@ -2,8 +2,12 @@
     list-style: none;
     padding: 20px;
     display: grid; 
-    grid-template-columns: repeat(4, 1fr); /*  4 colonnes qui se partagent l'espace à parts égales */
+    grid-template-columns: 1fr; /*  base mobile 1 seule colonne */
     gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .liste { grid-template-columns: repeat(4, 1fr); }   /* grand écran : 4 colonnes */
 }
 
 .liste img {
@@ -61,14 +65,32 @@
 
 .troneRow  { 
     display: flex;
+    flex-direction: column; /* mobile first donc on empile tout*/
     align-items: center; 
     justify-content: space-between; 
-    gap: 24px; }
+    gap: 24px; 
+}
 
-.troneLeft { 
-    display: flex; 
-    align-items: center; 
-    gap: 20px; }
+@media (min-width: 768px) {
+    .troneRow {
+        flex-direction: row;            /* grand écran : côte à côte */
+        justify-content: space-between;
+    }
+}
+
+.troneLeft {
+    display: flex;
+    flex-direction: column;   /* mobile : logo au-dessus du texte */
+    align-items: center;
+    text-align: center;       /* on centre */
+    gap: 16px;
+}
+@media (min-width: 768px) {
+    .troneLeft {
+        flex-direction: row;   /* grand écran : logo à gauche du texte */
+        text-align: left;
+    }
+}
 
 .first img {
     width: 120px;
@@ -97,7 +119,13 @@
     margin: 0 auto;  /*centre le bloc horizontalement*/
     display: flex;
     gap: 20px;
+    flex-direction: column; /* mobile first donc on empile tout*/
 }
+
+@media (min-width: 768px) {
+    .podiumRow { flex-direction: row; } /* grand écran : côte à côte */
+}
+
 .second, .third { 
     flex: 1; /* chacun prend la moitié de la rangée */
 }   

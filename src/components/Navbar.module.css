@@ -7,11 +7,16 @@
 }
 
 .right {
+    display: none; /* cachés par défaut sur mobile */
+    flex-direction: column; /* quand ils s'affichent, empilés */
     font-size: 1.3em;
-    display: flex;
     align-items: center;
     gap: 20px;
     text-decoration: none;
+}
+
+.right.open {
+    display: flex; /* le menu ouvert : on les montre */
 }
 
 .right :global(.active) {
@@ -22,6 +27,20 @@
     opacity: .8;
 }
 
+.hamburger {
+    display: block; /*prend toute la largeur dispo et force un retour à la ligne*/ 
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 28px;
+    cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    .right { display: flex; flex-direction: row; }
+    .hamburger { display: none; }
+}
+
 .logo {
     display: flex;
     align-items: center;  /* aligne verticalement l'image et le texte */
@@ -30,9 +49,17 @@
 }
 
 .logo img { /*avoir une image bonne taille */
-    height: 100px;
+    height: 60px;
     width: auto;
     padding: 10px;
+}
+
+@media (min-width: 768px) {
+    .logo img { /*avoir une image bonne taille */
+        height: 100px;
+        width: auto;
+        padding: 10px;
+    }
 }
 
 .avatar {
