@@ -20,10 +20,12 @@
 
 .inputs {
     background-color: transparent;
-    font-size: 30px;
+    font-size: 16px;
     color: var(--text);
     border: 1px solid var(--border);
     padding: 10px;
+    width: 100%; /* reduit tout seul sur mobile  */
+    max-width: 400px; /* taille max que peut prendre les lignes  */
 }
 
 .file_input {
@@ -32,4 +34,6 @@
     color: var(--text);
     border: 1px solid var(--border);
     padding: 10px;
+    width: 100%; /* reduit tout seul sur mobile  */
+    max-width: 400px; /* taille max que peut prendre les lignes  */
 }

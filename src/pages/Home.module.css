@@ -19,7 +19,7 @@
 }
 
 .titre {
-    font-size: 10em;
+    font-size : clamp(1rem, 4vh, 9rem); /* vise 10% de l'ecran, jamais en dessous de 1rem ni au dessus de 9 rem*/
     margin-top: 150px; /* baisse un peu le titre */
 }
 
