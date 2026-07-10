@@ -74,3 +74,15 @@
     padding-inline: 24px; 
     padding-top: 20px;
 }
+
+
+.timer {
+    display: flex;
+    justify-content: center; /* centrer le h1 dans la boite  */
+    align-items: center;
+    color: #c48d41;
+    padding: 5px;
+    margin: 20px auto 0;   /* centrer horizontalement la boite en elle meme et 20px en haut */
+    width: 100%; /* reduit tout seul sur mobile  */
+    max-width: 1000px; /* taille max que peut prendre les lignes  */
+}

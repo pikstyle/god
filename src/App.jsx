@@ -21,6 +21,8 @@ function App() {
   const [isVoting, setIsVoting] = useState(false)
   const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState(null)
+  const [gameState, setGameState] = useState(null)
+  const [now, setNow] = useState(new Date())
   const isVotingRef = useRef(false) // isVotingRef = { current: false }
   const navigate = useNavigate()
   const location = useLocation()
@@ -57,6 +59,15 @@ function App() {
     fetchHomeContent()
   }, [])
 
+      // Recuperer le gamestate 
+    useEffect(() => {
+      const fetchGameState = async () => {
+        const { data, error } = await supabase.from('game_state').select('*') // Attendre la réponse avec await et extrait les datas
+        setGameState(data[0]) // Prendre la premiere ligne et recuperer le bool regne.
+      }
+      fetchGameState()
+    }, []) // Tableau de dependences vide pour appeller qu'une seule fois. 
+
   // Charge le vote de l'utilisateur
   useEffect(()  => {
     const fetchUserVote = async () => {
@@ -80,6 +91,21 @@ function App() {
         }
         fetchProfile()
     }, [user])
+
+    // Lancer une horloge
+    useEffect(() => {
+      const interval = setInterval( () => setNow(new Date()), 1000) // setIntervalle fonction du navigateur qui exécute setNow toutes les 1000 ms
+      return () => clearInterval(interval) // Fonction menage pour arreter le timer quand on quitte la page
+    }, [])
+
+    // Realtime = actualise tout seul le changement de cycle
+    useEffect(() => {
+      const canal = supabase
+      .channel('check-timer') // ouvre la ligne d'écoute
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'game_state' }, (payload) => setGameState(payload.new)) // ce qu'on écoute, et quoi faire à réception (on filtre l'ecoute seulement pour update et game_state)
+      .subscribe() // décroche : la connexion s'établit
+      return () => supabase.removeChannel(canal) // Fonction menage pour arreter le canal quand on quitte la page
+    }, [])
 
   // Sauvegarde le texteHome dans la base de donnée
   const saveHomeContent = async (textContent) => {
@@ -133,6 +159,7 @@ function App() {
       navigate('/login') // Si on est pas connecte on va vers login
       return // On sort de la fonction
     }
+    if (gameState?.regne) return // Si on est en regne, on ne peut pas voter
     if (isVotingRef.current) return // on est entrain de voter donc on sort direct
     isVotingRef.current = true // sinon, on met à true le fait qu'on est entrainde voter
     try {
@@ -171,8 +198,17 @@ function App() {
       isVotingRef.current = false // Fin de voter
       setIsVoting(false)
     }
-  }  
+  }
 
+  // Calculer et formatter le timer
+  const formatTimer = () => {
+    const restant = (gameState && new Date(gameState.fin_phase) - now) // temps restant
+    const secondesTotales = Math.floor(restant / 1000) // ms en secondes
+    const heures = Math.floor(secondesTotales / 3600) // secondes en heures
+    const minutes = Math.floor((secondesTotales % 3600) / 60) 
+    const secondes = secondesTotales % 60
+    return `${heures}h ${minutes}m ${secondes}s`
+  }
     // Si on est en loading, ou que on a un user mais pas son profile et que on est pas dans onboarding, on ecrit chargement
     if (loading || (user && !profile && location.pathname !== '/onboarding')) {
     return <p>Chargement...</p>
@@ -181,12 +217,12 @@ function App() {
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <>
-    {location.pathname !== "/onboarding" && <NavBar avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
+    {location.pathname !== "/onboarding" && <NavBar timer={formatTimer()} gameState={gameState} avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
       <div className={styles.page} >
           <Routes>
-            <Route path="/" element={<Home user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
+            <Route path="/" element={<Home gameState={gameState} user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
             <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
-            <Route path="/parties" element={<PartyList partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/>}/>
+            <Route path="/parties" element={<PartyList gameState={gameState} partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/>}/>
             <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile  logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
             <Route path="/login" element={<Login setUser={setUser}/>}/>
             <Route path="/signup" element={<SignUp setUser={setUser}/>}/>

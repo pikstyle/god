@@ -1,7 +1,7 @@
 import styles from './PartyList.module.css'
 import PodiumCard from './PodiumCard'
 
-function ListeParty({ partyList, vote, isVoting}) {
+function ListeParty({ partyList, vote, isVoting, gameState }) {
 
 
     // le premier parti est le leader, tout le reste dans un tableau challengers
@@ -10,11 +10,11 @@ function ListeParty({ partyList, vote, isVoting}) {
     return (
         <>
         <div className={styles.podium}>
-            {leader && <PodiumCard party={leader} styleClass={styles.first} vote={vote} isVoting={isVoting} />}
+            {leader && <PodiumCard gameState={gameState} party={leader} styleClass={styles.first} vote={vote} isVoting={isVoting} />}
             </div>
             <div className={styles.podiumRow}>
-            {second && <PodiumCard party={second} styleClass={styles.second} vote={vote} isVoting={isVoting} />}
-            {third  && <PodiumCard party={third}  styleClass={styles.third}  vote={vote} isVoting={isVoting} />}
+            {second && <PodiumCard gameState={gameState} party={second} styleClass={styles.second} vote={vote} isVoting={isVoting} />}
+            {third  && <PodiumCard gameState={gameState} party={third}  styleClass={styles.third}  vote={vote} isVoting={isVoting} />}
         </div>
             <ul className={styles.liste}>
                 {challengers.map((party) => {
@@ -31,7 +31,7 @@ function ListeParty({ partyList, vote, isVoting}) {
                             <span className={styles.voteNombre}>{party.votes}</span> votes
                         </div>
                         <h3>Dirigé par : {party.profiles?.username}</h3>
-                        <button className={styles.btnVote} onClick={() => vote(party.id)} disabled={isVoting}>Voter</button>
+                        <button className={styles.btnVote} onClick={() => vote(party.id)} disabled={isVoting || gameState?.regne}>{gameState?.regne ? "Règne en cours" : "Voter"}</button>
                     </li>
                 )
                 })}

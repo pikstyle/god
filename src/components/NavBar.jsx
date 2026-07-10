@@ -4,9 +4,10 @@ import { useState } from "react";
 import logo from "../assets/GOD.png"
 
 
-function NavBar({ user, logout, loading, username, avatar }) {
+function NavBar({ user, logout, loading, username, avatar, timer, gameState }) {
     const [menuOpen, setMenuOpen] = useState(false)
     return (
+        <>
         <nav className={styles.navbar}>
             <NavLink to="/" className={styles.logo}>
                 <img src={logo} alt="logo" />
@@ -22,6 +23,10 @@ function NavBar({ user, logout, loading, username, avatar }) {
                 <p>{loading ? "Chargement..." : null}</p>
             </div>
         </nav>
+        <div className={styles.timer}>
+            <h1>{timer} avant le couronnement</h1>
+        </div>
+        </>
     )
 }
 
