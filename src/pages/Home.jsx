@@ -17,7 +17,10 @@ function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState }) {
         if (bloc.type === 'image') { // check si cest une image
             return <img key={index} src={bloc.url} alt="home-image" /> // on retourne une img avec les bonnes infos
         } else if (bloc.type === 'lien') { // check si cest un lien
-            return <a key={index} href={bloc.url}>{bloc.label}</a> // on retourne un lien avec les bonnes infos
+            if (!bloc.url.startsWith('http')) { // check si le lien commence par http, sinon on return
+                return null
+            }
+            return <a key={index} target="_blank" rel="noopener noreferrer" href={bloc.url}>{bloc.label}</a> // on retourne un lien avec les bonnes infos, on ouvre le lien dans un nouvel onglet et noopener coupe le lien vers des redirections
         }
     }
 
@@ -39,7 +42,12 @@ function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState }) {
                 {/* Post-it : retient l'URL tapée, avant de la "poser" sur la page */}
                 <input value={lienUrl} onChange={(e) => setLienUrl(e.target.value)}/>
                 {/* Pose le lien : ajoute un média au brouillon, puis vide le post-it */}
-                <button onClick={() => { setBrouillon({ ...brouillon, medias: [...brouillon.medias, { type: 'lien', url: lienUrl, label: lienUrl }] }); setLienUrl(""); }}>Ajouter un lien</button>
+                <button onClick={() => { 
+                    if (!lienUrl.startsWith('http')) { 
+                        alert("Lien invalide")
+                        return null
+                    }
+                    setBrouillon({ ...brouillon, medias: [...brouillon.medias, { type: 'lien', url: lienUrl, label: lienUrl }] }); setLienUrl(""); }}>Ajouter un lien</button>
                 {/* Retire tous les liens : garde les médias qui ne sont PAS des liens (filter) */}
                 <button onClick={() => setBrouillon({ ...brouillon, medias: brouillon.medias?.filter((media) => media.type !== "lien") })}>Supprimer les liens</button>
                 {/* Publie : écrit le brouillon en base, il devient la page publique vue par tous */}
