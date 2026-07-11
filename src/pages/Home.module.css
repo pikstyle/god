@@ -1,15 +1,3 @@
-.entrer {
-    font-size: x-large;
-    position: fixed; 
-    bottom: 100px;
-    font-family: inherit;
-    background-color: transparent;
-    color: var(--text);
-    border: 2px solid var(--border);
-    padding: 12px;
-    cursor: pointer;
-}
-
 .div_home{
     display: flex;            /* active flexbox */
     justify-content: flex-start; /* le contenu demarre en haut*/
@@ -20,9 +8,41 @@
 
 .titre {
     font-size : clamp(1rem, 4vh, 9rem); /* vise 10% de l'ecran, jamais en dessous de 1rem ni au dessus de 9 rem*/
-    margin-top: 150px; /* baisse un peu le titre */
+    margin-top: 50px; /* baisse un peu le titre */
 }
 
 .leaderName { 
     color: #c48d41;
+}
+
+.inputPhoto {
+    display: none;
+}
+
+.imageHomeDiv {
+    position: relative;  /* devient la reference pour le calque */
+    display: inline-block; /* pour epouser la taille de l'image */
+}
+
+.calque {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0,0,0,0.5);
+    opacity: 0;
+    cursor: pointer; /* afficher la petite main */
+}
+
+.imageHomeDiv:hover {
+    .calque {
+        opacity: 1;
+    }
+}
+
+.divBlocHome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

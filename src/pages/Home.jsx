@@ -14,6 +14,7 @@ function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, use
         maxSizeMB: 0.5,
         maxWidthOrHeight: 500,
     }
+    const fileInputRef = useRef(null) // avoir une ref de l'input pour upload l'image
 
     // quand la page publiée arrive, on la recopie dans le brouillon.
     useEffect(() => {
@@ -25,7 +26,10 @@ function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, use
     // Afficher les differents assets de la home
     function afficherBloc(bloc, index) {
         if (bloc.type === 'image') { // check si cest une image
-            return <img key={index} src={bloc.url} alt="home-image" /> // on retourne une img avec les bonnes infos
+            return <div key={index} className={styles.imageHomeDiv}  onClick={isLeader && gameState?.regne ? () => fileInputRef.current.click() : undefined}>
+                    <img src={bloc.url} alt="home-image" onLoad={() => setIsSubmitting(false)} /> 
+                    {isLeader && gameState?.regne && <div className={styles.calque}>Changer l'image</div>}
+                </div> // on retourne une img avec les bonnes infos
         } else if (bloc.type === 'lien') { // check si cest un lien
             if (!bloc.url.startsWith('http')) { // check si le lien commence par http, sinon on return
                 return null
@@ -51,20 +55,19 @@ function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, use
             setBrouillon({ ...brouillon, medias: brouillon.medias?.map((media) => media.type === 'image' ? { ...media, url: urlData.publicUrl } : media) }) // On copie tout le brouillon sauf pour medias : pour chaque media, on check si cest une image, et si oui on change son url par la nouvelle, et sinon on laisse tel quel
         } finally {
             isSubmittingRef.current = false
-            setIsSubmitting(false)
         }
     }
 
     return (
         <div className={styles.div_home}>
-            <h2>Parti en tête :
-                 <span className={styles.leaderName}>{partiLeader?.title}</span>, dirigé par 
-                <span className={styles.leaderName}>{partiLeader?.profiles?.username}</span>
+            <h2>Parti en tête : 
+                 <span className={styles.leaderName}>{" " + partiLeader?.title}</span>, dirigé par 
+                <span className={styles.leaderName}>{" " + partiLeader?.profiles?.username}</span>
             </h2>
             {isSubmitting && <h3>Chargement...</h3>}
             <div className={styles.titre}>{brouillon.text}</div> {/* On affiche le texte que l'user tappe*/}
             {/* Pour chaque media, on appelle afficherBloc, avec son media et son index pour les afficher*/}
-            <div>{brouillon.medias?.map((media, index) => afficherBloc(media, index))}</div>
+            <div className={styles.divBlocHome}>{brouillon.medias?.map((media, index) => afficherBloc(media, index))}</div>
             {/* Éditeur : visible seulement pour le leader, et seulement pendant son règne */}
             {isLeader && gameState?.regne ? 
             <div>
@@ -83,7 +86,7 @@ function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, use
                 {/* Retire tous les liens : garde les médias qui ne sont PAS des liens (filter) */}
                 <button onClick={() => setBrouillon({ ...brouillon, medias: brouillon.medias?.filter((media) => media.type !== "lien") })}>Supprimer les liens</button>
                 {/* Choisir la photo */}
-                <input required type="file" onChange={(e) => handleSubmit(e.target.files[0])}/> {/* Récupère le fichier choisi. e.target.files[0] = le premier fichier sélectionné */}
+                <input className={styles.inputPhoto} ref={fileInputRef} required type="file" onChange={(e) => handleSubmit(e.target.files[0])}/> {/* Récupère le fichier choisi. e.target.files[0] = le premier fichier sélectionné */}
                 {/* Publie : écrit le brouillon en base, il devient la page publique vue par tous */}
                 <button onClick={() => saveHomeContent(brouillon)}>Save</button>
                 </div>
