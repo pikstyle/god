@@ -9,7 +9,7 @@
 }
 
 .button {
-    background-color: #c48d41;
+    background-color:var(--rouge);
     font-size: 15px;
     font-family: inherit;
     color: var(--text);

@@ -60,7 +60,7 @@ function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, use
 
     return (
         <div className={styles.div_home}>
-            <h2>Parti en tête : 
+            <h2 className=''>
                  <span className={styles.leaderName}>{" " + partiLeader?.title}</span>, dirigé par 
                 <span className={styles.leaderName}>{" " + partiLeader?.profiles?.username}</span>
             </h2>

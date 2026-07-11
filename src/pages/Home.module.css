@@ -12,7 +12,7 @@
 }
 
 .leaderName { 
-    color: #c48d41;
+    color: var(--rouge);
 }
 
 .inputPhoto {

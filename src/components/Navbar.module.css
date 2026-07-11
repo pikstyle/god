@@ -3,7 +3,7 @@
     justify-content: space-between; /* colle le premier groupe à gauche, le dernier à droite, avec le max d'espace entre les deux.*/
     align-items: center;
     padding: 5px 14px;
-    border-bottom: 1px solid var(--border)
+    border-bottom: 1.5px solid var(--border)
 }
 
 .right {
@@ -20,11 +20,12 @@
 }
 
 .right :global(.active) {
-    color: #c48d41; 
+    color: var(--rouge); 
 }
 
 .right a:hover {
-    opacity: .8;
+    color: var(--rouge); 
+    opacity: 0.7;
 }
 
 .hamburger {
@@ -77,12 +78,13 @@
 
 
 .timer {
-    display: flex;
-    justify-content: center; /* centrer le h1 dans la boite  */
-    align-items: center;
-    color: #c48d41;
-    padding: 5px;
-    margin: 20px auto 0;   /* centrer horizontalement la boite en elle meme et 20px en haut */
-    width: 100%; /* reduit tout seul sur mobile  */
-    max-width: 1000px; /* taille max que peut prendre les lignes  */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--rouge);
+    color: var(--text);
+    text-align: center;
+    margin: 0; /* Supprime les marges pour coller en bas */
+    z-index: 1000; /* Assure que la barre reste au-dessus des autres éléments */
 }

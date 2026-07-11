@@ -23,10 +23,11 @@
     border: 1px solid var(--border);
     padding: 5px;
     word-break: break-word; /* saute des lignes automatiquement*/
+    background-color: #1a1a1a;
 }
 
 .btnVote {
-    background-color: #c48d41;
+    background-color: var(--rouge);
     font-family: inherit;
     color: var(--text);
     border: 1px solid var(--border);
@@ -48,15 +49,16 @@
     border: 2px solid;
     word-break: break-word;
     padding: 14px;
+    background-color: #1a1a1a;
 }
 .first  { 
-    border-color: #c48d41; 
+    border-color: var(--rouge); 
 }   
 .second { 
-    border-color: #b1b1b1; 
+    border-color: var(--rouge); 
 }  
 .third  { 
-    border-color: #63411d; 
+    border-color: var(--rouge); 
 }
 
 .second h1, .third h1 {
@@ -105,7 +107,7 @@
 }
 
 .voteNombre { 
-    font-size: 2rem; color: #c48d41; 
+    font-size: 2rem; color: var(--rouge); 
 }
 
 .podium, .podiumRow {

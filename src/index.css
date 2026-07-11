@@ -1,9 +1,10 @@
-@import url(https://cdn.jsdelivr.net/gh/aaaakshat/cm-web-fonts@latest/fonts.css);
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
 
 :root {
-    --background: #080808;
-    --text: #ffffff; 
-    --border: #ffffff;
+    --background: #111111;
+    --text: #f0f0ed; 
+    --border: #f0f0ed;
+    --rouge: #cc2507;
 }
 
 * {
@@ -18,8 +19,9 @@ html {
 body {
     background-color: var(--background);
     color: var(--text);
-    font-family: 'Computer Modern Serif', serif;
-    /* padding-inline: 24px;   /* espace à gauche ET à droite */
+    position: relative;
+    overflow: hidden; /* Assure que le grain ne dépasse pas */
+    font-family: "IBM Plex Mono", monospace;
 }
 
 a {

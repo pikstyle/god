@@ -1,34 +1,36 @@
+/* Colonne de texte : empile titre / paragraphes / phrase choc */
 .div {
     display: flex;
-    justify-content: center; /* centre verticalement car column */
-    flex-direction: column;
-    align-items: center;      /* centre horizontalement, car column */
-    gap: 25px;
+    flex-direction: column; /* empile les enfants de haut en bas */
+    gap: 20px; /* espace régulier entre les blocs (mieux que des margins) */
     font-size: large;
     text-align: left;
+    position: relative; /* relative + z-index = passe au-dessus de l'image de fond */
+    z-index: 1; /* le texte reste lisible par-dessus le filigrane */
 }
 
+/* Bloc des paragraphes */
 .text {
-    margin-top: 50px;
-    max-width: 600px;
+    max-width: 600px; /* bride la largeur de ligne */
 }
 
 .important {
-    max-width: 600px;
-
+    max-width: 600px; /* même largeur que .text pour aligner */
 }
 
-.titre {
+/* Conteneur de page pour centrer texte verticalement */
+.parent {
     display: flex;
-    justify-content: center; /* centre verticalement car column */
-    flex-direction: column;
-    align-items: center;      /* centre horizontalement, car column */
-    text-align: center;
-    padding-top: 20px;
+    align-items: center; /* centre .div sur l'axe vertical */
+    min-height: 70vh; /* donne de la hauteur, sinon "centrer" n'a aucune place pour agir */
+    padding-left: 60px; /* décale le texte du bord gauche */
 }
 
-.div img {
-    height: 200px;
-    width: auto;
-    padding-top: 20px;
+.imageFond {
+    position: fixed; /* hors flux + ancrée au viewport : les marges du texte ne la bougent pas */
+    bottom: -50px; /* déborde en bas */
+    right: -50px; /* déborde à droite */
+    height: 95vh;
+    opacity: 0.3;
+    pointer-events: none; /* les clics traversent l'image, elle ne bloque rien */
 }
