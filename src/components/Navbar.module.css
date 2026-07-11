@@ -3,7 +3,13 @@
     justify-content: space-between; /* colle le premier groupe à gauche, le dernier à droite, avec le max d'espace entre les deux.*/
     align-items: center;
     padding: 5px 14px;
-    border-bottom: 1.5px solid var(--border)
+    border-bottom: 1.5px solid var(--border);
+    background-color: var(--background);
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%;
+    z-index: 1000;
 }
 
 .right {

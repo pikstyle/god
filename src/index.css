@@ -5,6 +5,11 @@
     --text: #f0f0ed; 
     --border: #f0f0ed;
     --rouge: #cc2507;
+    --surface: #1a1a1a;
+    --border_carte: #1d1d1d;
+    --text-muted: #737373;
+    --leader_color: #2e1515;
+    --leader_color_border: #411a1a;
 }
 
 * {
@@ -20,8 +25,10 @@ body {
     background-color: var(--background);
     color: var(--text);
     position: relative;
-    overflow: hidden; /* Assure que le grain ne dépasse pas */
+    overflow-x: hidden;
     font-family: "IBM Plex Mono", monospace;
+    padding-bottom: 60px;
+    padding-top: 130px;
 }
 
 a {

@@ -1,45 +1,46 @@
 .liste {
     list-style: none;
-    padding: 20px;
-    display: grid; 
-    grid-template-columns: 1fr; /*  base mobile 1 seule colonne */
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    padding: 0;
 }
 
-@media (min-width: 768px) {
-    .liste { grid-template-columns: repeat(4, 1fr); }   /* grand écran : 4 colonnes */
-}
-
-.liste img {
-    height: 50px;
-    width: 50px;
-    object-fit: contain /* pour avoir une image toujours bien*/
+.image {
+    height: 48px;
+    width: 48px;
+    object-fit: cover; /* pour avoir une image toujours bien*/
+    flex-shrink: 0 /* pas se faire ecraser */
 }
 
 .carte {
     display: flex;
     flex-direction: column;
     align-items: flex-start; /* chaque item se cale à gauche et garde sa taille*/
-    border: 1px solid var(--border);
-    padding: 5px;
+    border: 2px solid var(--border_carte);
+    padding: 15px;
     word-break: break-word; /* saute des lignes automatiquement*/
-    background-color: #1a1a1a;
+    background-color: var(--surface);
+    gap: 12px;
 }
 
 .btnVote {
-    background-color: var(--rouge);
-    font-family: inherit;
-    color: var(--text);
-    border: 1px solid var(--border);
-    padding: 12px;
+    padding: 8px 16px;
     cursor: pointer;
-    width: 150px;
+    white-space: nowrap;
+    background: transparent;
+    color: var(--rouge);
+    transition: background-color 0.15s ease, color 0.15s ease;
+    text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;
+    background-color: color-mix(in srgb, var(--rouge) 8%, transparent);
+    border: none;
 }
 .btnVote:disabled { 
     cursor: not-allowed; opacity: 0.4; 
 }
 .btnVote:hover { 
-    filter: brightness(.9); 
+    background-color: var(--rouge);
+     color: var(--text);
 }
 .btnVote:active { 
     filter: brightness(1.3); 
@@ -49,20 +50,17 @@
     border: 2px solid;
     word-break: break-word;
     padding: 14px;
-    background-color: #1a1a1a;
+    background-color: var(--surface);
 }
 .first  { 
-    border-color: var(--rouge); 
+    border-color: var(--leader_color_border); 
+    background-color: var(--leader_color);
 }   
 .second { 
-    border-color: var(--rouge); 
+    border-color: var(--border_carte); 
 }  
 .third  { 
-    border-color: var(--rouge); 
-}
-
-.second h1, .third h1 {
-    font-size: 1.5rem; 
+    border-color: var(--border_carte); 
 }
 
 .troneRow  { 
@@ -95,9 +93,10 @@
 }
 
 .first img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover; /* recadre bien l'image*/
+    width: 96px;
+    height: 96px;
+    object-fit: cover; /* pour avoir une image toujours bien*/
+    flex-shrink: 0 /* pas se faire ecraser */
 }
 
 .infos {
@@ -110,15 +109,7 @@
     font-size: 2rem; color: var(--rouge); 
 }
 
-.podium, .podiumRow {
-    max-width: 900px;
-    margin: 0 auto;  /*centre le bloc horizontalement*/
-    padding: 20px;
-}
-
 .podiumRow {
-    max-width: 1100px;
-    margin: 0 auto;  /*centre le bloc horizontalement*/
     display: flex;
     gap: 20px;
     flex-direction: column; /* mobile first donc on empile tout*/
@@ -128,12 +119,55 @@
     .podiumRow { flex-direction: row; } /* grand écran : côte à côte */
 }
 
+.first h2 {
+    font-size: 2rem
+}
+
 .second, .third { 
     flex: 1; /* chacun prend la moitié de la rangée */
 }   
 
-.second img, .third img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
+.second:hover, .third:hover {
+    background-color: #202020;
 }
+
+.first:hover {
+    background-color: #3b1d1d;
+}
+
+.second img, .third img {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.footer {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 16px;
+}
+
+.carteInfos {
+    color: var(--text-muted);
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.carte:hover { background-color: #202020 }
