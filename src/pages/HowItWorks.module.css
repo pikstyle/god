@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column; /* empile les enfants de haut en bas */
     gap: 20px; /* espace régulier entre les blocs (mieux que des margins) */
-    font-size: large;
+    font-size: 1.2em;
     text-align: left;
     position: relative; /* relative + z-index = passe au-dessus de l'image de fond */
     z-index: 1; /* le texte reste lisible par-dessus le filigrane */

@@ -11,8 +11,8 @@ function NavBar({ user, logout, loading, username, avatar, timer, gameState, par
             <nav className={styles.navbar}>
                 <div className={styles.navInner}>
                     <NavLink to="/" className={styles.logo}>
-                        <img src={partyList?.[0]?.logo_url} alt="logo-party" />
-                        <h1>{partyList?.[0]?.title ?? "GOD"}</h1>
+                        <img src={gameState?.regne ? partyList?.[0]?.logo_url : "./GOD.png"} alt="logo-party" />
+                        <h1>{gameState?.regne ? partyList?.[0]?.title : "GOD"}</h1>
                     </NavLink>
                     <button className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>☰</button>
                     {/* on colle la classe "open" seulement quand menuOpen est vrai */}

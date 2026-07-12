@@ -46,7 +46,7 @@ function PartyDetails({ partyList, vote, isVoting, gameState }) {
                     {partyIndex !== 0 && (
                         <div className={styles.stat}>
                             <h2>{voteEcartTrone + 1}</h2>
-                            <p>pour passer #1</p>
+                            <p>votes du #1</p>
                         </div>
                     )}
                 </div>
