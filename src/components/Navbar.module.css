@@ -1,15 +1,22 @@
 .navbar {
-    display: flex;
-    justify-content: space-between; /* colle le premier groupe à gauche, le dernier à droite, avec le max d'espace entre les deux.*/
     align-items: center;
-    padding: 5px 14px;
-    border-bottom: 1.5px solid var(--border);
+    padding-block: 5px;
+    border-bottom: .5px solid var(--border);
     background-color: var(--background);
-    position: fixed; 
+    position: sticky; top: 0;
     top: 0; 
     left: 0; 
     width: 100%;
     z-index: 1000;
+}
+
+.navInner {
+    display: flex;
+    justify-content: space-between; /* colle le premier groupe à gauche, le dernier à droite, avec le max d'espace entre les deux.*/
+    max-width: var(--canvas-max);
+    margin: 0 auto;
+    padding-inline: var(--canvas-gutter);
+    align-items: center;
 }
 
 .right {
@@ -56,14 +63,14 @@
 }
 
 .logo img { /*avoir une image bonne taille */
-    height: 60px;
+    height: 30px;
     width: auto;
     padding: 10px;
 }
 
 @media (min-width: 768px) {
     .logo img { /*avoir une image bonne taille */
-        height: 100px;
+        height: 60px;
         width: auto;
         padding: 10px;
     }
@@ -78,8 +85,9 @@
 }
 
 .page { 
-    padding-inline: 24px; 
-    padding-top: 20px;
+    max-width: var(--canvas-max);
+    margin: 0 auto; /*centrer le canva */
+    padding: 32px var(--canvas-gutter) 0; /* haut identique pour toutes les pages */
 }
 
 

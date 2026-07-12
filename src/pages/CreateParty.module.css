@@ -3,7 +3,7 @@
     justify-content: center; /* centre verticalement car column */
     flex-direction: column; /* empile verticalement */
     align-items: center;      /* centre horizontalement, car column */
-    min-height: 70vh; /* donne au conteneur la taille de l'ecran permet donc de tout centrer*/
+    min-height: 65vh; /* donne au conteneur la taille de l'ecran permet donc de tout centrer*/
     gap: 1.5rem;   /* permet d'espacer tout les children du form*/
 }
 

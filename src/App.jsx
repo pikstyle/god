@@ -217,7 +217,7 @@ function App() {
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <>
-    {location.pathname !== "/onboarding" && <NavBar timer={formatTimer()} gameState={gameState} avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
+    {location.pathname !== "/onboarding" && <NavBar partyList={sortedParties} timer={formatTimer()} gameState={gameState} avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
       <div className={styles.page} >
           <Routes>
             <Route path="/" element={<Home gameState={gameState} user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>

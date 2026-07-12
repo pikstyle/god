@@ -23,7 +23,6 @@
     display: flex;
     align-items: center; /* centre .div sur l'axe vertical */
     min-height: 70vh; /* donne de la hauteur, sinon "centrer" n'a aucune place pour agir */
-    padding-left: 60px; /* décale le texte du bord gauche */
 }
 
 .imageFond {
@@ -31,6 +30,6 @@
     bottom: -50px; /* déborde en bas */
     right: -50px; /* déborde à droite */
     height: 95vh;
-    opacity: 0.3;
+    opacity: 0.4;
     pointer-events: none; /* les clics traversent l'image, elle ne bloque rien */
 }
