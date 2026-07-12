@@ -9,6 +9,7 @@ import Profile from './pages/Profile'
 import Onboarding from './pages/Onboarding'
 import ProtectedRoute from './components/ProtectedRoute'
 import HowItWorks from './pages/HowItWorks'
+import PartyDetails from './pages/PartyDetails'
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from './supabaseClients'
 import styles from "./components/Navbar.module.css"
@@ -119,10 +120,10 @@ function App() {
   const isLeader = user?.id === sortedParties[0]?.created_by
 
   // Ajouter un parti à la liste des partis
-  const addParty = async ({ title, description, votes, logoFile }) => {
+  const addParty = async ({ title, description, votes, logoFile, description_longue }) => {
     const { data: uploadData } = await supabase.storage.from('logos').upload(title, logoFile) // Upload (donc envoie) le logofile au bucket de supabase
     const { data: urlData } = supabase.storage.from('logos').getPublicUrl(title) // Récupère l'URL publique du fichier uploadé (url générée par supabase)
-    const { data, error } = await supabase.from('parties').insert({ title, description, votes, created_by: user.id, logo_url: urlData.publicUrl }).select() // Attend et insère le parti dans la table parties de supabase 
+    const { data, error } = await supabase.from('parties').insert({ title, description, votes, created_by: user.id, logo_url: urlData.publicUrl, description_longue }).select() // Attend et insère le parti dans la table parties de supabase 
     if (error) {
       return { error } 
     } else {
@@ -228,6 +229,7 @@ function App() {
             <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
             <Route path="/onboarding" element={<ProtectedRoute loading={loading} user={user}><Onboarding user={user} profile={profile} updateProfile={updateProfile}/></ProtectedRoute>}/>
             <Route path="/hiw" element={<HowItWorks/>}/>
+            <Route path="/party/:id" element={<PartyDetails partyList={sortedParties} isVoting={isVoting} vote={vote} gameState={gameState}/>}/>
           </Routes>
         </div>
       </>

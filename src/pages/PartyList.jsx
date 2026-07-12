@@ -1,12 +1,16 @@
 import styles from './PartyList.module.css'
+import { useNavigate } from 'react-router-dom'
 
 function ListeParty({ partyList, vote, isVoting, gameState }) {
+
+    const navigate = useNavigate()
+    
     return (
         // liste ordonmée
         <ol className={styles.liste}>
             {partyList.map((party, index) => (
                 // Le leader (index 0) reçoit une classe en plus : .ligne .leader
-                <li key={party.id} className={`${styles.ligne} ${index === 0 ? styles.leader : ''}`}>
+                <li key={party.id} className={`${styles.ligne} ${index === 0 ? styles.leader : ''}`} onClick={() => navigate(`\/party/${party.id}`)}>
                     <span className={styles.rang}>#{index + 1}</span>
                     <img className={styles.logo} src={party.logo_url} alt="logo-party" />
                     <div className={styles.identite}>
@@ -22,7 +26,8 @@ function ListeParty({ partyList, vote, isVoting, gameState }) {
                         <span className={styles.voteNombre}>{party.votes}</span>
                         <span className={styles.voteLabel}>votes</span>
                     </div>
-                    <button className={styles.btnVote} onClick={() => vote(party.id)} disabled={isVoting || gameState?.regne}>
+                    {/* e.stopPropagation() perment de cliquer sur voter dans que usenavigate s'active */}
+                    <button className={styles.btnVote} onClick={(e) => { e.stopPropagation(); vote(party.id) }} disabled={isVoting || gameState?.regne}>
                         Voter
                     </button>
                 </li>

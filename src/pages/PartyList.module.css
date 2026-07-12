@@ -19,20 +19,15 @@
     border-right: .5px solid color-mix(in srgb, var(--text) 100%, transparent);
 }
 
-/*
+
 .ligne:hover {
     background-color: var(--surface);
-}*/
+}
 
 /* Leader */
 .leader {
     border-top: .5px solid color-mix(in srgb, var(--text) 100%, transparent);
-
 }
-/*
-.leader:hover {
-    background-color: #3b1d1d;
-}*/
 
 /* Col 1 : rang */
 .rang {
