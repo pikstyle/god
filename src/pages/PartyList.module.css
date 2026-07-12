@@ -17,6 +17,7 @@
     border-top: .5px solid color-mix(in srgb, var(--text) 100%, transparent);
     border-left: .5px solid color-mix(in srgb, var(--text) 100%, transparent);
     border-right: .5px solid color-mix(in srgb, var(--text) 100%, transparent);
+    cursor: pointer;
 }
 
 
