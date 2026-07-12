@@ -30,6 +30,6 @@
     bottom: -50px; /* déborde en bas */
     right: -50px; /* déborde à droite */
     height: 95vh;
-    opacity: 0.4;
+    opacity: 0.5;
     pointer-events: none; /* les clics traversent l'image, elle ne bloque rien */
 }

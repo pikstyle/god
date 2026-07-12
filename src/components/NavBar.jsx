@@ -26,7 +26,7 @@ function NavBar({ user, logout, loading, username, avatar, timer, gameState, par
                 </div>
             </nav>
             <div className={styles.timer}>
-                <h3>{timer} {gameState?.regne ? " avant les élections" : " avant le couronnement"}</h3>
+                <h3>{gameState?.regne ? "Fin du mandat dans : " : "Élection du nouveau parti dans : "}{timer}</h3>
             </div>
         </div>
     )

@@ -1,0 +1,104 @@
+.parent {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 64px;
+}
+
+.head {
+    display: flex;
+    align-items: center; /* centre .div sur l'axe vertical */
+    justify-content: space-between;
+    border: .5px solid var(--text);
+    padding-right: 25px;
+    padding-left: 25px;
+}
+
+.logo {
+    width: 164px;
+    height: 164px;
+    object-fit: cover;
+    padding: 16px;
+}
+
+.slogan {
+    font-style: italic;
+    font-size: 1.5em;
+    text-align: center;
+
+}
+
+.droite {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+
+.droite h4 {
+    color: var(--text-muted);
+}
+
+.reste {
+    gap: 15px;
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+
+}
+
+.boutonVote {
+    padding: 8px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    color: var(--text);
+    background-color: var(--rouge);
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.5rem;
+}
+.boutonVote:hover {
+    background-color: var(--rouge);
+    color: var(--text);
+}
+.boutonVote:disabled {
+    cursor: not-allowed;
+    opacity: 0.4;
+}
+
+.stat1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat1 h1 {
+    font-size: 3em;
+    color: var(--rouge);
+}
+
+.stat1 p {
+    color: var(--text-muted);
+}
+
+.stat { 
+    display: flex; 
+    flex-direction: column; 
+}
+.stat + .stat 
+    { border-left: .5px solid var(--text); 
+    padding-left: 24px; 
+}
+
+.stat h2 {
+    font-size: 2em;
+    color: var(--rouge);
+}
+
+.stat p {
+    color: var(--text-muted);
+}
+
+.statsPolitique { 
+    display: flex; 
+    gap: 24px; 
+}
