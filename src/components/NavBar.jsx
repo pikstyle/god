@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import styles from './Navbar.module.css'
 import { useState } from "react";
 import logo from "../assets/GOD.png"
+import logoBlanc from "../assets/GOD-blanc.png"
 
 
 function NavBar({ user, logout, loading, username, avatar, timer, gameState, partyList }) {
@@ -11,7 +12,7 @@ function NavBar({ user, logout, loading, username, avatar, timer, gameState, par
             <nav className={styles.navbar}>
                 <div className={styles.navInner}>
                     <NavLink to="/" className={styles.logo}>
-                        <img src={gameState?.regne ? partyList?.[0]?.logo_url : "./GOD.png"} alt="logo-party" />
+                        <img src={gameState?.regne ? partyList?.[0]?.logo_url : logoBlanc} alt="logo-party" />
                         <h1>{gameState?.regne ? partyList?.[0]?.title : "GOD"}</h1>
                     </NavLink>
                     <button className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>☰</button>
