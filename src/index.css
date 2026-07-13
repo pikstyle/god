@@ -6,11 +6,7 @@
     --text: #000000; 
     --border: #000000;
     --rouge: #ff2600;
-    --surface: #e9e9e9;
-    --border_carte: #1d1d1d;
     --text-muted: #000000;
-    --leader_color: #2e1515;
-    --leader_color_border: #411a1a;
     --canvas-max: 1300px; /* largeur max du contenu, partout */
     --canvas-gutter: 24px; /* marge latérale, partout */
 }
@@ -25,7 +21,6 @@ body {
     color: var(--text);
     position: relative;
     font-family: 'Computer Modern Serif', serif;
-    padding-bottom: 60px;
 }
 
 a {

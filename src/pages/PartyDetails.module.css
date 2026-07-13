@@ -9,14 +9,14 @@
     display: flex;
     align-items: center; /* centre .div sur l'axe vertical */
     justify-content: space-between;
-    border: .5px solid var(--text);
-    padding-right: 25px;
-    padding-left: 25px;
+    border: 1px solid var(--text);
+    padding-right: 24px;
+    padding-left: 24px;
 }
 
 .logo {
-    width: 164px;
-    height: 164px;
+    width: 128px;
+    height: 128px;
     object-fit: cover;
     padding: 16px;
 }
@@ -31,7 +31,7 @@
 .droite {
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 16px;
 }
 
 .droite h4 {
@@ -39,7 +39,7 @@
 }
 
 .reste {
-    gap: 15px;
+    gap: 16px;
     display: flex;
     text-align: left;
     flex-direction: column;
@@ -47,8 +47,8 @@
 }
 
 .reste h3 {
-    font-size: 1.5em;
-    padding-bottom: 20px;
+    font-size: 2em;
+    padding-bottom: 24px;
 }
 
 .boutonVote {
@@ -60,7 +60,7 @@
     border: 1px solid var(--text);
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-size: 1.5rem;
+    font-size: 1.5em;
 }
 .boutonVote:hover:not(:disabled) { /*desactive l'effet du hover quand le bouto est desactive*/
     background-color: var(--text);
@@ -77,7 +77,7 @@
 }
 
 .stat1 h1 {
-    font-size: 3em;
+    font-size: 2em;
     color: var(--rouge);
 }
 
@@ -89,8 +89,7 @@
     display: flex; 
     flex-direction: column; 
 }
-.stat + .stat 
-    { border-left: .5px solid var(--text); 
+.stat + .stat { 
     padding-left: 24px; 
 }
 

@@ -25,10 +25,6 @@ function PartyDetails({ partyList, vote, isVoting, gameState }) {
     return (
         <div className={styles.parent}>
             <div className={styles.head}>
-                <div className={styles.stat1}>
-                    <h1>#{partyIndex + 1}</h1>
-                    <p>sur {nombreDePartis}</p>
-                </div>
                 <img className={styles.logo} src={party?.logo_url} alt="logo-party" />
                 <div className={styles.identite}>
                     <div className={styles.droite}>
@@ -37,6 +33,10 @@ function PartyDetails({ partyList, vote, isVoting, gameState }) {
                     </div>
                 </div>
                 <div className={styles.statsPolitique}>
+                    <div className={styles.stat}>
+                        <h2>#{partyIndex + 1}</h2>
+                        <p>sur {nombreDePartis}</p>
+                    </div>
                     <div className={styles.stat}>
                         <h2>{party?.votes}</h2> <p>votes</p>
                     </div>

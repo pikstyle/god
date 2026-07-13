@@ -1,18 +1,21 @@
-.div_home{
-    display: flex;            /* active flexbox */
-    justify-content: center; /* centre verticalement car column */
-    flex-direction: column; /* empile verticalement */
-    align-items: center;      /* centre horizontalement, car column */
-    min-height: 65vh; /* donne au conteneur la taille de l'ecran permet donc de tout centrer*/
-    gap: 1.5rem;   /* permet d'espacer tout les children du form*/
+.div_home {
+    display: flex;
+    /* active flexbox */
+    justify-content: center;
+    /* centre verticalement car column */
+    flex-direction: column;
+    /* empile verticalement */
+    align-items: center;
+    /* centre horizontalement, car column */
+    min-height: 65vh;
+    /* donne au conteneur la taille de l'ecran permet donc de tout centrer*/
+    gap: 1.5rem;
+    /* permet d'espacer tout les children du form*/
 }
 
 .titre {
-    font-size : clamp(1rem, 4vh, 9rem); /* vise 10% de l'ecran, jamais en dessous de 1rem ni au dessus de 9 rem*/
-}
-
-.leaderName { 
-    color: var(--rouge);
+    font-size: clamp(1rem, 4vh, 9rem);
+    /* vise 10% de l'ecran, jamais en dessous de 1rem ni au dessus de 9 rem*/
 }
 
 .inputPhoto {
@@ -20,8 +23,10 @@
 }
 
 .imageHomeDiv {
-    position: relative;  /* devient la reference pour le calque */
-    display: inline-block; /* pour epouser la taille de l'image */
+    position: relative;
+    /* devient la reference pour le calque */
+    display: inline-block;
+    /* pour epouser la taille de l'image */
 }
 
 .calque {
@@ -30,9 +35,10 @@
     justify-content: center;
     position: absolute;
     inset: 0;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     opacity: 0;
-    cursor: pointer; /* afficher la petite main */
+    cursor: pointer;
+    /* afficher la petite main */
 }
 
 .imageHomeDiv:hover {

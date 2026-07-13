@@ -22,21 +22,23 @@ function Login({ setUser }) {
     }
 
     return (
-        <form className={styles.form_auth} onSubmit={handleSubmit}>
+        <div className={styles.div}>
             <h1>LOGIN</h1>
-            <button className={styles.button} type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
-            <div className={styles.separateur}>Ou</div>
-            <label>Email</label>
-            <input className={styles.inputs} required type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <label>Mot de passe</label>
-            <input className={styles.inputs} required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
-            <button className={styles.button} type="submit">Login</button>
-            <div className={styles.auth_question}>
-                <h3>Pas encore de compte ? </h3>
-                <Link className={styles.link} to="/signup"> Signup</Link>
-            </div>
-            {errorMsg && <p>{errorMsg}</p>}
-        </form>
+            <form className={styles.form_auth} onSubmit={handleSubmit}>
+                <button className={styles.button} type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
+                <div className={styles.separateur}>Ou</div>
+                <label>Email</label>
+                <input className={styles.inputs} required type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                <label>Mot de passe</label>
+                <input className={styles.inputs} required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
+                <button className={styles.button} type="submit">Login</button>
+                <div className={styles.auth_question}>
+                    <h3>Pas encore de compte ? </h3>
+                    <Link className={styles.link} to="/signup"> Signup</Link>
+                </div>
+                {errorMsg && <p>{errorMsg}</p>}
+            </form>
+        </div>
     )
 }
 

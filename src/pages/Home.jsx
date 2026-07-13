@@ -60,11 +60,6 @@ function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, use
 
     return (
         <div className={styles.div_home}>
-                    {/*
-            <h2 className=''>
-                 <span className={styles.leaderName}>{" " + partiLeader?.title}</span>, dirigé par 
-                <span className={styles.leaderName}>{" " + partiLeader?.profiles?.username}</span>
-            </h2>            */}
             {isSubmitting && <h3>Chargement...</h3>}
             <div className={styles.titre}>{brouillon.text}</div> {/* On affiche le texte que l'user tappe*/}
             {/* Pour chaque media, on appelle afficherBloc, avec son media et son index pour les afficher*/}

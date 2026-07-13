@@ -60,9 +60,9 @@ function CreateParty({ addParty }) {
     }
  
     return (
-        <>
+        <div className={styles.div}>
+            <h1>CRÉER UN PARTI</h1>
             <form className={styles.form} onSubmit={handleSubmit}>
-                <h1>CRÉER UN PARTI</h1>
                 <label>Titre (Max 15 caractères)</label>
                 <input className={styles.inputs} required type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
                 <label>Slogan (Max 50 caractères)</label>
@@ -73,7 +73,7 @@ function CreateParty({ addParty }) {
                 <input className={styles.file_input} ref={fileInputRef} required type="file" id="logoParti" onChange={(e) => setPartyLogo(e.target.files[0])}/>
                 <button className={styles.button} type="submit" disabled={isSubmitting}>{isSubmitting ? "Création..." : "Créer le parti"}</button>
             </form>
-        </>
+        </div>
     )
 }
 

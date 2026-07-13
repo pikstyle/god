@@ -1,28 +1,27 @@
 .div_princ {
-    display: flex;            /* active flexbox */
-    flex-direction: column; /* empile verticalement */
-    justify-content: center;
-    align-items: center;      /* centre horizontalement, car column */
-    gap: 1.5rem;   /* permet d'espacer tout les children du form*/
+    flex: 1; /* remplit l'espace sous le titre */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;  /* centre les inputs dans cet espace */
+    gap: 1.5rem;
 }
 
 .button {
-    background-color:var(--rouge);
-    font-size: 15px;
-    font-family: inherit;
-    color: var(--text);
-    border: 1px solid var(--border) ;
-    padding: 12px;
+    padding: 8px 16px;
     cursor: pointer;
-    width: 150px; /* donne la meme taille aux boutons*/
+    white-space: nowrap;
+    color: var(--text);
+    background-color: transparent;
+    border: 1px solid var(--text);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1.5em;
 }
 
-.button:hover {
-    filter: brightness(.9);
-}
-
-.button:active {
-    filter: brightness(1.3);
+.button:hover { 
+    background-color: var(--text);
+    color: var(--background);
 }
 
 .inputs {
@@ -37,4 +36,11 @@
     height: 100px;
     width: 100px;
     object-fit: contain /* pour avoir une image toujours bien*/
+}
+
+.div {
+    display: flex;
+    flex-direction: column;
+    min-height: 70vh;
+    align-items: center;
 }
