@@ -24,7 +24,7 @@ function SignUp({ setUser }) {
 
     return (
         <>
-            {!emailSent ? <form className={styles.form_auth} onSubmit={handleSubmit}><h1>SignUp</h1>
+            {!emailSent ? <form className={styles.form_auth} onSubmit={handleSubmit}><h1>SIGN-UP</h1>
             <button className={styles.button} type="button" onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Signup avec Google</button>
             <div className={styles.separateur}>Ou</div>
             <label>Email</label>

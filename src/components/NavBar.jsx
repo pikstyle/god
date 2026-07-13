@@ -5,14 +5,14 @@ import logo from "../assets/GOD.png"
 import logoBlanc from "../assets/GOD-blanc.png"
 
 
-function NavBar({ user, logout, loading, username, avatar, timer, gameState, partyList }) {
+function NavBar({ user, logout, loading, username, avatar, gameState, partyList }) {
     const [menuOpen, setMenuOpen] = useState(false)
     return (
         <div className={styles.container}>
             <nav className={styles.navbar}>
                 <div className={styles.navInner}>
                     <NavLink to="/" className={styles.logo}>
-                        <img src={gameState?.regne ? partyList?.[0]?.logo_url : logoBlanc} alt="logo-party" />
+                        <img src={gameState?.regne ? partyList?.[0]?.logo_url : logo} alt="logo-party" />
                         <h1>{gameState?.regne ? partyList?.[0]?.title : "GOD"}</h1>
                     </NavLink>
                     <button className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>☰</button>
@@ -26,9 +26,6 @@ function NavBar({ user, logout, loading, username, avatar, timer, gameState, par
                     </div>
                 </div>
             </nav>
-            <div className={styles.timer}>
-                <h3>{gameState?.regne ? "Fin du mandat dans : " : "Élection du nouveau parti dans : "}{timer}</h3>
-            </div>
         </div>
     )
 }

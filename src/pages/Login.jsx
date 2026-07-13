@@ -23,7 +23,7 @@ function Login({ setUser }) {
 
     return (
         <form className={styles.form_auth} onSubmit={handleSubmit}>
-            <h1>Login</h1>
+            <h1>LOGIN</h1>
             <button className={styles.button} type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
             <div className={styles.separateur}>Ou</div>
             <label>Email</label>

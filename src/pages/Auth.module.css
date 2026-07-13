@@ -3,7 +3,6 @@
     justify-content: center; /* centre verticalement car column */
     flex-direction: column; /* empile verticalement */
     align-items: center;      /* centre horizontalement, car column */
-    min-height: 65vh; /* donne au conteneur la taille de l'ecran permet donc de tout centrer*/
     gap: 1.5rem;   /* permet d'espacer tout les children du form*/
 }
 
@@ -13,9 +12,9 @@
     background-color: transparent;
     color: var(--text);
     border: 2px solid var(--border) ;
-    padding: 12px;
+    padding: 16px;
     cursor: pointer;
-    width: 150px; /* donne la meme taille aux boutons*/
+    width: 164px; /* donne la meme taille aux boutons*/
 }
 
 .auth_question {

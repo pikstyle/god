@@ -108,6 +108,15 @@ function App() {
       return () => supabase.removeChannel(canal) // Fonction menage pour arreter le canal quand on quitte la page
     }, [])
 
+    // Realtime = actualise tout seul les votes
+    useEffect(() => {
+      const canalVotes = supabase
+      .channel('parties-live')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'parties' }, (payload) => { setParties(prev => prev.map(p => p.id === payload.new.id ? { ...p, votes: payload.new.votes } : p))}) // ma uniquement les votes du bon parti
+      .subscribe()
+      return () => supabase.removeChannel(canalVotes)
+    }, [])
+
   // Sauvegarde le texteHome dans la base de donnée
   const saveHomeContent = async (textContent) => {
     await supabase.from('home_content').update({ content: textContent} ).eq('id', 1); // Maj le texte depuis supabase, en filtrant qu'on est bien dans la premiere ligne de la table home 
@@ -218,12 +227,12 @@ function App() {
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
     <>
-    {location.pathname !== "/onboarding" && <NavBar partyList={sortedParties} timer={formatTimer()} gameState={gameState} avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
+    {location.pathname !== "/onboarding" && <NavBar partyList={sortedParties} gameState={gameState} avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
       <div className={styles.page} >
           <Routes>
             <Route path="/" element={<Home gameState={gameState} user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
             <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
-            <Route path="/parties" element={<PartyList gameState={gameState} partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/>}/>
+            <Route path="/parties" element={<PartyList timer={formatTimer()} gameState={gameState} partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/>}/>
             <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile  logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
             <Route path="/login" element={<Login setUser={setUser}/>}/>
             <Route path="/signup" element={<SignUp setUser={setUser}/>}/>

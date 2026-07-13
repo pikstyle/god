@@ -56,19 +56,19 @@
     cursor: pointer;
     white-space: nowrap;
     color: var(--text);
-    background-color: var(--rouge);
-    border: none;
+    background-color: transparent;
+    border: 1px solid var(--text);
     text-transform: uppercase;
     letter-spacing: 1px;
     font-size: 1.5rem;
 }
-.boutonVote:hover {
-    background-color: var(--rouge);
-    color: var(--text);
+.boutonVote:hover:not(:disabled) { /*desactive l'effet du hover quand le bouto est desactive*/
+    background-color: var(--text);
+    color: var(--background);
 }
 .boutonVote:disabled {
     cursor: not-allowed;
-    opacity: 0.4;
+    opacity: .3;
 }
 
 .stat1 {

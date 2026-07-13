@@ -6,7 +6,7 @@ function Profile( {user, updateProfile, profile, logout} ) {
     const [username, setUsername] = useState("")
     return (
         <div className={styles.div_princ}>
-            <h1>Profile</h1>
+            <h1>PROFILE</h1>
             <h3>{profile?.username}</h3>
             {profile?.avatar_url && <img className={styles.avatar_image} src={profile.avatar_url} alt="avatar"/>}
             <h2>Update le profile : </h2> {/* Affiche la photo seulement si avatar_url existe (évite le flash de la pdp Google au chargement) */}

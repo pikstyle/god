@@ -8,7 +8,7 @@
     left: 0; 
     width: 100%;
     z-index: 1000;
-    background-color: #050101;
+    text-transform: uppercase;
 }
 
 .navInner {
@@ -34,12 +34,16 @@
 }
 
 .right :global(.active) {
-    color: var(--rouge); 
+    border: 1px solid var(--text);
+}
+
+.right a {
+    border: 1px solid transparent;
+    padding: 5px;
 }
 
 .right a:hover {
-    color: var(--rouge); 
-    opacity: 0.7;
+    border: 1px solid var(--text);
 }
 
 .hamburger {
@@ -89,17 +93,4 @@
     max-width: var(--canvas-max);
     margin: 0 auto; /*centrer le canva */
     padding: 32px var(--canvas-gutter) 0; /* haut identique pour toutes les pages */
-}
-
-
-.timer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: var(--rouge);
-    color: var(--text);
-    text-align: center;
-    margin: 0; /* Supprime les marges pour coller en bas */
-    z-index: 1000; /* Assure que la barre reste au-dessus des autres éléments */
 }
