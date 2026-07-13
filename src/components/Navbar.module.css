@@ -21,7 +21,7 @@
 .right {
     display: none; /* cachés par défaut sur mobile */
     flex-direction: column; /* quand ils s'affichent, empilés */
-    font-size: 1.3em;
+    font-size: var(--h3);
     align-items: center;
     gap: 20px;
     text-decoration: none;

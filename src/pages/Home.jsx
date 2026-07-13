@@ -61,7 +61,7 @@ function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, use
     return (
         <div className={styles.div_home}>
             {isSubmitting && <h3>Chargement...</h3>}
-            <div className={styles.titre}>{brouillon.text}</div> {/* On affiche le texte que l'user tappe*/}
+            <span className={styles.texteHome}>{brouillon.text}</span> {/* On affiche le texte que l'user tappe*/}
             {/* Pour chaque media, on appelle afficherBloc, avec son media et son index pour les afficher*/}
             <div className={styles.divBlocHome}>{brouillon.medias?.map((media, index) => afficherBloc(media, index))}</div>
             {/* Éditeur : visible seulement pour le leader, et seulement pendant son règne */}

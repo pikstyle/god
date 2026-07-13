@@ -23,21 +23,22 @@ function SignUp({ setUser }) {
     }
 
     return (
-        <>
-            {!emailSent ? <form className={styles.form_auth} onSubmit={handleSubmit}><h1>SIGN-UP</h1>
-            <button className={styles.button} type="button" onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Signup avec Google</button>
-            <div className={styles.separateur}>Ou</div>
-            <label>Email</label>
-            <input className={styles.inputs} required type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
-            <label>Mot de passe</label>
-            <input className={styles.inputs} required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
-            <button className={styles.button}>SignUp</button>
-            <div className={styles.auth_question}>
-                <h3>Déjà un compte ? </h3>
-                <Link className={styles.link} to="/login"> Login</Link>
-            </div>
-            </form> : <p>Vous devez verif votre mail</p>}
-        </>
+        <div className={styles.div}>
+            <h1>SIGN-UP</h1>
+            <form className={styles.form_auth} onSubmit={handleSubmit}>
+                <button className={styles.button} type="button" onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Signup avec Google</button>
+                <div className={styles.separateur}>Ou</div>
+                <label>Email</label>
+                <input className={styles.inputs} required type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
+                <label>Mot de passe</label>
+                <input className={styles.inputs} required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
+                <button className={styles.button}>SignUp</button>
+                <div className={styles.auth_question}>
+                    <h4>Déjà un compte ? </h4>
+                    <Link className={styles.link} to="/login"> Login</Link>
+                </div>
+            </form>
+        </div>
     )
 }
 

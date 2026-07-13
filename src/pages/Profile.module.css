@@ -5,37 +5,16 @@
     align-items: center;
     justify-content: center;  /* centre les inputs dans cet espace */
     gap: 1.5rem;
+    width: 100%;
+    max-width: 400px;
 }
 
-.button {
-    padding: 8px 16px;
-    cursor: pointer;
-    white-space: nowrap;
-    color: var(--text);
-    background-color: transparent;
-    border: 1px solid var(--text);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 1.5em;
-}
-
-.button:hover { 
-    background-color: var(--text);
-    color: var(--background);
-}
-
-.inputs {
-    background-color: transparent;
-    font-size: 15px;
-    color: var(--text);
-    border: 1px solid var(--border);
-    padding: 10px;
-}
 
 .avatar_image {
     height: 100px;
     width: 100px;
-    object-fit: contain /* pour avoir une image toujours bien*/
+    object-fit: cover; /* pour avoir une image toujours bien*/
+    border-radius: 50%;
 }
 
 .div {
@@ -44,3 +23,5 @@
     min-height: 70vh;
     align-items: center;
 }
+
+.div_princ button { width: 100%; }

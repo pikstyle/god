@@ -23,90 +23,38 @@
 
 .slogan {
     font-style: italic;
-    font-size: 1.5em;
+    font-weight: lighter;
     text-align: center;
-
 }
 
 .droite {
     display: flex;
     flex-direction: column;
-    padding: 16px;
-}
-
-.droite h4 {
-    color: var(--text-muted);
 }
 
 .reste {
-    gap: 16px;
+    gap: 24px;
     display: flex;
     text-align: left;
     flex-direction: column;
-
-}
-
-.reste h3 {
-    font-size: 2em;
-    padding-bottom: 24px;
-}
-
-.boutonVote {
-    padding: 8px 16px;
-    cursor: pointer;
-    white-space: nowrap;
-    color: var(--text);
-    background-color: transparent;
-    border: 1px solid var(--text);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 1.5em;
-}
-.boutonVote:hover:not(:disabled) { /*desactive l'effet du hover quand le bouto est desactive*/
-    background-color: var(--text);
-    color: var(--background);
-}
-.boutonVote:disabled {
-    cursor: not-allowed;
-    opacity: .3;
-}
-
-.stat1 {
-    display: flex;
-    flex-direction: column;
-}
-
-.stat1 h1 {
-    font-size: 2em;
-    color: var(--rouge);
-}
-
-.stat1 p {
-    color: var(--text-muted);
 }
 
 .stat { 
     display: flex; 
     flex-direction: column; 
 }
-.stat + .stat { 
-    padding-left: 24px; 
-}
-
-.stat h2 {
-    font-size: 2em;
-    color: var(--rouge);
-}
-
-.stat p {
-    color: var(--text-muted);
-}
 
 .statsPolitique { 
     display: flex; 
-    gap: 24px; 
+    gap: 100px; 
 }
 
-.programme {
-    font-size: 1.3em;
+.nombre {
+    font-size: var(--h2);
+    color: var(--rouge);
+    font-weight: bolder;
+}
+
+.boutonVote {
+    font-size: var(--moyen-bouton);
 }

@@ -10,7 +10,7 @@ function ListeParty({ partyList, vote, isVoting, gameState, timer }) {
         <div className={styles.div}>
             <h1>LISTE DES PARTIS</h1>
             <div className={styles.timer}>
-                <h3>{gameState?.regne ? "Fin du mandat dans : " : "Élection du nouveau parti dans : "}{timer}</h3>
+                <h2>{gameState?.regne ? "Fin du mandat dans : " : "Élection du nouveau parti dans : "}{timer}</h2>
             </div>
             <ol className={styles.liste}>
                 {partyList.map((party, index) => (
@@ -21,7 +21,6 @@ function ListeParty({ partyList, vote, isVoting, gameState, timer }) {
                         <div className={styles.identite}>
                             <h3 className={styles.titre}>
                                 {party.title}
-                                {index === 0 && <span className={styles.tag}>Au pouvoir</span>}
                             </h3>
                             <p className={styles.meta}>Dirigé par : {party.profiles?.username}</p>
                         </div>

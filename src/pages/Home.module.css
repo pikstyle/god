@@ -13,9 +13,8 @@
     /* permet d'espacer tout les children du form*/
 }
 
-.titre {
-    font-size: clamp(1rem, 4vh, 9rem);
-    /* vise 10% de l'ecran, jamais en dessous de 1rem ni au dessus de 9 rem*/
+.texteHome {
+    font-size: var(--text-home);
 }
 
 .inputPhoto {

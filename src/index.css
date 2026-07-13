@@ -6,15 +6,29 @@
     --text: #000000; 
     --border: #000000;
     --rouge: #ff2600;
-    --text-muted: #000000;
+    --text-home: 3.5rem;
     --canvas-max: 1300px; /* largeur max du contenu, partout */
     --canvas-gutter: 24px; /* marge latérale, partout */
+    --h1: 2.5rem;
+    --h2: 1.75rem;
+    --h3: 1.25rem;
+    --h4: 1rem;
+    --p: 1rem;
+    --petit-bouton: 1em;
+    --moyen-bouton: 1.25em;
+    --gros-bouton: 1.75em;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
 }
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.15rem; }
+h4 { font-size: 1rem; }
+p  { font-size: 1rem; }
 
 body {
     background-color: var(--background);
@@ -28,7 +42,36 @@ a {
     text-decoration: none;
 }
 
-button, input, textarea {
+input, textarea {
   font-family: inherit;
 }
 
+button {
+    font-family: inherit;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--text);
+    padding: 8px 16px;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+button:hover:not(:disabled) { background: var(--text); color: var(--background); }
+button:disabled { cursor: not-allowed; opacity: 0.4; }
+
+input, textarea {
+    font-family: inherit;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+label {
+    font-size: var(--h3);
+}
+
+html { font-size: 15px; }

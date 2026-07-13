@@ -23,12 +23,6 @@
     box-shadow: inset 0 0 0 1px var(--text);
 }
 
-/* Col 1 : rang */
-.rang {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-}
-
 /* Col 2 : logo */
 .logo {
     width: 48px;
@@ -43,24 +37,20 @@
 
 /* autorise l'ellipsis dans une colonne grid */
 .titre {
-    font-size: 1.1rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/*
-.leader .titre { font-size: 1.5rem; } */
+
 .meta {
-    color: var(--text-muted);
-    font-size: 0.85rem;
+    color: var(--text);
 }
 
 /* Le tampon du pouvoir : plein, pas de contour */
 .tag {
     background-color: var(--rouge);
     color: var(--text);
-    font-size: 0.6rem;
     text-transform: uppercase;
     letter-spacing: 2px;
     padding: 2px 8px;
@@ -72,7 +62,7 @@
 /* Col 4 slogan */
 .description {
     font-style: italic;
-    color: var(--text-muted);
+    color: var(--text);
     min-width: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -89,35 +79,16 @@
 }
 
 .voteNombre {
-    font-size: 1.5rem;
+    font-size: var(--h3);
 }
 
 .voteLabel {
-    color: var(--text-muted);
-    font-size: 0.75rem;
+    color: var(--text); 
     text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
-/* col 6 bouton */
 .btnVote {
-    padding: 8px 16px;
-    cursor: pointer;
-    white-space: nowrap;
-    border: 1px solid var(--text);
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    background-color: var(--background);
-}
-
-.btnVote:disabled {
-    cursor: not-allowed;
-    opacity: 0.4;
-}
-
-.btnVote:hover:not(:disabled) {
-    background-color: black;
-    color: white;
+    font-size: var(--moyen-bouton);
 }
 
 /* Mobile 5 colonne */
@@ -145,5 +116,8 @@
     text-align: center;
     padding: 8px;
     text-transform: uppercase;
-    font-size: 0.8em;
+}
+
+.rang {
+    font-size: 1.25rem;
 }

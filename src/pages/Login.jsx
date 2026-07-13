@@ -33,7 +33,7 @@ function Login({ setUser }) {
                 <input className={styles.inputs} required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
                 <button className={styles.button} type="submit">Login</button>
                 <div className={styles.auth_question}>
-                    <h3>Pas encore de compte ? </h3>
+                    <h4>Pas encore de compte ? </h4>
                     <Link className={styles.link} to="/signup"> Signup</Link>
                 </div>
                 {errorMsg && <p>{errorMsg}</p>}

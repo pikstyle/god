@@ -13,7 +13,7 @@ function NavBar({ user, logout, loading, username, avatar, gameState, partyList 
                 <div className={styles.navInner}>
                     <NavLink to="/" className={styles.logo}>
                         <img src={gameState?.regne ? partyList?.[0]?.logo_url : logo} alt="logo-party" />
-                        <h1>{gameState?.regne ? partyList?.[0]?.title : "GOD"}</h1>
+                        <h3>{gameState?.regne ? partyList?.[0]?.title : "GOD"}</h3>
                     </NavLink>
                     <button className={styles.hamburger} onClick={() => setMenuOpen(!menuOpen)}>☰</button>
                     {/* on colle la classe "open" seulement quand menuOpen est vrai */}
@@ -21,7 +21,7 @@ function NavBar({ user, logout, loading, username, avatar, gameState, partyList 
                         <NavLink to="/hiw" onClick={() => setMenuOpen(false)}>How it works ? </NavLink>
                         <NavLink to="/parties" onClick={() => setMenuOpen(false)}>Liste des partis </NavLink>
                         <NavLink to="/create" onClick={() => setMenuOpen(false)}>Creer un parti </NavLink>
-                        {user ? <NavLink to="/profile" onClick={() => setMenuOpen(false)}>{avatar && <img className={styles.avatar} src={avatar} alt="profil" />}</NavLink> : <NavLink to="/login" onClick={() => setMenuOpen(false)}>Login/Signup</NavLink>}
+                        {user ? <NavLink to="/profile" onClick={() => setMenuOpen(false)}>Profile</NavLink> : <NavLink to="/login" onClick={() => setMenuOpen(false)}>Login/Signup</NavLink>}
                         <p>{loading ? "Chargement..." : null}</p>
                     </div>
                 </div>
