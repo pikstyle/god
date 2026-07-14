@@ -1,13 +1,13 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from './Navbar.module.css'
 import { useState } from "react";
 import logo from "../assets/GOD.png"
 import logoBlanc from "../assets/GOD-blanc.png"
-import { useLocation } from "react-router-dom";
 
 function NavBar({ user, logout, loading, username, avatar, gameState, partyList, partiLeader, timer }) {
     const [menuOpen, setMenuOpen] = useState(false)
     const location = useLocation()
+    const navigate = useNavigate()
 
     return (
         <div className={styles.container}>
@@ -21,14 +21,33 @@ function NavBar({ user, logout, loading, username, avatar, gameState, partyList,
                     {/* on colle la classe "open" seulement quand menuOpen est vrai */}
                     <div className={`${styles.right} ${menuOpen ? styles.open : ''}`}>
                         <NavLink to="/hiw" onClick={() => setMenuOpen(false)}>How it works ? </NavLink>
-                        <NavLink to="/parties" onClick={() => setMenuOpen(false)}>Liste des partis </NavLink>
-                        <NavLink to="/create" onClick={() => setMenuOpen(false)}>Creer un parti </NavLink>
+                        <NavLink to="/parties" onClick={() => setMenuOpen(false)}>Parties </NavLink>
+                        <NavLink to="/create" onClick={() => setMenuOpen(false)}>Create your party </NavLink>
                         {user ? <NavLink to="/profile" onClick={() => setMenuOpen(false)}>Profile</NavLink> : <NavLink to="/login" onClick={() => setMenuOpen(false)}>Login/Signup</NavLink>}
                         <p>{loading ? "Chargement..." : null}</p>
                     </div>
                 </div>
             </nav>
-            {location.pathname == "/" && <div className={styles.info}><h3>Cette page appartient au parti <span>{partiLeader?.title}</span> élu avec <span>{partiLeader?.votes}</span> votes et dirigé par <span>{partiLeader?.profiles?.username}</span>. Remise en jeu dans : <span>{timer}</span></h3></div>}
+            {location.pathname == "/" && 
+            <div className={styles.info}>
+                {gameState?.regne ?
+                <h3>
+                    This page belongs to the party
+                    <span>{" "+ partiLeader?.title + " "}</span>
+                    elected with
+                    <span>{" "+partiLeader?.votes+ " "}</span>
+                    votes and led by
+                    <span>{" "+partiLeader?.profiles?.username}</span>.
+                    Voting reopens in
+                    <span>{" "+ timer }. </span>
+                    <NavLink className={styles.cta} to="/create">Take its place here</NavLink>
+                </h3> :
+                <h3>
+                    <span>Election in progress. </span>
+                    The winner will govern this page for 12 hours. {" "}
+                    <NavLink className={styles.cta} to="/parties">Vote here</NavLink>
+                </h3>}
+            </div>}
         </div>
     )
 }

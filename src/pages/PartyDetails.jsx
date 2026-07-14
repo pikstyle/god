@@ -29,13 +29,13 @@ function PartyDetails({ partyList, vote, isVoting, gameState }) {
                 <div className={styles.identite}>
                     <div className={styles.droite}>
                         <h2>{party?.title}</h2>
-                        <h4>Leader : {party?.profiles?.username}</h4>
+                        <h4>Led by {party?.profiles?.username}</h4>
                     </div>
                 </div>
                 <div className={styles.statsPolitique}>
                     <div className={styles.stat}>
                         <span className={styles.nombre}>#{partyIndex + 1}</span>
-                        <h4>sur {nombreDePartis}</h4>
+                        <h4>out of {nombreDePartis}</h4>
                     </div>
                     <div className={styles.stat}>
                         <span className={styles.nombre}>{party?.votes}</span>
@@ -43,21 +43,21 @@ function PartyDetails({ partyList, vote, isVoting, gameState }) {
                     </div>
                     <div className={styles.stat}>
                         <span className={styles.nombre}>{pourcentageDesVoix}%</span>
-                        <h4>des voix</h4>
+                        <h4>of the vote</h4>
                     </div>
                     {partyIndex !== 0 && (
                         <div className={styles.stat}>
                             <span className={styles.nombre}>{voteEcartTrone + 1}</span>
-                            <h4>votes du #1</h4>
+                            <h4>votes from #1</h4>
                         </div>
                     )}
                 </div>
-                <button className={styles.boutonVote} onClick={ () => vote(party.id)} disabled={isVoting || gameState?.regne}>Voter</button>
+                <button className={styles.boutonVote} onClick={ () => vote(party.id)} disabled={isVoting || gameState?.regne}>Vote</button>
             </div>
             <h2 className={styles.slogan} >"{party?.description}"
             </h2>
             <div className={styles.reste}>
-                <h3>Programme : </h3>
+                {party?.description_longue === null ? null : <h3>Platform : </h3>}
                 <p className={styles.programme}>{party?.description_longue}</p>
             </div>
         </div>

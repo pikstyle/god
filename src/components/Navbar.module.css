@@ -96,10 +96,15 @@
 .info {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--text);
 }
 
 .info span {
     color: red;
+}
+
+.cta {
+    text-decoration: underline;
 }

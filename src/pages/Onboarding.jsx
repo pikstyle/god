@@ -40,9 +40,9 @@ function Onboarding( {user, profile, updateProfile} ) {
     return (
         
     <form className={styles.form_auth} onSubmit={handleSubmit}>
-        <label>Votre pseudo </label>
+        <label>Enter your name </label>
         <input className={styles.inputs} required type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
-        <label>Votre photo de profil </label>
+        <label>Choose your profile picture </label>
         <input className={styles.inputs} required type="file" onChange={(e) => setAvatarFile(e.target.files[0])}/> {/* Récupère le fichier choisi. e.target.files[0] = le premier fichier sélectionné */}
         <button className={styles.button} disabled={isSubmitting} type="submit">{isSubmitting ? "Création..." : "Save"}</button>
     </form>

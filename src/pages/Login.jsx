@@ -25,15 +25,15 @@ function Login({ setUser }) {
         <div className={styles.div}>
             <h1>LOGIN</h1>
             <form className={styles.form_auth} onSubmit={handleSubmit}>
-                <button className={styles.button} type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login avec Google</button>
-                <div className={styles.separateur}>Ou</div>
+                <button className={styles.button} type='button' onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>Login with Google</button>
+                <div className={styles.separateur}>Or</div>
                 <label>Email</label>
                 <input className={styles.inputs} required type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
-                <label>Mot de passe</label>
+                <label>Password</label>
                 <input className={styles.inputs} required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
                 <button className={styles.button} type="submit">Login</button>
                 <div className={styles.auth_question}>
-                    <h4>Pas encore de compte ? </h4>
+                    <h4>Don't have an account yet? </h4>
                     <Link className={styles.link} to="/signup"> Signup</Link>
                 </div>
                 {errorMsg && <p>{errorMsg}</p>}

@@ -60,7 +60,7 @@ function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, use
 
     return (
         <div className={styles.div_home}>
-            {isSubmitting && <h3>Chargement...</h3>}
+            {isSubmitting && <h3>Loading...</h3>}
             <span className={styles.texteHome}>{brouillon.text}</span> {/* On affiche le texte que l'user tappe*/}
             {/* Pour chaque media, on appelle afficherBloc, avec son media et son index pour les afficher*/}
             <div className={styles.divBlocHome}>{brouillon.medias?.map((media, index) => afficherBloc(media, index))}</div>

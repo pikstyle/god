@@ -10,7 +10,7 @@ function Profile( {user, updateProfile, profile, logout} ) {
             <div className={styles.div_princ}>
                 <h2>{profile?.username}</h2>
                 {profile?.avatar_url && <img className={styles.avatar_image} src={profile.avatar_url} alt="avatar"/>}
-                <label>Changer de pseudo : </label>
+                <label>Change your name: </label>
                 <input  type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
                 <button onClick={() => updateProfile({ username, avatar_url: profile?.avatar_url })}>Save</button>
                 <button onClick={() => logout()}>Logout</button>
