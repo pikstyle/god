@@ -92,3 +92,14 @@
     margin: 0 auto; /*centrer le canva */
     padding: 32px var(--canvas-gutter) 0; /* haut identique pour toutes les pages */
 }
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid var(--text);
+}
+
+.info span {
+    color: red;
+}

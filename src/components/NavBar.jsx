@@ -3,10 +3,12 @@ import styles from './Navbar.module.css'
 import { useState } from "react";
 import logo from "../assets/GOD.png"
 import logoBlanc from "../assets/GOD-blanc.png"
+import { useLocation } from "react-router-dom";
 
-
-function NavBar({ user, logout, loading, username, avatar, gameState, partyList }) {
+function NavBar({ user, logout, loading, username, avatar, gameState, partyList, partiLeader, timer }) {
     const [menuOpen, setMenuOpen] = useState(false)
+    const location = useLocation()
+
     return (
         <div className={styles.container}>
             <nav className={styles.navbar}>
@@ -26,6 +28,7 @@ function NavBar({ user, logout, loading, username, avatar, gameState, partyList 
                     </div>
                 </div>
             </nav>
+            {location.pathname == "/" && <div className={styles.info}><h3>Cette page appartient au parti <span>{partiLeader?.title}</span> élu avec <span>{partiLeader?.votes}</span> votes et dirigé par <span>{partiLeader?.profiles?.username}</span>. Remise en jeu dans : <span>{timer}</span></h3></div>}
         </div>
     )
 }
