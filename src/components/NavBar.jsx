@@ -2,7 +2,6 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import styles from './Navbar.module.css'
 import { useState } from "react";
 import logo from "../assets/GOD.png"
-import logoBlanc from "../assets/GOD-blanc.png"
 
 function NavBar({ user, logout, loading, username, avatar, gameState, partyList, partiLeader, timer }) {
     const [menuOpen, setMenuOpen] = useState(false)
