@@ -22,6 +22,21 @@ function PartyDetails({ partyList, vote, isVoting, gameState }) {
     const voteEcartTrone = parseInt(partyList[0]?.votes - party?.votes)
     const nombreDePartis = partyList?.length
 
+    const partager = async (party) => {
+        const url = "https://gameofdemocracy.org/party/" + party.id // Genere l'url par rapport a l'id du party
+        try {
+            if (navigator.share) { // Check si le navigateur supporte navigator.check
+                await navigator.share({ title: party.title, text: "Vote for my party!", url })
+            } else {
+                navigator.clipboard.writeText(url) // Sinon on copie juste l'url
+                alert("Link copied!")
+            }
+
+            } catch (error) {
+                    console.log(error)
+                }
+        }
+
     return (
         <div className={styles.parent}>
             <div className={styles.head}>
@@ -52,6 +67,7 @@ function PartyDetails({ partyList, vote, isVoting, gameState }) {
                         </div>
                     )}
                 </div>
+                <button className={styles.boutonVote} onClick={ () => partager(party)}>Share</button>
                 <button className={styles.boutonVote} onClick={ () => vote(party.id)} disabled={isVoting || gameState?.regne}>Vote</button>
             </div>
             <h2 className={styles.slogan} >"{party?.description}"
