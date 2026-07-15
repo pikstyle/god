@@ -4,10 +4,11 @@ import { supabase } from "../supabaseClients"
 import imageCompression from 'browser-image-compression'
 
 
-function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, user }) {
+function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, user, sendAnnonce }) {
 
     const [brouillon, setBrouillon] = useState({})
     const [lienUrl, setLienUrl] = useState("")
+    const [messageDiscord, setMessageDiscord] = useState("")
     const [isSubmitting, setIsSubmitting] = useState(false) // State pour savoir si on submit une image
     const isSubmittingRef = useRef(false) // bloque un double-upload instantanément, avant même que le state ne se mette à jour
     const options = {
@@ -71,6 +72,15 @@ function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, use
                 <input value={brouillon.text ?? ""} onChange={(e) => setBrouillon({ ...brouillon, text: e.target.value })}/>
                 {/* Post-it : retient l'URL tapée, avant de la "poser" sur la page */}
                 <input value={lienUrl} onChange={(e) => setLienUrl(e.target.value)}/>
+                {/* Input envoyer discord annonces */}
+                <input type="text" value={messageDiscord} onChange={(e) => setMessageDiscord(e.target.value)} placeholder='Faire une annonce discord'/>
+                {/* Bouton envoyer discord annonces */}
+                <button onClick={() => {
+                    if (messageDiscord === '') {
+                        alert("Veuillez inclure un message")
+                        return 
+                    }
+                    sendAnnonce(messageDiscord), setMessageDiscord("")}}>Envoyer sur discord</button>
                 {/* Pose le lien : ajoute un média au brouillon, puis vide le post-it */}
                 <button onClick={() => { 
                     // Verifie d'abord que cest un lien valide

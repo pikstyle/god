@@ -240,6 +240,12 @@ function App() {
     const secondes = secondesTotales % 60
     return `${heures}h ${minutes}m ${secondes}s`
   }
+
+  //  insère une ligne dans announcements, et cet insert déclenche toute la chaîne (annonce_discord => post_to_discord => Discord)
+  const sendAnnonce = async (message) => {
+    const { error } = await supabase.from('announcements').insert({ message: message, user_id: user.id }) // Insere le message, et l'id de l'user qui a ecrit le message
+    console.log(error)
+  }
     // Si on est en loading, ou que on a un user mais pas son profile et que on est pas dans onboarding, on ecrit chargement
     if (loading || (user && !profile && location.pathname !== '/onboarding')) {
     return <p>Chargement...</p>
@@ -251,10 +257,10 @@ function App() {
     {location.pathname !== "/onboarding" && <NavBar timer={formatTimer()} partiLeader={sortedParties[0]} partyList={sortedParties} gameState={gameState} avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
       <div className={styles.page} >
           <Routes>
-            <Route path="/" element={<Home gameState={gameState} user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
+            <Route path="/" element={<Home sendAnnonce={sendAnnonce} gameState={gameState} user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
             <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
             <Route path="/parties" element={<PartyList userVoteRev={userVoteRev} voteRevolution={voteRevolution} partiLeader={sortedParties[0]} timer={formatTimer()} gameState={gameState} partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/>}/>
-            <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile  logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
+            <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
             <Route path="/login" element={<Login setUser={setUser}/>}/>
             <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
             <Route path="/onboarding" element={<ProtectedRoute loading={loading} user={user}><Onboarding user={user} profile={profile} updateProfile={updateProfile}/></ProtectedRoute>}/>

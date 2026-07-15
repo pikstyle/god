@@ -2,7 +2,7 @@ import { useState } from "react"
 import styles from './Profile.module.css'
 import imageCompression from 'browser-image-compression'
 
-function Profile( {user, updateProfile, profile, logout} ) {
+function Profile( {user, updateProfile, profile, logout } ) {
     const [username, setUsername] = useState("")
     return (
         <div className={styles.div}>
