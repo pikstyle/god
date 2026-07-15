@@ -1,19 +1,29 @@
 import styles from './PartyList.module.css'
 import { useNavigate } from 'react-router-dom'
 
-function ListeParty({ partyList, vote, isVoting, gameState, timer, partiLeader }) {
+function ListeParty({ partyList, vote, isVoting, gameState, timer, partiLeader, voteRevolution, userVoteRev }) {
 
     const navigate = useNavigate()
+
+    const nombreVoteRevolution = gameState?.nombre_votes_revolution
+    const totalVote = partyList.reduce((total, party) => total + party.votes, 0)
+    const seuil = Math.ceil(0.13 * totalVote)
     
     return (
-        // liste ordonmée
+        // liste ordonmée   
         <div className={styles.div}>
             <h1>LIST OF PARTIES</h1>
             <div className={styles.timer}>
-                {gameState?.regne ? (
+                {gameState?.revolution ? (
+                    <h2>Revolution in Progress. Take power in{" "}
+                        <span className={styles.rouge}>{timer}</span>
+                    </h2>
+                ) : gameState?.regne ? (
                     <h2>
                         <span className={styles.rouge}> {partiLeader?.title}</span> won the elections, voting will reopen in:{" "}
                         <span className={styles.rouge}>{timer}</span>
+                        <br />
+                        <span>{nombreVoteRevolution}/{seuil}{" "}votes restant pour lancer une révolution</span>
                     </h2>
                 ) : (
                     <h2>
@@ -41,9 +51,13 @@ function ListeParty({ partyList, vote, isVoting, gameState, timer, partiLeader }
                             <span className={styles.voteLabel}>votes</span>
                         </div>
                         {/* e.stopPropagation() perment de cliquer sur voter dans que usenavigate s'active */}
+                        {index === 0 && gameState?.regne ?
+                        <button className={styles.btnVote} onClick={(e) => { e.stopPropagation(); voteRevolution() }} disabled={userVoteRev}>
+                            {userVoteRev ? "Signé" : "Revolution"}
+                        </button> : 
                         <button className={styles.btnVote} onClick={(e) => { e.stopPropagation(); vote(party.id) }} disabled={isVoting || gameState?.regne}>
                             Vote
-                        </button>
+                        </button> }
                     </li>
                 ))}
             </ol>

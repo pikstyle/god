@@ -29,23 +29,29 @@ function NavBar({ user, logout, loading, username, avatar, gameState, partyList,
             </nav>
             {location.pathname == "/" && 
             <div className={styles.info}>
-                {gameState?.regne ?
-                <h3>
-                    This page belongs to the party
-                    <span>{" "+ partiLeader?.title + " "}</span>
-                    elected with
-                    <span>{" "+partiLeader?.votes+ " "}</span>
-                    votes and led by
-                    <span>{" "+partiLeader?.profiles?.username}</span>.
-                    Voting reopens in
-                    <span>{" "+ timer }. </span>
-                    <NavLink className={styles.cta} to="/create">Take its place here</NavLink>
-                </h3> :
-                <h3>
-                    <span>Election in progress. </span>
-                    The winner will govern this page for 12 hours. {" "}
-                    <NavLink className={styles.cta} to="/parties">Vote here</NavLink>
-                </h3>}
+                {gameState?.revolution ? (
+                    <h3>The tyrant has been overthrown! Emergency vote ends in{" "}
+                        <span className={styles.rouge}>{timer}</span>
+                    </h3>
+                ) : gameState?.regne ? (
+                    <h3>
+                        This page belongs to the party
+                        <span>{" "+ partiLeader?.title + " "}</span>
+                        elected with
+                        <span>{" "+partiLeader?.votes+ " "}</span>
+                        votes and led by
+                        <span>{" "+partiLeader?.profiles?.username}</span>.
+                        Voting reopens in
+                        <span>{" "+ timer }. </span>
+                        <NavLink className={styles.cta} to="/create">Take its place here</NavLink>
+                    </h3>
+                ) : (
+                    <h3>
+                        <span>Election in progress. </span>
+                        The winner will govern this page for 12 hours. {" "}
+                        <NavLink className={styles.cta} to="/parties">Vote here</NavLink>
+                    </h3>
+                )}
             </div>}
         </div>
     )

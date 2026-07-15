@@ -24,7 +24,9 @@ function App() {
   const [profile, setProfile] = useState(null)
   const [gameState, setGameState] = useState(null)
   const [now, setNow] = useState(new Date())
+  const [userVoteRev, setUserVoteRev] = useState(false)
   const isVotingRef = useRef(false) // isVotingRef = { current: false }
+  const isVotingRevRef = useRef(false) // isVotingRef = { current: false }
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -71,13 +73,15 @@ function App() {
 
   // Charge le vote de l'utilisateur
   useEffect(()  => {
-    const fetchUserVote = async () => {
+    const fetchUserVotes = async () => {
       if (user) { // Verifie si l'user est connecté
-        const { data } = await supabase.from('votes').select('*').eq('user_id', user.id) 
+        const { data } = await supabase.from('votes').select('*').eq('user_id', user.id)
+        const { data: dataRev  } = await supabase.from('votes_revolution').select('id').eq('user_id', user.id)
         setUserVote(data[0]?.party_id) // si data[0] est undefined alors return juste undefined grace au ? optional chaining
+        setUserVoteRev(dataRev.length > 0)
       }
     }
-    fetchUserVote()
+    fetchUserVotes()
   }, [user])
 
     // Recuperer le profile de l'user depuis supabase
@@ -210,9 +214,26 @@ function App() {
     }
   }
 
+  const voteRevolution = async () => {
+    if (!user) { 
+      navigate('/login') // Si on est pas connecte on va vers login
+      return // On sort de la fonction
+    }
+    if (!gameState?.regne) return // Si on est en pas en regne, on ne peut pas voter
+    if (isVotingRevRef.current) return // on est entrain de voter donc on sort direct
+    isVotingRevRef.current = true // sinon, on met à true le fait qu'on est entrainde voter
+    try {
+      if (userVoteRev) return // Si on a deja vote pour la revolution alors on sort
+      await supabase.from('votes_revolution').insert({ user_id: user.id })
+      setUserVoteRev(true)
+    } finally {
+      isVotingRevRef.current = false
+    }
+  }
+
   // Calculer et formatter le timer
   const formatTimer = () => {
-    const restant = (gameState && new Date(gameState.fin_phase) - now) // temps restant
+    const restant = Math.max(0, (gameState ? new Date(gameState.fin_phase) - now : 0)) // temps restant et Math.max pour eviter d'avoir des negatifs
     const secondesTotales = Math.floor(restant / 1000) // ms en secondes
     const heures = Math.floor(secondesTotales / 3600) // secondes en heures
     const minutes = Math.floor((secondesTotales % 3600) / 60) 
@@ -232,7 +253,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home gameState={gameState} user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
             <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
-            <Route path="/parties" element={<PartyList partiLeader={sortedParties[0]} timer={formatTimer()} gameState={gameState} partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/>}/>
+            <Route path="/parties" element={<PartyList userVoteRev={userVoteRev} voteRevolution={voteRevolution} partiLeader={sortedParties[0]} timer={formatTimer()} gameState={gameState} partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/>}/>
             <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile  logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
             <Route path="/login" element={<Login setUser={setUser}/>}/>
             <Route path="/signup" element={<SignUp setUser={setUser}/>}/>

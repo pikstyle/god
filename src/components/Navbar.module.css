@@ -79,14 +79,6 @@
     }
 }
 
-.avatar {
-    height: 40px;
-    width: 40px; 
-    border-radius: 50%; /* le rend circulaire */
-    object-fit: cover; /* l'image remplit le cercle sans se déformer */
-    border: 1px solid var(--border);
-}
-
 .page { 
     max-width: var(--canvas-max);
     margin: 0 auto; /*centrer le canva */
