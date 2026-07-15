@@ -31,7 +31,6 @@ function PartyDetails({ partyList, vote, isVoting, gameState }) {
                 navigator.clipboard.writeText(url) // Sinon on copie juste l'url
                 alert("Link copied!")
             }
-
             } catch (error) {
                     console.log(error)
                 }

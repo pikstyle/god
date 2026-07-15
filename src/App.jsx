@@ -82,7 +82,7 @@ function App() {
       }
     }
     fetchUserVotes()
-  }, [user])
+  }, [user, gameState?.regne]) // Lance le fetch quand on change d'user, et quand on change de regne
 
     // Recuperer le profile de l'user depuis supabase
     useEffect(() => {

@@ -7,7 +7,7 @@ function ListeParty({ partyList, vote, isVoting, gameState, timer, partiLeader, 
 
     const nombreVoteRevolution = gameState?.nombre_votes_revolution
     const totalVote = partyList.reduce((total, party) => total + party.votes, 0) // On fait la somme de chaque vote de chaque party
-    const seuil = Math.ceil(0.13 * totalVote) // Le seuil = 13% des votes totaux
+    const seuil = Math.max(5, Math.ceil(0.13 * totalVote)) // 5 au debut (tient environ pour 38 votes) et sinon 13% des votes totaux
     
     return (
         // liste ordonmée   
