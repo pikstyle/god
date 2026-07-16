@@ -22,6 +22,7 @@ function NavBar({ user, logout, loading, username, avatar, gameState, partyList,
                         <NavLink to="/hiw" onClick={() => setMenuOpen(false)}>How it works ? </NavLink>
                         <NavLink to="/parties" onClick={() => setMenuOpen(false)}>Parties </NavLink>
                         <NavLink to="/create" onClick={() => setMenuOpen(false)}>Create your party </NavLink>
+                        <NavLink to="/museum" onClick={() => setMenuOpen(false)}>Museum </NavLink>
                         {user ? <NavLink to="/profile" onClick={() => setMenuOpen(false)}>Profile</NavLink> : <NavLink to="/login" onClick={() => setMenuOpen(false)}>Login/Signup</NavLink>}
                         <p>{loading ? "Chargement..." : null}</p>
                     </div>

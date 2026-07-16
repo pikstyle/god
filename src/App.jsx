@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import HowItWorks from './pages/HowItWorks'
 import PartyDetails from './pages/PartyDetails'
 import Footer from './components/Footer'
+import Musee from './pages/Musee'
 import Cgu from './pages/Cgu'
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from './supabaseClients'
@@ -269,6 +270,7 @@ function App() {
               <Route path="/hiw" element={<HowItWorks/>}/>
               <Route path="/party/:id" element={<PartyDetails partyList={sortedParties} isVoting={isVoting} vote={vote} gameState={gameState}/>}/>
               <Route path="/cgu" element={<Cgu></Cgu>}/>
+              <Route path="/museum" element={<Musee></Musee>}/>
             </Routes>
           </div>
           {location.pathname !== "/" && <Footer />} {/*Pour pas afficher dans home*/}
