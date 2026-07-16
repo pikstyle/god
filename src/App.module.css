@@ -1,0 +1,15 @@
+/* bien cadrer toutes les pages avec un canva avec la meme taille */
+
+.page { 
+    max-width: var(--canvas-max);
+    margin: 0 auto; /*centrer le canva */
+    padding: 32px var(--canvas-gutter) 0; /* haut identique pour toutes les pages */
+    flex: 1; /* prend tout l'espace restant*/
+}
+
+/* pour pousser le footer tjr en bas*/
+.wrapper {
+    min-height: 100vh; /* fais au moins la hauteur de l'écran et grandit si le contenu debordre*/
+    display: flex; 
+    flex-direction: column;
+}

@@ -1,0 +1,18 @@
+.footer {
+    align-items: center;
+    padding-block: 5px;
+    border: 1px solid var(--border);
+    background-color: var(--background);
+    z-index: 1000;
+    text-transform: uppercase;
+}
+
+.inner {
+    display: flex;
+    justify-content: space-between; /* colle le premier groupe à gauche, le dernier à droite, avec le max d'espace entre les deux.*/
+    max-width: var(--canvas-max);
+    margin: 0 auto;
+    padding-inline: var(--canvas-gutter);
+    align-items: center;
+}
+

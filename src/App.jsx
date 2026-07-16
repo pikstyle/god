@@ -10,9 +10,10 @@ import Onboarding from './pages/Onboarding'
 import ProtectedRoute from './components/ProtectedRoute'
 import HowItWorks from './pages/HowItWorks'
 import PartyDetails from './pages/PartyDetails'
+import Footer from './components/Footer'
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from './supabaseClients'
-import styles from "./components/Navbar.module.css"
+import styles from './App.module.css'
 
 function App() {
   const [parties, setParties] = useState([]) // Liste des partis
@@ -253,22 +254,23 @@ function App() {
 
   // Les éléments dans ProtectedRoute sont ses children et s'affichent seulement si l'user est connecté
   return (
-    <>
-    {location.pathname !== "/onboarding" && <NavBar timer={formatTimer()} partiLeader={sortedParties[0]} partyList={sortedParties} gameState={gameState} avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
-      <div className={styles.page} >
-          <Routes>
-            <Route path="/" element={<Home sendAnnonce={sendAnnonce} gameState={gameState} user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
-            <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
-            <Route path="/parties" element={<PartyList userVoteRev={userVoteRev} voteRevolution={voteRevolution} partiLeader={sortedParties[0]} timer={formatTimer()} gameState={gameState} partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/>}/>
-            <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
-            <Route path="/login" element={<Login setUser={setUser}/>}/>
-            <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
-            <Route path="/onboarding" element={<ProtectedRoute loading={loading} user={user}><Onboarding user={user} profile={profile} updateProfile={updateProfile}/></ProtectedRoute>}/>
-            <Route path="/hiw" element={<HowItWorks/>}/>
-            <Route path="/party/:id" element={<PartyDetails partyList={sortedParties} isVoting={isVoting} vote={vote} gameState={gameState}/>}/>
-          </Routes>
-        </div>
-      </>
+    <div className={styles.wrapper} >
+      {location.pathname !== "/onboarding" && <NavBar timer={formatTimer()} partiLeader={sortedParties[0]} partyList={sortedParties} gameState={gameState} avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
+        <div className={styles.page} >
+            <Routes>
+              <Route path="/" element={<Home sendAnnonce={sendAnnonce} gameState={gameState} user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
+              <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
+              <Route path="/parties" element={<PartyList userVoteRev={userVoteRev} voteRevolution={voteRevolution} partiLeader={sortedParties[0]} timer={formatTimer()} gameState={gameState} partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/>}/>
+              <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
+              <Route path="/login" element={<Login setUser={setUser}/>}/>
+              <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
+              <Route path="/onboarding" element={<ProtectedRoute loading={loading} user={user}><Onboarding user={user} profile={profile} updateProfile={updateProfile}/></ProtectedRoute>}/>
+              <Route path="/hiw" element={<HowItWorks/>}/>
+              <Route path="/party/:id" element={<PartyDetails partyList={sortedParties} isVoting={isVoting} vote={vote} gameState={gameState}/>}/>
+            </Routes>
+          </div>
+          {location.pathname !== "/" && <Footer />} {/*Pour pas afficher dans home*/}
+      </div>
   )
 }
 

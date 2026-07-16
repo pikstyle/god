@@ -3,8 +3,6 @@
     padding-block: 5px;
     border-bottom: 1px solid var(--border);
     background-color: var(--background);
-    position: sticky;
-    top: 0; 
     z-index: 1000;
     text-transform: uppercase;
 }
@@ -77,12 +75,6 @@
         width: auto;
         padding: 10px;
     }
-}
-
-.page { 
-    max-width: var(--canvas-max);
-    margin: 0 auto; /*centrer le canva */
-    padding: 32px var(--canvas-gutter) 0; /* haut identique pour toutes les pages */
 }
 
 .info {
