@@ -32,12 +32,13 @@
     border-bottom: 1px solid var(--text);
     border-right: 1px solid var(--text);
     border-left: 1px solid var(--text);
+    text-transform: uppercase;
+    padding: 8px;
 }
 
 .contenu {
     display: flex;
     flex-direction: column;
-    gap: 16px;
     border: 1px solid var(--text);
-
+    padding: 16px;
 }
