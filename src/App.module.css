@@ -5,6 +5,7 @@
     margin: 0 auto; /*centrer le canva */
     padding: 32px var(--canvas-gutter) 0; /* haut identique pour toutes les pages */
     flex: 1; /* prend tout l'espace restant*/
+    width: 100% /* prend toute la largeur du canva*/
 }
 
 /* pour pousser le footer tjr en bas*/

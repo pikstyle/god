@@ -1,4 +1,5 @@
 import styles from './Footer.module.css'
+import { NavLink } from 'react-router-dom'
 
 function Footer() {
     return (
@@ -6,8 +7,9 @@ function Footer() {
             <footer className={styles.footer}>
                 <div className={styles.inner}>
                     <a target="_blank" href="https://discord.gg/AMNYvNxfEs">Discord</a>
-                    <p>Create by jeune sim</p>
-                    <p>Contact</p>
+                    <a href="mailto:pro.pikstyle@gmail.com">Contact</a>
+                    <NavLink to="/cgu">CGU</NavLink>
+
                 </div>
             </footer>
         </div>
