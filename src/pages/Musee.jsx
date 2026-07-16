@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react"
 import { supabase } from '../supabaseClients'
+import styles from './Musee.module.css'
 
 function Musee() {
 
     const [dataMusee, setDataMusee] = useState([])
+    const options = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    }
 
     useEffect(() => {
       const fetchMusee = async () => {
@@ -16,7 +22,7 @@ function Musee() {
     function afficherBloc(bloc, index) {
         if (bloc.type === 'image') { // check si cest une image
             return <div key={index}>
-                    <img src={bloc.url} alt="home-image"/> 
+                    <img className={styles.image} src={bloc.url} alt="home-image"/> 
                 </div> // on retourne une img avec les bonnes infos
         } else if (bloc.type === 'lien') { // check si cest un lien
             if (!bloc.url.startsWith('http')) { // check si le lien commence par http, sinon on return
@@ -27,13 +33,20 @@ function Musee() {
     }
 
     return (
-        <div>
-            <ul>
+        <div className={styles.div}>
+            <h1>MUSEUM</h1>
+            <ul className={styles.ul}>
             {dataMusee.map((ligne) => 
-            <li key={ligne.id}>
-                {ligne.party_name + ", "}
-                {"elected with: " + ligne.nombre_votes + " votes the " + ligne.date_modification}
-                {ligne?.contenu?.medias?.map((media, index) => afficherBloc(media, index))}
+            <li className={styles.li} key={ligne.id}>
+                    <div className={styles.contenu}>
+                        <span className={styles.textHome}>{ligne.contenu.text}</span>
+                        {ligne?.contenu?.medias?.map((media, index) => afficherBloc(media, index))}
+                    </div>
+                    <div className={styles.infos}>
+                        <p>{ligne.party_name}</p>
+                        <p>{"Elected with " + ligne.nombre_votes + " votes"}</p>
+                        <p>{new Date(ligne.date_modification).toLocaleDateString(undefined, options)}</p>
+                    </div>
             </li>)}
             </ul>
         </div>
