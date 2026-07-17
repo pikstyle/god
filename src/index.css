@@ -6,7 +6,7 @@
     --text: #000000; 
     --border: #000000;
     --rouge: #ff2600;
-    --text-home: 3.5rem;
+    --text-home: clamp(2rem, 9vw, 3.5rem);
     --canvas-max: 1300px; /* largeur max du contenu, partout */
     --canvas-gutter: 24px; /* marge latérale, partout */
     --h1: 2.5rem;

@@ -43,8 +43,13 @@
 }
 
 
+/* Le créateur ne doit jamais voler la place du titre :
+   même discipline que .titre. Un pseudo long déborde aussi sur desktop. */
 .meta {
     color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Le tampon du pouvoir : plein, pas de contour */
@@ -91,12 +96,21 @@
     font-size: var(--moyen-bouton);
 }
 
-/* Mobile 5 colonne */
+/* On passe la ligne sur 2 rangées : le titre récupère toute la largeur. */
 @media (max-width: 900px) {
     .ligne {
-        grid-template-columns: 32px 48px 1fr 80px auto;
-        gap: 8px;
+        grid-template-columns: 32px 48px 1fr auto;
+        grid-template-areas:
+            "rang logo identite identite"
+            "rang logo votes    bouton";
+        gap: 8px 12px;
     }
+
+    .rang     { grid-area: rang; }
+    .logo     { grid-area: logo; }
+    .identite { grid-area: identite; }
+    .votes    { grid-area: votes; justify-content: flex-start; }
+    .btnVote  { grid-area: bouton; }
 
     .description {
         display: none;

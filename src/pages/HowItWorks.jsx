@@ -1,5 +1,6 @@
 import styles from './HowItWorks.module.css'
 import logo from "../assets/GOD.png"
+import back from "../assets/Back.png"
 
 
 function HowItWorks() {
@@ -17,10 +18,10 @@ function HowItWorks() {
                         <p>Do you have a message to share? Are you part of a community, or perhaps looking to provoke?</p>
                     </div>
                     <div className={styles.important}>
-                        <h2>Alors créez un parti, et commencez à convaincre le monde de voter pour vous. </h2>
+                        <h2>So create a party, and start convincing everyone to vote for you</h2>
                     </div>
                 </div>
-                <img className={styles.imageFond} src={logo} alt="logo" />
+                <img className={styles.imageFond} src={back} alt="logo" />
             </div>
         </div>
     )

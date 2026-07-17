@@ -3,42 +3,58 @@ import styles from './Cgu.module.css'
 function Cgu() {
     return (
         <div className={styles.div}>
-            <h1>CGU</h1>
+            <h1>Terms of Use</h1>
             <div className={styles.content}>
-                <h3>1. Objet</h3>
-                <p>Les présentes conditions régissent l'utilisation du site gameofdemocracy.org (« le Site »), un jeu en ligne gratuit édité par Mounier Simon (« l'Éditeur »). L'utilisation du Site implique l'acceptation pleine et entière des présentes conditions.</p>
-                <h3>2. Description du service</h3>
-                <p>GOD est un jeu de vote. Les utilisateurs inscrits peuvent créer un « parti » (nom, description, logo), voter pour un parti à raison d'un seul vote par compte, et participer à des cycles alternant une phase d'élection et une phase de règne.
-                Pendant la phase de règne, le créateur du parti arrivé en tête (« le Leader ») peut modifier librement le contenu de la page d'accueil publique du Site (texte, images, liens) pour la durée de son règne. Les utilisateurs peuvent mettre fin à un règne par un mécanisme de « révolution » (pétition atteignant un seuil de signatures).
-                L'Éditeur peut modifier, suspendre ou arrêter le jeu, ses règles ou ses paramètres (durées, seuils) à tout moment, sans préavis et sans indemnité.</p>
-                <h3>3. Compte</h3>
+                <h3>1. Purpose</h3>
+                <p>These Terms of Use govern the use of gameofdemocracy.org (the "Website"), a free online game operated by Mounier Simon (the "Publisher"). By using the Website, you fully and unconditionally agree to these Terms.</p>
+
+                <h3>2. Description of the Service</h3>
                 <p>
-                L'inscription requiert une adresse e-mail valide ou un compte Google. L'utilisateur s'engage à :
-                ne créer qu'un seul compte ; la création de comptes multiples destinée à fausser les votes est interdite et peut entraîner la suppression des comptes concernés ;
-                ne pas usurper l'identité d'un tiers ;
-                maintenir la confidentialité de ses identifiants.
+                    GOD is a voting game. Registered users may create a "party" (name, description, and logo), vote for a party (limited to one vote per account), and participate in recurring cycles consisting of an election phase followed by a ruling phase.
+                    During the ruling phase, the creator of the winning party ("the Leader") may freely modify the content of the Website's public homepage (including text, images, and links) for the duration of their term.
+                    Users may end a ruling phase through a "revolution" mechanism, triggered when a petition reaches the required number of signatures.
+                    The Publisher may modify, suspend, or discontinue the game, its rules, or its parameters (including durations and thresholds) at any time, without prior notice or compensation.
                 </p>
-                <h3>5. Contenu publié par les utilisateurs</h3>
+
+                <h3>3. Accounts</h3>
                 <p>
-                Les contenus publiés sur le Sit ; noms et descriptions de partis, logos, avatars, contenu de la page d'honneur, annonces,  sont créés et publiés sous la seule responsabilité de leurs auteurs. Ils ne reflètent en aucun cas les opinions de l'Éditeur.
-
-                L'utilisateur qui publie un contenu déclare détenir les droits nécessaires (notamment sur les images) et garantit l'Éditeur contre toute réclamation de tiers à ce titre.
-
-                L'Éditeur n'exerce aucun contrôle a priori sur les contenus publiés.
+                    Registration requires a valid email address or a Google account. Users agree to:
+                    create only one account; creating multiple accounts to manipulate votes is prohibited and may result in the deletion of the accounts involved;
+                    not impersonate another person;
+                    keep their login credentials confidential.
                 </p>
-                <h3>6. Signalement et retrait</h3>
-                <p>Tout contenu peut être signalé à l'adresse pro.pikstyle@mail.com, accessible depuis le Site. Le signalement doit préciser l'URL ou l'emplacement du contenu et le motif.
 
-                À réception d'un signalement, l'Éditeur procède à un examen et retire, le cas échéant, tout contenu manifestement illicite dans un délai raisonnable.
+                <h3>4. User-Generated Content</h3>
+                <p>
+                    Content published on the Website—including party names and descriptions, logos, avatars, homepage content, and announcements—is created and published solely under the responsibility of its authors. Such content does not reflect the views or opinions of the Publisher.
 
-                L'Éditeur peut également suspendre ou supprimer un compte en cas de manquement aux présentes.</p>
-                <h3>7. Responsabilité</h3>
-                <p>Le Site est fourni « en l'état », sans garantie de disponibilité ni de continuité. Le jeu repose sur des services tiers et des traitements automatisés pouvant connaître des interruptions.
+                    By publishing content, users represent that they own or have the necessary rights to it (including image rights) and agree to indemnify the Publisher against any third-party claims arising from such content.
 
-                L'Éditeur ne saurait être tenu responsable des contenus publiés par les utilisateurs, ni des dommages résultant de l'utilisation du Site.</p>
-                <h3>8. Modification des conditions</h3>
-                <p>L'Éditeur peut modifier les présentes conditions. La version applicable est celle publiée sur le Site à la date d'utilisation.</p>
-                <h3>11. Contact</h3>
+                    The Publisher does not review or moderate user-generated content before it is published.
+                </p>
+
+                <h3>5. Reporting and Removal</h3>
+                <p>
+                    Any content may be reported by email at pro.pikstyle@mail.com. Reports should include the URL or location of the content and the reason for the report.
+
+                    Upon receiving a report, the Publisher will review the content and, where appropriate, remove any manifestly unlawful content within a reasonable timeframe.
+
+                    The Publisher may also suspend or delete an account for violations of these Terms.
+                </p>
+
+                <h3>6. Liability</h3>
+                <p>
+                    The Website is provided "as is," without any guarantee of availability or uninterrupted service. The game relies on third-party services and automated processes that may experience interruptions.
+
+                    The Publisher shall not be held liable for content published by users or for any damages resulting from the use of the Website.
+                </p>
+
+                <h3>7. Changes to the Terms</h3>
+                <p>
+                    The Publisher may modify these Terms at any time. The version applicable is the one published on the Website on the date of use.
+                </p>
+
+                <h3>8. Contact</h3>
                 <p>pro.pikstyle@gmail.com</p>
             </div>
         </div>

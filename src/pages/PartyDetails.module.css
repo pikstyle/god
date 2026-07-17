@@ -58,3 +58,36 @@
 .boutonVote {
     font-size: var(--moyen-bouton);
 }
+
+/* Sous 900px, la fiche ne tient plus en ligne : logo + identité + stats + 2 boutons.
+   Elle s'empile. */
+@media (max-width: 900px) {
+    .head {
+        flex-direction: column;
+        gap: 24px;
+        padding: 24px;
+    }
+
+    /* le titre passe sous le logo, donc il se centre. */
+    .droite {
+        text-align: center;
+        overflow-wrap: break-word;
+    }
+
+    /*  grid remplace le flex */
+    .statsPolitique {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        align-self: stretch;
+    }
+
+    .stat {
+        align-items: center;
+    }
+
+    /* pleine largeur */
+    .boutonVote {
+        align-self: stretch;
+    }
+}

@@ -27,10 +27,10 @@
 
 .imageFond {
     position: fixed; /* hors flux + ancrée au viewport : les marges du texte ne la bougent pas */
-    bottom: -50px; /* déborde en bas */
-    right: -50px; /* déborde à droite */
-    height: 95vh;
-    opacity: 0.5;
+    bottom: -90px; /* déborde en bas */
+    right: 100px; /* déborde à droite */
+    height: 100vh;
+    opacity: 0.9;
     pointer-events: none; /* les clics traversent l'image, elle ne bloque rien */
 }
 
@@ -39,4 +39,17 @@
     flex-direction: column;
     align-items: center;
     text-transform: uppercase;
+}
+
+@media (max-width: 1217px) {
+    .imageFond {
+        opacity: 0.2;
+    }
+}
+
+@media (max-width: 740px) {
+    .imageFond {
+        opacity: 0.2;
+        display: none;
+    }
 }
