@@ -16,6 +16,7 @@ import Cgu from './pages/Cgu'
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from './supabaseClients'
 import styles from './App.module.css'
+import Canvas from './components/Canvas'
 
 function App() {
   const [parties, setParties] = useState([]) // Liste des partis
@@ -270,6 +271,7 @@ function App() {
               <Route path="/party/:id" element={<PartyDetails partyList={sortedParties} isVoting={isVoting} vote={vote} gameState={gameState}/>}/>
               <Route path="/cgu" element={<Cgu></Cgu>}/>
               <Route path="/museum" element={<Musee></Musee>}/>
+              <Route path="/editor-debug" element={<Canvas></Canvas>}/>
             </Routes>
           </div>
           {location.pathname !== "/" && <Footer />} {/*Pour pas afficher dans home*/}

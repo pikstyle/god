@@ -1,0 +1,19 @@
+.scene {
+    width: 100%;
+}
+
+.canva {
+    position: relative;
+    border-top: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+}
+
+
+/*Les images prennent toute la place de leur parent (le porteur), comme ca on peut changer leur taille grace au porteur*/
+.media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
