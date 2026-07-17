@@ -53,3 +53,18 @@
     flex-direction: column;
     align-items: center;
 }
+
+@media (hover: hover) {
+    .imageHomeDiv:hover {
+        .calque {
+            opacity: 1;
+        }
+    }
+}
+
+/* on l'affiche en permanence pour que le leader sache que l'image est cliquable */
+@media (hover: none) {
+    .calque {
+        opacity: 1;
+    }
+}

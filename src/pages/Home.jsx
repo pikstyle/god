@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react'
 import { supabase } from "../supabaseClients"
 import imageCompression from 'browser-image-compression'
 
-
 function Home({ isLeader, textHome, saveHomeContent, partiLeader, gameState, user, sendAnnonce }) {
 
     const [brouillon, setBrouillon] = useState({})

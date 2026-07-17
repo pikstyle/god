@@ -132,9 +132,8 @@ function App() {
   // Liste des partis triées par ordre décroissant de votes
   const sortedParties = [...parties].sort((a, b) => b.votes - a.votes)
 
-  // Definir qui est le leader
-  const isLeader = user?.id === sortedParties[0]?.created_by
-
+  // Definir qui est le leader et leader existe ssi user existe, si le parti leader est chargé et si son id = created_by du parti #1
+  const isLeader = user && sortedParties[0]?.created_by && user?.id === sortedParties[0]?.created_by
   // Ajouter un parti à la liste des partis
   const addParty = async ({ title, description, votes, logoFile, description_longue }) => {
     const { data: uploadData } = await supabase.storage.from('logos').upload(title, logoFile) // Upload (donc envoie) le logofile au bucket de supabase

@@ -96,3 +96,9 @@
 .cta {
     text-decoration: underline;
 }
+
+@media (hover: hover) {
+    .right a:hover {
+        border: 1px solid var(--text);
+    }
+}
