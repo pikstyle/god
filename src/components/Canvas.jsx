@@ -17,7 +17,7 @@ const testContent = {
     ]
 }
 
-function Canvas({ user, editable, content = testContent, onSave }) {
+function Canvas({ user, editable, content = testContent, onSave, sendAnnonce }) {
 
     const sceneRef = useRef(null)
     const [scale, setScale] = useState(1)
@@ -33,6 +33,7 @@ function Canvas({ user, editable, content = testContent, onSave }) {
     }
     const fileInputRef = useRef(null)
     const gf = new GiphyFetch('rS3kFALE4PpPUODOk5ZBGWlTKF5lKoI1')
+    const [messageDiscord, setMessageDiscord] = useState("")
 
     // Afficher les gifs, trending de base et sinon on affiche ce qu'on recherche
     const fetchGifs = (offset) => {
@@ -221,6 +222,14 @@ function Canvas({ user, editable, content = testContent, onSave }) {
                 {ouvrirGif && <Grid key={rechercheGif} width={600} columns={3} fetchGifs={fetchGifs} onGifClick={((gif, e) => {
                     ajouterGif(gif.images.fixed_height.url), e.preventDefault()
                 })} />}
+                <input type="text" value={messageDiscord} onChange={(e) => setMessageDiscord(e.target.value)} placeholder='Faire une annonce discord'/>
+                {/* Bouton envoyer discord annonces */}
+                <button onClick={() => {
+                    if (messageDiscord === '') {
+                        alert("Veuillez inclure un message")
+                        return 
+                    }
+                    sendAnnonce(messageDiscord), setMessageDiscord("")}}>Envoyer sur discord</button>
                 {<button onClick={async () => {
                     const erreur = await onSave(brouillon)
                     if (erreur) {
