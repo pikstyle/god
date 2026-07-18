@@ -66,21 +66,21 @@ function App() {
     fetchHomeContent()
   }, [])
 
-      // Recuperer le gamestate 
-    useEffect(() => {
-      const fetchGameState = async () => {
-        const { data, error } = await supabase.from('game_state').select('*') // Attendre la réponse avec await et extrait les datas
-        setGameState(data[0]) // Prendre la premiere ligne et recuperer le bool regne.
-      }
-      fetchGameState()
-    }, []) // Tableau de dependences vide pour appeller qu'une seule fois. 
+  // Recuperer le gamestate 
+  useEffect(() => {
+    const fetchGameState = async () => {
+      const { data, error } = await supabase.from('game_state').select('*') // Attendre la réponse avec await et extrait les datas
+      setGameState(data[0]) // Prendre la premiere ligne et recuperer le bool regne.
+    }
+    fetchGameState()
+  }, []) // Tableau de dependences vide pour appeller qu'une seule fois. 
 
   // Charge le vote de l'utilisateur
-  useEffect(()  => {
+  useEffect(() => {
     const fetchUserVotes = async () => {
       if (user) { // Verifie si l'user est connecté
         const { data } = await supabase.from('votes').select('*').eq('user_id', user.id)
-        const { data: dataRev  } = await supabase.from('votes_revolution').select('id').eq('user_id', user.id)
+        const { data: dataRev } = await supabase.from('votes_revolution').select('id').eq('user_id', user.id)
         setUserVote(data[0]?.party_id) // si data[0] est undefined alors return juste undefined grace au ? optional chaining
         setUserVoteRev(dataRev.length > 0)
       }
@@ -88,46 +88,52 @@ function App() {
     fetchUserVotes()
   }, [user, gameState?.regne]) // Lance le fetch quand on change d'user, et quand on change de regne
 
-    // Recuperer le profile de l'user depuis supabase
-    useEffect(() => {
-        const fetchProfile = async () => {
-            if (!user) return // évite de faire la requête si user n'est pas encore chargé
-            const { data } = await supabase.from('profiles').select('*').eq('id', user.id) // Récupère la ligne dans la table profiles où id = user.id
-            setProfile(data[0]) // Stocke le profile et maj le state
-            if (!data[0]) { // Si l'user n'a pas de profile, go onboard
-              navigate('/onboarding')
+  // Recuperer le profile de l'user depuis supabase
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return // évite de faire la requête si user n'est pas encore chargé
+      const { data } = await supabase.from('profiles').select('*').eq('id', user.id) // Récupère la ligne dans la table profiles où id = user.id
+      setProfile(data[0]) // Stocke le profile et maj le state
+      if (!data[0]) { // Si l'user n'a pas de profile, go onboard
+        navigate('/onboarding')
       }
-        }
-        fetchProfile()
-    }, [user])
+    }
+    fetchProfile()
+  }, [user])
 
-    // Lancer une horloge
-    useEffect(() => {
-      const interval = setInterval( () => setNow(new Date()), 1000) // setIntervalle fonction du navigateur qui exécute setNow toutes les 1000 ms
-      return () => clearInterval(interval) // Fonction menage pour arreter le timer quand on quitte la page
-    }, [])
+  // Lancer une horloge
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000) // setIntervalle fonction du navigateur qui exécute setNow toutes les 1000 ms
+    return () => clearInterval(interval) // Fonction menage pour arreter le timer quand on quitte la page
+  }, [])
 
-    // Realtime = actualise tout seul le changement de cycle
-    useEffect(() => {
-      const canal = supabase
+  // Realtime = actualise tout seul le changement de cycle
+  useEffect(() => {
+    const canal = supabase
       .channel('check-timer') // ouvre la ligne d'écoute
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'game_state' }, (payload) => setGameState(payload.new)) // ce qu'on écoute, et quoi faire à réception (on filtre l'ecoute seulement pour update et game_state)
       .subscribe() // décroche : la connexion s'établit
-      return () => supabase.removeChannel(canal) // Fonction menage pour arreter le canal quand on quitte la page
-    }, [])
+    return () => supabase.removeChannel(canal) // Fonction menage pour arreter le canal quand on quitte la page
+  }, [])
 
-    // Realtime = actualise tout seul les votes
-    useEffect(() => {
-      const canalVotes = supabase
+  // Realtime = actualise tout seul les votes
+  useEffect(() => {
+    const canalVotes = supabase
       .channel('parties-live')
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'parties' }, (payload) => { setParties(prev => prev.map(p => p.id === payload.new.id ? { ...p, votes: payload.new.votes } : p))}) // ma uniquement les votes du bon parti
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'parties' }, (payload) => { setParties(prev => prev.map(p => p.id === payload.new.id ? { ...p, votes: payload.new.votes } : p)) }) // ma uniquement les votes du bon parti
       .subscribe()
-      return () => supabase.removeChannel(canalVotes)
-    }, [])
+    return () => supabase.removeChannel(canalVotes)
+  }, [])
 
   // Sauvegarde le texteHome dans la base de donnée
   const saveHomeContent = async (textContent) => {
-    await supabase.from('home_content').update({ content: textContent} ).eq('id', 1); // Maj le texte depuis supabase, en filtrant qu'on est bien dans la premiere ligne de la table home 
+    const { data, error } = await supabase.from('home_content').update({ content: textContent }).eq('id', 1).select()
+    if (error) {
+      return error
+    }
+    if (data.length === 0) { // aucune ligne touchée car la RLS a filtré = pas leader en règne
+      return { message: 'Publication refusée : il faut être leader pendant un règne.' }
+    }
   }
 
   // Liste des partis triées par ordre décroissant de votes
@@ -141,12 +147,12 @@ function App() {
     const { data: urlData } = supabase.storage.from('logos').getPublicUrl(title) // Récupère l'URL publique du fichier uploadé (url générée par supabase)
     const { data, error } = await supabase.from('parties').insert({ title, description, votes, created_by: user.id, logo_url: urlData.publicUrl, description_longue }).select() // Attend et insère le parti dans la table parties de supabase 
     if (error) {
-      return { error } 
+      return { error }
     } else {
-    setParties((prev) => { // maj le state local avec le nouveau parti pour que l'affichage se maj sans avoir à recharger les données depuis Supabase
-      return [...prev, { ...data[0], profiles: { id: user.id, username: profile?.username, avatar_url: profile?.avatar_url } }] // Créé un nouveau tableau avec tout les anciens + le nouveau et met tout ça dans setParties
-    })
-    return { error: null }
+      setParties((prev) => { // maj le state local avec le nouveau parti pour que l'affichage se maj sans avoir à recharger les données depuis Supabase
+        return [...prev, { ...data[0], profiles: { id: user.id, username: profile?.username, avatar_url: profile?.avatar_url } }] // Créé un nouveau tableau avec tout les anciens + le nouveau et met tout ça dans setParties
+      })
+      return { error: null }
     }
 
   }
@@ -158,7 +164,7 @@ function App() {
   }
 
   // Sauvegarde le profil de l'user dans la table de profiles de Supabase
-  const updateProfile = async ( {username, avatar_url} ) => { // Nouveau pseudo, avatar
+  const updateProfile = async ({ username, avatar_url }) => { // Nouveau pseudo, avatar
     await supabase.from("profiles").upsert({ id: user.id, username, avatar_url }) // Si le profil existe deja, il est maj sinon on le crée
     setParties(parties.map(party => { // Actualiser le profile aussi pour partyList
       if (user.id === party.created_by) { // Pour chaque parti crée par l'user
@@ -172,7 +178,7 @@ function App() {
 
   // Le compteur parties.votes est recalculé par un trigger Postgres à chaque insert/delete dans votes. Ici on ne fait qu'ajouter/retirer le vote donc on touche jamais au compteur en base. 
   const vote = async (partyId) => {
-    if (!user) { 
+    if (!user) {
       navigate('/login') // Si on est pas connecte on va vers login
       return // On sort de la fonction
     }
@@ -203,22 +209,22 @@ function App() {
           setParties(parties.map((party) => { // Retourne un nouveau tableau avec le nombre de vote de chaque partis maj
             if (party.id === currentVotePartyId) { // Check si c'est l'ancien parti voté
               return { ...party, votes: party.votes - 1 } // change seulement le nombre de vote de l'ancien parti voté
-            } else if (party.id === partyId ){ // Check si c'est un nouveau id
+            } else if (party.id === partyId) { // Check si c'est un nouveau id
               return { ...party, votes: party.votes + 1 } // Rajoute le vote dans le nouveau party
             } else { // C'est un autre parti random donc on touche pas
               return party // On retourne le parti tel quel
             }
           }))
         }
-        }
-    } finally {  
+      }
+    } finally {
       isVotingRef.current = false // Fin de voter
       setIsVoting(false)
     }
   }
 
   const voteRevolution = async () => {
-    if (!user) { 
+    if (!user) {
       navigate('/login') // Si on est pas connecte on va vers login
       return // On sort de la fonction
     }
@@ -239,7 +245,7 @@ function App() {
     const restant = Math.max(0, (gameState ? new Date(gameState.fin_phase) - now : 0)) // temps restant et Math.max pour eviter d'avoir des negatifs
     const secondesTotales = Math.floor(restant / 1000) // ms en secondes
     const heures = Math.floor(secondesTotales / 3600) // secondes en heures
-    const minutes = Math.floor((secondesTotales % 3600) / 60) 
+    const minutes = Math.floor((secondesTotales % 3600) / 60)
     const secondes = secondesTotales % 60
     return `${heures}h ${minutes}m ${secondes}s`
   }
@@ -249,8 +255,8 @@ function App() {
     const { error } = await supabase.from('announcements').insert({ message: message, user_id: user.id }) // Insere le message, et l'id de l'user qui a ecrit le message
     console.log(error)
   }
-    // Si on est en loading, ou que on a un user mais pas son profile et que on est pas dans onboarding, on ecrit chargement
-    if (loading || (user && !profile && location.pathname !== '/onboarding')) {
+  // Si on est en loading, ou que on a un user mais pas son profile et que on est pas dans onboarding, on ecrit chargement
+  if (loading || (user && !profile && location.pathname !== '/onboarding')) {
     return <p>Chargement...</p>
   }
 
@@ -258,24 +264,24 @@ function App() {
   return (
     <div className={styles.wrapper} >
       {location.pathname !== "/onboarding" && <NavBar timer={formatTimer()} partiLeader={sortedParties[0]} partyList={sortedParties} gameState={gameState} avatar={profile?.avatar_url} user={user} logout={logOut} loading={loading} username={profile?.username}></NavBar>}
-        <div className={styles.page} >
-            <Routes>
-              <Route path="/" element={<Home sendAnnonce={sendAnnonce} gameState={gameState} user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent}/>}/>
-              <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty}/></ProtectedRoute>}/>
-              <Route path="/parties" element={<PartyList userVoteRev={userVoteRev} voteRevolution={voteRevolution} partiLeader={sortedParties[0]} timer={formatTimer()} gameState={gameState} partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user}/>}/>
-              <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>}/>
-              <Route path="/login" element={<Login setUser={setUser}/>}/>
-              <Route path="/signup" element={<SignUp setUser={setUser}/>}/>
-              <Route path="/onboarding" element={<ProtectedRoute loading={loading} user={user}><Onboarding user={user} profile={profile} updateProfile={updateProfile}/></ProtectedRoute>}/>
-              <Route path="/hiw" element={<HowItWorks/>}/>
-              <Route path="/party/:id" element={<PartyDetails partyList={sortedParties} isVoting={isVoting} vote={vote} gameState={gameState}/>}/>
-              <Route path="/cgu" element={<Cgu></Cgu>}/>
-              <Route path="/museum" element={<Musee></Musee>}/>
-              <Route path="/editor-debug" element={<Canvas user={user} ></Canvas>}/>
-            </Routes>
-          </div>
-          {location.pathname !== "/" && <Footer />} {/*Pour pas afficher dans home*/}
+      <div className={styles.page} >
+        <Routes>
+          <Route path="/" element={<Home sendAnnonce={sendAnnonce} gameState={gameState} user={user} isLeader={isLeader} partiLeader={sortedParties[0]} textHome={textHome} setTextHome={setTextHome} saveHomeContent={saveHomeContent} />} />
+          <Route path="/create" element={<ProtectedRoute loading={loading} user={user}><CreateParty addParty={addParty} /></ProtectedRoute>} />
+          <Route path="/parties" element={<PartyList userVoteRev={userVoteRev} voteRevolution={voteRevolution} partiLeader={sortedParties[0]} timer={formatTimer()} gameState={gameState} partyList={sortedParties} vote={vote} isVoting={isVoting} profile={profile} user={user} />} />
+          <Route path="/profile" element={<ProtectedRoute loading={loading} user={user}><Profile logout={logOut} updateProfile={updateProfile} user={user} profile={profile}></Profile></ProtectedRoute>} />
+          <Route path="/login" element={<Login setUser={setUser} />} />
+          <Route path="/signup" element={<SignUp setUser={setUser} />} />
+          <Route path="/onboarding" element={<ProtectedRoute loading={loading} user={user}><Onboarding user={user} profile={profile} updateProfile={updateProfile} /></ProtectedRoute>} />
+          <Route path="/hiw" element={<HowItWorks />} />
+          <Route path="/party/:id" element={<PartyDetails partyList={sortedParties} isVoting={isVoting} vote={vote} gameState={gameState} />} />
+          <Route path="/cgu" element={<Cgu></Cgu>} />
+          <Route path="/museum" element={<Musee></Musee>} />
+          <Route path="/editor-debug" element={textHome ? <Canvas user={user} editable={true} content={textHome} onSave={saveHomeContent} editable={true}/> : null} />
+        </Routes>
       </div>
+      {location.pathname !== "/" && <Footer />} {/*Pour pas afficher dans home*/}
+    </div>
   )
 }
 
