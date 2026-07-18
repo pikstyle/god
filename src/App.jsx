@@ -271,7 +271,7 @@ function App() {
               <Route path="/party/:id" element={<PartyDetails partyList={sortedParties} isVoting={isVoting} vote={vote} gameState={gameState}/>}/>
               <Route path="/cgu" element={<Cgu></Cgu>}/>
               <Route path="/museum" element={<Musee></Musee>}/>
-              <Route path="/editor-debug" element={<Canvas></Canvas>}/>
+              <Route path="/editor-debug" element={<Canvas user={user} ></Canvas>}/>
             </Routes>
           </div>
           {location.pathname !== "/" && <Footer />} {/*Pour pas afficher dans home*/}

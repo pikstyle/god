@@ -1,8 +1,11 @@
 import styles from '../components/Canvas.module.css'
 import { useRef, useState, useEffect } from 'react'
 import { Rnd } from 'react-rnd'
+import { supabase } from '../supabaseClients'
+import imageCompression from 'browser-image-compression'
 
-function Canvas() {
+
+function Canvas({ user }) {
 
     const testContent = {
         "version": 2,
@@ -15,6 +18,19 @@ function Canvas() {
         ]
     }
 
+    const sceneRef = useRef(null)
+    const [scale, setScale] = useState(1)
+    const [testContentState, setTestContentState] = useState(testContent)
+    const [selectedId, setSelectedId] = useState(null)
+    const recadrage = `scale(${scale})`   // = "scale(0.31)"
+    const isSubmittingRef = useRef(false)
+    const [isSubmitting, setIsSubmitting] = useState(false) // State pour savoir si on submit une image
+    const options = {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 500,
+    }
+    const fileInputRef = useRef(null)
+
     const poignee = {
         width: 12,
         height: 12,
@@ -22,11 +38,37 @@ function Canvas() {
         border: '1px solid var(--text)',
     }
 
-    const sceneRef = useRef(null)
-    const [scale, setScale] = useState(1)
-    const [testContentState, setTestContentState] = useState(testContent)
-    const [selectedId, setSelectedId] = useState(null)
-    const recadrage = `scale(${scale})`   // = "scale(0.31)"
+    const couleurs = [
+        '#000000',
+        '#ff2600',
+        '#0000ff',
+        '#26ff00',
+        '#ffee00',
+        '#ff8800',
+        '#8800ff',
+        '#ff00aa',
+        '#ffffff'
+    ]
+
+    const handleSubmit = async (file) => {
+        if (isSubmittingRef.current) return // On est entrainde submit donc on sort direct
+        isSubmittingRef.current = true  // On est entrain submit 
+        try {
+            setIsSubmitting(true)
+            const compressedFile = await imageCompression(file, options) // Image file est compress
+            const chemin = `${user.id}/${Date.now()}`  // Chemin de fichier different a chaque upload
+            const { data: uploadData, error: uploadError } = await supabase.storage.from('image_home').upload(chemin, compressedFile) // Upload l'image dans le bucket image_home
+            if (uploadError) { // Si l'upload échoue (RLS, fichier trop lourd...), on prévient et on sort sans sauvegarder une URL cassée
+                alert('Upload échoué: ' + uploadError.message)
+                return
+            }
+            const { data: urlData } = supabase.storage.from('image_home').getPublicUrl(chemin) // Récupère l'URL publique du fichier uploadé (url générée par supabase)
+            ajouterImage(urlData.publicUrl)
+        } finally {
+            isSubmittingRef.current = false
+            setIsSubmitting(false)
+        }
+    }
 
     useEffect(() => {
         const mesurer = () => setScale(sceneRef.current.offsetWidth / testContentState.canvas.w)
@@ -51,44 +93,101 @@ function Canvas() {
         }
     }
 
+    const supprimerElement = () => {
+        setTestContentState({
+            ...testContentState,
+            elements: testContentState.elements.filter((truc) => truc.id !== selectedId) // On garde tout les elements sauf celui selectionné
+        })
+        setSelectedId(null)
+    }
+
+    const modifierSelection = (changements) => {
+        const nouveauxElements = testContentState.elements.map((truc) => {
+            if (truc.id === selectedId) {
+                return { ...truc, ...changements }
+            } else {
+                return truc
+            }
+        })
+        setTestContentState({ ...testContentState, elements: nouveauxElements })
+    }
+
+    const ajouterElement = (type) => {
+        let nouvelElement = { id: crypto.randomUUID(), type: type, x: 450, y: 320, w: 300, h: 60 }
+        if (type === 'text') {
+            nouvelElement = { ...nouvelElement, text_content: 'Nouveau texte', color: '#000000', size: 32 }
+        } else if (type === 'lien') {
+            nouvelElement = { ...nouvelElement, url: 'https://', label: 'Nouveau lien', color: '#000000', size: 20, h: 50 }
+        }
+        setTestContentState({ ...testContentState, elements: [...testContentState.elements, nouvelElement] })
+        setSelectedId(nouvelElement.id)
+    }
+
+    const ajouterImage = (url) => {
+        let nouvelleImage = { id: crypto.randomUUID(), type: 'image', url: url, x: 450, y: 320, w: 300, h: 300 }
+        setTestContentState({ ...testContentState, elements: [...testContentState.elements, nouvelleImage] })
+        setSelectedId(nouvelleImage.id)
+    }
+
+    const elementSelectionne = testContentState.elements.find(element => element.id === selectedId)
+
     return (
-        <div className={styles.scene} style={{ height: testContentState.canvas.h * scale }} ref={sceneRef}>
-            <div className={styles.canva} style={{ transform: recadrage, transformOrigin: 'top left', width: testContentState.canvas.w, height: testContentState.canvas.h }} onClick={(e) => { if (e.target === e.currentTarget) setSelectedId(null) }} >
-                {testContentState.elements.map((element) => {
-                    // dans le map, elle capture l'element de cette itération
-                    const deplacer = (event, donnees) => {
-                        const nouveauxElements = testContentState.elements.map((truc) => {
-                            if (truc.id === element.id) {
-                                return { ...truc, x: donnees.x, y: donnees.y }
-                            } else {
-                                return truc
-                            }
-                        })
-                        setTestContentState({ ...testContentState, elements: nouveauxElements })
-                    }
-                    const redimensionner = (event, direction, ref, delta, position) => {
-                        const nouveauxElements = testContentState.elements.map((truc) => {
-                            if (truc.id === element.id) {
-                                return { ...truc, x: position.x, y: position.y, w: ref.offsetWidth, h: ref.offsetHeight }
-                            } else {
-                                return truc
-                            }
-                        })
-                        setTestContentState({ ...testContentState, elements: nouveauxElements })
-                    }
-                    // Bound parent pour eviter de depasser du canva
-                    return (
-                        <Rnd onDragStart={() => setSelectedId(element.id)} onResizeStart={() => setSelectedId(element.id)} key={element.id} position={{ x: element.x, y: element.y }} size={{ width: element.w, height: element.h }}
-                            scale={scale} bounds="parent" onDrag={deplacer} onDragStop={deplacer} onResize={redimensionner} onResizeStop={redimensionner} style={{ border: selectedId === element.id ? '1px dashed var(--text)' : '1px dashed transparent' }} enableResizing={selectedId === element.id} resizeHandleStyles={{
-                                topLeft: { ...poignee, left: -6, top: -6 },
-                                topRight: { ...poignee, right: -6, top: -6 },
-                                bottomLeft: { ...poignee, left: -6, bottom: -6 },
-                                bottomRight: { ...poignee, right: -6, bottom: -6 },
-                            }}>
-                            {afficherElements(element)}
-                        </Rnd>
-                    )
-                })}
+        <div className={styles.all}>
+            <div className={styles.scene} style={{ height: testContentState.canvas.h * scale }} ref={sceneRef}>
+                <div className={styles.canva} style={{ transform: recadrage, transformOrigin: 'top left', width: testContentState.canvas.w, height: testContentState.canvas.h }} onClick={(e) => { if (e.target === e.currentTarget) setSelectedId(null) }} >
+                    {testContentState.elements.map((element) => {
+                        // dans le map, elle capture l'element de cette itération
+                        const deplacer = (event, donnees) => {
+                            const nouveauxElements = testContentState.elements.map((truc) => {
+                                if (truc.id === element.id) {
+                                    return { ...truc, x: donnees.x, y: donnees.y }
+                                } else {
+                                    return truc
+                                }
+                            })
+                            setTestContentState({ ...testContentState, elements: nouveauxElements })
+                        }
+                        const redimensionner = (event, direction, ref, delta, position) => {
+                            const nouveauxElements = testContentState.elements.map((truc) => {
+                                if (truc.id === element.id) {
+                                    return { ...truc, x: position.x, y: position.y, w: ref.offsetWidth, h: ref.offsetHeight }
+                                } else {
+                                    return truc
+                                }
+                            })
+                            setTestContentState({ ...testContentState, elements: nouveauxElements })
+                        }
+                        // Bound parent pour eviter de depasser du canva
+                        return (
+                            <Rnd onDragStart={() => setSelectedId(element.id)} onResizeStart={() => setSelectedId(element.id)} key={element.id} position={{ x: element.x, y: element.y }} size={{ width: element.w, height: element.h }}
+                                scale={scale} bounds="parent" onDrag={deplacer} onDragStop={deplacer} onResize={redimensionner} onResizeStop={redimensionner} style={{ border: selectedId === element.id ? '1px dashed var(--text)' : '1px dashed transparent' }} enableResizing={selectedId === element.id} resizeHandleStyles={{
+                                    topLeft: { ...poignee, left: -6, top: -6 },
+                                    topRight: { ...poignee, right: -6, top: -6 },
+                                    bottomLeft: { ...poignee, left: -6, bottom: -6 },
+                                    bottomRight: { ...poignee, right: -6, bottom: -6 },
+                                }}>
+                                {afficherElements(element)}
+                            </Rnd>
+                        )
+                    })}
+                </div>
+            </div>
+            <div className={styles.panneau}>
+                <button onClick={() => ajouterElement('text')}>+Text</button>
+                <button onClick={() => ajouterElement('lien')}>+Lien</button>
+                {selectedId && <button onClick={supprimerElement}>Supprimer</button>}
+                {elementSelectionne?.type === 'text' && <input value={elementSelectionne.text_content} type="text" onChange={(e) => modifierSelection({ text_content: e.target.value })} />}
+                {elementSelectionne?.type === 'lien' && <input value={elementSelectionne.url} type="text" onChange={(e) => modifierSelection({ url: e.target.value })} />}
+                {elementSelectionne?.type === 'lien' && <input value={elementSelectionne.label} type="text" onChange={(e) => modifierSelection({ label: e.target.value })} />}
+                {elementSelectionne?.type === 'lien' && couleurs.map((couleur) => (
+                    <button key={couleur} className={styles.pastilles} style={{ backgroundColor: couleur }} onClick={() => modifierSelection({ color: couleur })}></button>
+                ))}
+                {elementSelectionne?.type === 'text' && couleurs.map((couleur) => (
+                    <button key={couleur} className={styles.pastilles} style={{ backgroundColor: couleur }} onClick={() => modifierSelection({ color: couleur })}></button>
+                ))}
+                {elementSelectionne?.type === 'text' && <input value={elementSelectionne.size} type="number" onChange={(e) => modifierSelection({ size: Number(e.target.value) })} />}
+                {elementSelectionne?.type === 'lien' && <input value={elementSelectionne.size} type="number" onChange={(e) => modifierSelection({ size: Number(e.target.value) })} />}
+                <input ref={fileInputRef} required type="file" onChange={(e) => handleSubmit(e.target.files[0])} />
             </div>
         </div>
     )
