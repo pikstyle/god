@@ -3,6 +3,8 @@ import { useRef, useState, useEffect } from 'react'
 import { Rnd } from 'react-rnd'
 import { supabase } from '../supabaseClients'
 import imageCompression from 'browser-image-compression'
+import { Grid } from '@giphy/react-components'
+import { GiphyFetch } from '@giphy/js-fetch-api'
 
 
 function Canvas({ user }) {
@@ -30,6 +32,18 @@ function Canvas({ user }) {
         maxWidthOrHeight: 500,
     }
     const fileInputRef = useRef(null)
+    const gf = new GiphyFetch('rS3kFALE4PpPUODOk5ZBGWlTKF5lKoI1')
+
+    // Afficher les gifs, trending de base et sinon on affiche ce qu'on recherche
+    const fetchGifs = (offset) => {
+        if (rechercheGif === '') {
+            return gf.trending({ offset, limit: 10 })
+        } else {
+            return gf.search(rechercheGif, { offset, limit: 10 })
+        }
+    }
+    const [ouvrirGif, setOuvrirGif] = useState(false)
+    const [rechercheGif, setRechercheGif] = useState('')
 
     const poignee = {
         width: 12,
@@ -129,6 +143,12 @@ function Canvas({ user }) {
         setSelectedId(nouvelleImage.id)
     }
 
+    const ajouterGif = (url) => {
+        let nouvelleImage = { id: crypto.randomUUID(), type: 'gif', url: url, x: 450, y: 320, w: 300, h: 300 }
+        setTestContentState({ ...testContentState, elements: [...testContentState.elements, nouvelleImage] })
+        setSelectedId(nouvelleImage.id)
+    }
+
     const elementSelectionne = testContentState.elements.find(element => element.id === selectedId)
 
     return (
@@ -188,6 +208,11 @@ function Canvas({ user }) {
                 {elementSelectionne?.type === 'text' && <input value={elementSelectionne.size} type="number" onChange={(e) => modifierSelection({ size: Number(e.target.value) })} />}
                 {elementSelectionne?.type === 'lien' && <input value={elementSelectionne.size} type="number" onChange={(e) => modifierSelection({ size: Number(e.target.value) })} />}
                 <input ref={fileInputRef} required type="file" onChange={(e) => handleSubmit(e.target.files[0])} />
+                <button onClick={() => setOuvrirGif(!ouvrirGif)}>gifs</button>
+                {ouvrirGif && <input type="text" onChange={(e) => setRechercheGif(e.target.value)}/>}
+                {ouvrirGif && <Grid key={rechercheGif} width={600} columns={3} fetchGifs={fetchGifs}  onGifClick={((gif, e) => {
+                    ajouterGif(gif.images.fixed_height.url), e.preventDefault()
+                })}/>}
             </div>
         </div>
     )
