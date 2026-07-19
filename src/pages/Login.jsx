@@ -14,7 +14,7 @@ function Login({ setUser }) {
         event.preventDefault()
         const { data, error } = await supabase.auth.signInWithPassword({ email: email, password: mdp }) // Connecte l'user lors de la connexion et le stocke dans data
         if (error) {
-            setErrorMsg('Email ou mot de passe incorrect')
+            setErrorMsg('Incorrect email or password.')
             return
         }
         setUser(data.user) // Maj le state local avec le bon user

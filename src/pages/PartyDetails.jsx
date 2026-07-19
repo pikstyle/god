@@ -2,22 +2,22 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import styles from "./PartyDetails.module.css";
 
-function PartyDetails({ partyList, vote, isVoting, gameState }) {
+function PartyDetails({ partyList, vote, isVoting, gameState, voteRevolution, userVoteRev }) {
 
     const { id } = useParams() // Recupère l'objet id destructuré en string qui est obtenu par useParams qui le récupère depuis :id de la route path="/party/:id"
 
     // Definir le bon party ; index et son rang
-    const isSameIndex = (party) =>  String(party.id) === id
+    const isSameIndex = (party) => String(party.id) === id
     const partyIndex = partyList.findIndex(isSameIndex)
     const party = partyList[partyIndex]
     const rang = partyIndex + 1
 
     // Calculer le nombre de vote total
     const nombreVoteTotal = partyList?.reduce(
-        (total, party) => total + party.votes, 0 
+        (total, party) => total + party.votes, 0
     )
 
-    const pourcentageDesVoix = Math.floor((party?.votes / nombreVoteTotal)*100)
+    const pourcentageDesVoix = Math.floor((party?.votes / nombreVoteTotal) * 100)
 
     const voteEcartTrone = parseInt(partyList[0]?.votes - party?.votes)
     const nombreDePartis = partyList?.length
@@ -31,10 +31,10 @@ function PartyDetails({ partyList, vote, isVoting, gameState }) {
                 navigator.clipboard.writeText(url) // Sinon on copie juste l'url
                 alert("Link copied!")
             }
-            } catch (error) {
-                    console.log(error)
-                }
+        } catch (error) {
+            console.log(error)
         }
+    }
 
     return (
         <div className={styles.parent}>
@@ -66,8 +66,15 @@ function PartyDetails({ partyList, vote, isVoting, gameState }) {
                         </div>
                     )}
                 </div>
-                <button className={styles.boutonVote} onClick={ () => partager(party)}>Share</button>
-                <button className={styles.boutonVote} onClick={ () => vote(party.id)} disabled={isVoting || gameState?.regne}>Vote</button>
+                <button className={styles.boutonVote} onClick={() => partager(party)}>Share</button>
+                {partyIndex === 0 && gameState?.regne ?
+                    <button className={styles.boutonVote} onClick={(e) => { voteRevolution() }} disabled={userVoteRev}>
+                        {userVoteRev ? "Rebelled" : "Rebel"}
+                    </button> :
+                    <button className={styles.boutonVote} onClick={(e) => { vote(party.id) }} disabled={isVoting || gameState?.regne}>
+                        Vote
+                    </button>}
+
             </div>
             <h2 className={styles.slogan} >"{party?.description}"
             </h2>

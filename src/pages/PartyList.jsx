@@ -23,7 +23,7 @@ function ListeParty({ partyList, vote, isVoting, gameState, timer, partiLeader, 
                         <span className={styles.rouge}> {partiLeader?.title}</span> won the elections, voting will reopen in:{" "}
                         <span className={styles.rouge}>{timer}</span>
                         <br />
-                        <span>{nombreVoteRevolution}/{seuil}{" "}votes restant pour lancer une révolution</span>
+                        <span>{nombreVoteRevolution}/{seuil}{" "}votes remaining to start a revolution</span>
                     </h2>
                 ) : (
                     <h2>
@@ -53,7 +53,7 @@ function ListeParty({ partyList, vote, isVoting, gameState, timer, partiLeader, 
                         {/* e.stopPropagation() perment de cliquer sur voter dans que usenavigate s'active */}
                         {index === 0 && gameState?.regne ?
                         <button className={styles.btnVote} onClick={(e) => { e.stopPropagation(); voteRevolution() }} disabled={userVoteRev}>
-                            {userVoteRev ? "Signé" : "Revolution"}
+                            {userVoteRev ? "Rebelled" : "Rebel"}
                         </button> : 
                         <button className={styles.btnVote} onClick={(e) => { e.stopPropagation(); vote(party.id) }} disabled={isVoting || gameState?.regne}>
                             Vote

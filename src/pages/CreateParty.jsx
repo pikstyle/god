@@ -19,16 +19,16 @@ function CreateParty({ addParty }) {
     // Quand on envoie le form
     const handleSubmit = async (event) => {
         event.preventDefault()
-        if (title.length > 15) {
-            alert('Titre de parti trop long, max 15 caractères')
+        if (title.length > 30) {
+            alert('Party title is too long (Maximum 30 characters)')
             return
         }    
-        if (description.length > 50) {
-            alert('Slogan trop long, max 50 caractères')
+        if (description.length > 100) {
+            alert('Slogan is too long. (Maximum 100 characters.)')
             return
         }
         if (descriptionLongue.length > 2000) {
-            alert('Description trop longue, max 2000 caractères')
+            alert('Platform description is too long. (Maximum 2000 characters.)')
             return
         }
         // if (partyLogo.size > 1 * 1024 * 1024) { // Verifie que le logo est inf a 1MB
@@ -43,7 +43,7 @@ function CreateParty({ addParty }) {
             const { error } = await addParty({ title: title, description: description, logoFile: compressedFile, votes: 0, description_longue: descriptionLongue})
             // Si on catch une erreur alors on ne cree pas le parti
             if (error) {
-                alert(error.code === '23505' ? 'Ce nom de parti est déjà pris, choisissez-en un autre' : 'Erreur lors de la création du parti')
+                alert(error.code === '23505' ? 'This party name is already taken, please choose another one.' : 'Error while creating the party')
                 return // 23505 : code d'erreur standard de PostgreSQL : violé une contrainte unique
             }
             // Apres avoir crée le parti on reset les inputs
@@ -52,7 +52,7 @@ function CreateParty({ addParty }) {
             setDescriptionLongue("")
             setPartyLogo() // Vide le state logo party
             fileInputRef.current.value = '' // Vider l'input file
-            alert('Parti créé !')
+            alert('Party created!')
         } finally {
             isSubmittingRef.current = false
             setIsSubmitting(false)

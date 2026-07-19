@@ -74,7 +74,7 @@ function Canvas({ user, editable, content = testContent, onSave, sendAnnonce }) 
             const chemin = `${user.id}/${Date.now()}`  // Chemin de fichier different a chaque upload
             const { data: uploadData, error: uploadError } = await supabase.storage.from('image_home').upload(chemin, compressedFile) // Upload l'image dans le bucket image_home
             if (uploadError) { // Si l'upload échoue (RLS, fichier trop lourd...), on prévient et on sort sans sauvegarder une URL cassée
-                alert('Upload échoué: ' + uploadError.message)
+                alert('Upload failed: ' + uploadError.message)
                 return
             }
             const { data: urlData } = supabase.storage.from('image_home').getPublicUrl(chemin) // Récupère l'URL publique du fichier uploadé (url générée par supabase)
@@ -226,16 +226,16 @@ function Canvas({ user, editable, content = testContent, onSave, sendAnnonce }) 
                 {/* Bouton envoyer discord annonces */}
                 <button onClick={() => {
                     if (messageDiscord === '') {
-                        alert("Veuillez inclure un message")
+                        alert("Please include a message.")
                         return 
                     }
                     sendAnnonce(messageDiscord), setMessageDiscord("")}}>Envoyer sur discord</button>
                 {<button onClick={async () => {
                     const erreur = await onSave(brouillon)
                     if (erreur) {
-                        setMessageSave('Échec : ' + erreur.message)
+                        setMessageSave('Failed : ' + erreur.message)
                     } else {
-                        setMessageSave('Publié !')
+                        setMessageSave('Posted!')
                     }
                 }}>Publier</button>}
                 {messageSave && <span>{messageSave}</span>}
