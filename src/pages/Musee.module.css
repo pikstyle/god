@@ -14,7 +14,7 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    padding: 32px;
+    max-width: 800px;
 }
 
 .textHome {
@@ -29,16 +29,8 @@
 .infos {
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid var(--text);
-    border-right: 1px solid var(--text);
     border-left: 1px solid var(--text);
+    border-right: 1px solid var(--text);
     text-transform: uppercase;
     padding: 8px;
-}
-
-.contenu {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid var(--text);
-    padding: 16px;
 }
