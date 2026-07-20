@@ -220,7 +220,8 @@ function Canvas({ user, editable, content = testContent, onSave, sendAnnonce }) 
                 <button onClick={() => setOuvrirGif(!ouvrirGif)}>gifs</button>
                 {ouvrirGif && <input type="text" onChange={(e) => setRechercheGif(e.target.value)} />}
                 {ouvrirGif && <Grid key={rechercheGif} width={600} columns={3} fetchGifs={fetchGifs} onGifClick={((gif, e) => {
-                    ajouterGif(gif.images.fixed_height.url), e.preventDefault()
+                    e.preventDefault()
+                    ajouterGif(gif.images.fixed_height?.url) 
                 })} />}
                 <input type="text" value={messageDiscord} onChange={(e) => setMessageDiscord(e.target.value)} placeholder='Faire une annonce discord'/>
                 {/* Bouton envoyer discord annonces */}

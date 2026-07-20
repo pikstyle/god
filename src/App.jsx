@@ -143,8 +143,12 @@ function App() {
   const isLeader = user && sortedParties[0]?.created_by && user?.id === sortedParties[0]?.created_by
   // Ajouter un parti à la liste des partis
   const addParty = async ({ title, description, votes, logoFile, description_longue }) => {
-    const { data: uploadData } = await supabase.storage.from('logos').upload(title, logoFile) // Upload (donc envoie) le logofile au bucket de supabase
-    const { data: urlData } = supabase.storage.from('logos').getPublicUrl(title) // Récupère l'URL publique du fichier uploadé (url générée par supabase)
+    const chemin = `${user.id}/${Date.now()}`
+    const { error: uploadError } = await supabase.storage.from('logos').upload(chemin, logoFile) // Upload (donc envoie) le logofile au bucket de supabase
+    if (uploadError) {
+      return { error: uploadError }
+    }
+    const { data: urlData } = supabase.storage.from('logos').getPublicUrl(chemin) // Récupère l'URL publique du fichier uploadé (url générée par supabase)
     const { data, error } = await supabase.from('parties').insert({ title, description, votes, created_by: user.id, logo_url: urlData.publicUrl, description_longue }).select() // Attend et insère le parti dans la table parties de supabase 
     if (error) {
       return { error }

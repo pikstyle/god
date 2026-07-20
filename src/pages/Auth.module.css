@@ -43,3 +43,8 @@
     min-height: 70vh;
     align-items: center;
 }
+
+.divon {
+    display: flex;
+    justify-content: center;
+}

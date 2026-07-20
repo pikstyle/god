@@ -19,8 +19,8 @@ function CreateParty({ addParty }) {
     // Quand on envoie le form
     const handleSubmit = async (event) => {
         event.preventDefault()
-        if (title.length > 30) {
-            alert('Party title is too long (Maximum 30 characters)')
+        if (title.length > 50) {
+            alert('Party title is too long (Maximum 50 characters)')
             return
         }    
         if (description.length > 100) {
@@ -63,11 +63,11 @@ function CreateParty({ addParty }) {
         <div className={styles.div}>
             <h1>CREATE YOUR PARTY</h1>
             <form className={styles.form} onSubmit={handleSubmit}>
-                <label>Title (Max 15 characters)</label>
+                <label>Title</label>
                 <input className={styles.inputs} required type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-                <label>slogan (Max 50 characters)</label>
+                <label>Slogan</label>
                 <input className={styles.inputs} required name="description" id="description" value={description} onChange={(e) => setDescription(e.target.value)}></input>
-                <label>Description (Max 1000 characters)</label>
+                <label>Description</label>
                 <textarea className={styles.inputs} required name="descriptionLongue" id="descriptionLongue" value={descriptionLongue} onChange={(e) => setDescriptionLongue(e.target.value)}></textarea>
                 <label>Logo</label>
                 <input className={styles.file_input} ref={fileInputRef} required type="file" id="logoParti" onChange={(e) => setPartyLogo(e.target.files[0])}/>
