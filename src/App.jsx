@@ -136,8 +136,8 @@ function App() {
     }
   }
 
-  // Liste des partis triées par ordre décroissant de votes
-  const sortedParties = [...parties].sort((a, b) => b.votes - a.votes)
+  // Liste des partis triées par ordre décroissant de votes et par ordre d'id croissant d'id (le plus ancien gagne)
+  const sortedParties = [...parties].sort((a, b) => b.votes - a.votes || a.id - b.id)
 
   // Definir qui est le leader et leader existe ssi user existe, si le parti leader est chargé et si son id = created_by du parti #1
   const isLeader = user && sortedParties[0]?.created_by && user?.id === sortedParties[0]?.created_by
