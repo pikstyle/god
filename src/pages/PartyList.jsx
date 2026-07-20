@@ -1,7 +1,7 @@
 import styles from './PartyList.module.css'
 import { useNavigate } from 'react-router-dom'
 
-function ListeParty({ partyList, vote, isVoting, gameState, timer, partiLeader, voteRevolution, userVoteRev }) {
+function ListeParty({ partyList, vote, isVoting, gameState, timer, partiLeader, voteRevolution, userVoteRev, userVote }) {
 
     const navigate = useNavigate()
 
@@ -55,8 +55,8 @@ function ListeParty({ partyList, vote, isVoting, gameState, timer, partiLeader, 
                         <button className={styles.btnVote} onClick={(e) => { e.stopPropagation(); voteRevolution() }} disabled={userVoteRev}>
                             {userVoteRev ? "Rebelled" : "Rebel"}
                         </button> : 
-                        <button className={styles.btnVote} onClick={(e) => { e.stopPropagation(); vote(party.id) }} disabled={isVoting || gameState?.regne}>
-                            Vote
+                        <button className={styles.btnVote} onClick={(e) => { e.stopPropagation(); vote(party.id) }} disabled={isVoting || gameState?.regne || userVote === party.id}>
+                            {userVote === party.id ? "Voted" : "Vote"}
                         </button> }
                     </li>
                 ))}
