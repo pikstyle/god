@@ -15,6 +15,7 @@
     justify-content: center;
     margin: 0 auto;
     max-width: 420px;
+    
 }
 
 .textHome {
@@ -29,8 +30,8 @@
 .infos {
     display: flex;
     flex-direction: column;
-    border-left: 1px solid var(--text);
-    border-right: 1px solid var(--text);
+    border-left: 0.5px solid var(--text);
+    border-right: 0.5px solid var(--text);
     text-transform: uppercase;
     padding: 8px;
 }

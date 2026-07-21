@@ -1,5 +1,11 @@
 .scene {
     width: 100%;
+    overflow: hidden;
+}
+
+.all {
+    width: 100%;
+    min-width: 0;
 }
 
 .canva {
