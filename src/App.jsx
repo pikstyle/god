@@ -281,7 +281,7 @@ function App() {
           <Route path="/party/:id" element={<PartyDetails userVoteRev={userVoteRev} voteRevolution={voteRevolution} partyList={sortedParties} isVoting={isVoting} vote={vote} gameState={gameState} />} />
           <Route path="/cgu" element={<Cgu></Cgu>} />
           <Route path="/museum" element={<Musee></Musee>} />
-          <Route path="/editor-debug" element={textHome ? <Canvas sendAnnonce={sendAnnonce} user={user} content={textHome} onSave={saveHomeContent} editable={true}/> : null} />
+          {/*<Route path="/editor-debug" element={textHome ? <Canvas sendAnnonce={sendAnnonce} user={user} content={textHome} onSave={saveHomeContent} editable={true}/> : null} />*/}
         </Routes>
       </div>
       {location.pathname !== "/" && <Footer />} {/*Pour pas afficher dans home*/}
