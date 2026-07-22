@@ -7,6 +7,7 @@ function SignUp({ setUser }) {
     const [email, setEmail] = useState('')
     const [mdp, setMdp] = useState('')
     const navigate = useNavigate() // Hook qui lance la fonction pour naviguer
+    const [showMdp, setShowMdp] = useState(false)
 
     // Signup avec email et mot de passe
     const handleSubmit = async (event) => {
@@ -31,7 +32,8 @@ function SignUp({ setUser }) {
                 <label>Email</label>
                 <input className={styles.inputs} required type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <label>Password</label>
-                <input className={styles.inputs} required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
+                <input className={styles.inputs} required type={showMdp ? 'text' : 'password'} value={mdp} onChange={(e) => setMdp(e.target.value)}/>
+                <button type="button" onClick={() => setShowMdp(!showMdp)}>{showMdp ? 'Hide' : 'Show'}</button>
                 <button className={styles.button}>SignUp</button>
                 <div className={styles.auth_question}>
                     <h4>Already on account? </h4>

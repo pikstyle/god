@@ -8,6 +8,7 @@ function Login({ setUser }) {
     const [mdp, setMdp] = useState('')
     const [errorMsg, setErrorMsg] = useState('')
     const navigate = useNavigate() // Hook qui lance la fonction pour naviguer
+    const [showMdp, setShowMdp] = useState(false)
 
     // Submit le form et login
     const handleSubmit = async (event) => {
@@ -30,7 +31,8 @@ function Login({ setUser }) {
                 <label>Email</label>
                 <input className={styles.inputs} required type="text" value={email} onChange={(e) => setEmail(e.target.value)}/>
                 <label>Password</label>
-                <input className={styles.inputs} required type="password" value={mdp} onChange={(e) => setMdp(e.target.value)}/>
+                <input className={styles.inputs} required type={showMdp ? 'text' : 'password'} value={mdp} onChange={(e) => setMdp(e.target.value)}/>
+                <button type="button" onClick={() => setShowMdp(!showMdp)}>{showMdp ? 'Hide' : 'Show'}</button>
                 <button className={styles.button} type="submit">Login</button>
                 <div className={styles.auth_question}>
                     <h4>Don't have an account yet? </h4>
