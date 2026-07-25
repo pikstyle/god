@@ -7,6 +7,7 @@ function Footer() {
             <footer className={styles.footer}>
                 <div className={styles.inner}>
                     <a target="_blank" href="https://discord.gg/gyUvG3HW9F">Discord</a>
+                    <a target="_blank" href="https://github.com/pikstyle/god">Github</a>
                     <a href="mailto:pro.pikstyle@gmail.com">Contact</a>
                     <NavLink to="/cgu">Terms of Use</NavLink>
 
